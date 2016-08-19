@@ -3,6 +3,7 @@
     <div *ngFor="let device of devices" class="iot-device">
         {{ device.name}}
     </div>
+    <button (click)="createNewScript()">New</button>
     Scripts:
     <div *ngFor="let script of scripts" class="iot-device">
         <b>Name:</b>{{ script.Name }} <br>
