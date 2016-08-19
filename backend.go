@@ -120,14 +120,20 @@ func main() {
 	api.Get("/script/:scriptUuid/:version", func(c *iris.Context) {
 		script := Script{}
 		scriptUuid := c.Param("scriptUuid")
-		version, _ := strconv.Atoi(c.Param("version"))
-		fmt.Println(scriptUuid)
 
 		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).One(&script)
 		if err != nil {
 			println("error: " + err.Error())
 		}
-		c.JSON(iris.StatusOK, script.Scripts[version-1])
+
+		versionString := c.Param("version")
+		if versionString == "latest" {
+			c.JSON(iris.StatusOK, script.Scripts[len(script.Scripts)-1])
+		} else {
+			version, _ := strconv.Atoi(versionString)
+			c.JSON(iris.StatusOK, script.Scripts[version-1])
+		}
+
 	})
 
 	api.Listen(":8001")
