@@ -6,13 +6,19 @@ import "gopkg.in/mgo.v2"
 import "gopkg.in/mgo.v2/bson"
 import "github.com/satori/go.uuid"
 import "fmt"
+import "strconv"
+
+type ScriptVersion struct {
+	Version int `bson:"version"`
+	Content string
+}
 
 type Script struct {
 	Id         bson.ObjectId `_id`
-	ScriptUuid string
+	Name       string
+	ScriptUuid string `bson:"scriptuuid"`
 	DeviceUuid string
-	Version    int
-	Content    string
+	Scripts    []ScriptVersion
 }
 
 func main() {
@@ -40,6 +46,7 @@ func main() {
 		i := bson.NewObjectId()
 		script.Id = i
 		script.ScriptUuid = uuid.NewV4().String()
+		script.Scripts = []ScriptVersion{}
 
 		err := scriptsDb.Insert(script)
 		if err != nil {
@@ -53,7 +60,7 @@ func main() {
 		c.ReadJSON(&sentScript)
 		scriptUuid := c.Param("scriptUuid")
 
-		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).Sort("-version").One(&script)
+		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).One(&script)
 		if err != nil {
 			println("error: " + err.Error())
 		}
@@ -61,10 +68,37 @@ func main() {
 		i := bson.NewObjectId()
 		script.Id = i
 		script.ScriptUuid = scriptUuid
-		script.Version = script.Version + 1
-		script.Content = sentScript.Content
+		script.Name = sentScript.Name
+		script.DeviceUuid = sentScript.DeviceUuid
 
 		err = scriptsDb.Insert(script)
+		if err != nil {
+			panic(err)
+		}
+		c.JSON(iris.StatusOK, script)
+	})
+	api.Post("/script/:scriptUuid/version", func(c *iris.Context) {
+		script := Script{}
+		sentScript := ScriptVersion{}
+		c.ReadJSON(&sentScript)
+		scriptUuid := c.Param("scriptUuid")
+
+		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).One(&script)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		scriptVersion := ScriptVersion{}
+		if len(script.Scripts) == 0 {
+			scriptVersion.Version = 1
+		} else {
+			scriptVersion.Version = script.Scripts[len(script.Scripts)-1].Version + 1
+		}
+		scriptVersion.Content = sentScript.Content
+
+		script.Scripts = append(script.Scripts, scriptVersion)
+
+		err = scriptsDb.Update(bson.M{"scriptuuid": scriptUuid}, script)
 		if err != nil {
 			panic(err)
 		}
@@ -76,11 +110,24 @@ func main() {
 		scriptUuid := c.Param("scriptUuid")
 		fmt.Println(scriptUuid)
 
-		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).Sort("-version").One(&script)
+		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).Select(bson.M{"scripts": 0}).One(&script)
 		if err != nil {
 			println("error: " + err.Error())
 		}
 		c.JSON(iris.StatusOK, script)
+	})
+
+	api.Get("/script/:scriptUuid/:version", func(c *iris.Context) {
+		script := Script{}
+		scriptUuid := c.Param("scriptUuid")
+		version, _ := strconv.Atoi(c.Param("version"))
+		fmt.Println(scriptUuid)
+
+		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).One(&script)
+		if err != nil {
+			println("error: " + err.Error())
+		}
+		c.JSON(iris.StatusOK, script.Scripts[version-1])
 	})
 
 	api.Listen(":8001")
