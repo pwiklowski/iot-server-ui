@@ -1,0 +1,15 @@
+<div class="iot-devices">
+    Devices:
+    <div *ngFor="let device of devices" class="iot-device">
+        {{ device.name}}
+    </div>
+    Scripts:
+    <div *ngFor="let script of scripts" class="iot-device">
+        <b>Name:</b>{{ script.Name }} <br>
+        {{ script.ScriptUuid}} 
+    </div>
+</div>
+
+<div class="iot-content">
+    <router-outlet></router-outlet>
+</div>
