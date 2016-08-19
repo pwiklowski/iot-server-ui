@@ -48,6 +48,12 @@ func main() {
 		script.ScriptUuid = uuid.NewV4().String()
 		script.Scripts = []ScriptVersion{}
 
+		scriptVersion := ScriptVersion{}
+		scriptVersion.Version = 1
+		scriptVersion.Content = "//Fill me"
+
+		script.Scripts = append(script.Scripts, scriptVersion)
+
 		err := scriptsDb.Insert(script)
 		if err != nil {
 			panic(err)
