@@ -6,8 +6,10 @@
     <button (click)="createNewScript()">New</button>
     Scripts:
     <div *ngFor="let script of scripts" class="iot-device">
+        <a href="/#/script/{{script.ScriptUuid}}">
         <b>Name:</b>{{ script.Name }} <br>
         {{ script.ScriptUuid}} 
+        </a>
     </div>
 </div>
 
