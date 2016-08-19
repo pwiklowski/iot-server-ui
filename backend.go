@@ -102,7 +102,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		c.JSON(iris.StatusOK, script)
+		c.JSON(iris.StatusOK, scriptVersion)
 	})
 
 	api.Get("/script/:scriptUuid", func(c *iris.Context) {
