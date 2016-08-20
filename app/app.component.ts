@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: '[application]',
-    templateUrl: 'app/app.template.html',
+    templateUrl: 'templates/app.template.html',
     directives: [ROUTER_DIRECTIVES]
 })
 export class AppComponent {

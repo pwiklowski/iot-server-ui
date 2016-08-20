@@ -23,8 +23,8 @@ export class MapToIterable {
 
 
 @Component({
-    selector: '[app]',
-    templateUrl: "app/devices.template.html",
+    selector: '[application]',
+    templateUrl: "templates/devices.template.html",
     pipes: [MapToIterable],
     directives: [ROUTER_DIRECTIVES]
 })

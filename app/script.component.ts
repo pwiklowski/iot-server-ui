@@ -10,8 +10,8 @@ import 'codemirror/mode/javascript/javascript';
 
 
 @Component({
-    selector: 'app',
-    templateUrl: "app/script.template.html",
+    selector: '[application]',
+    templateUrl: "templates/script.template.html",
     directives: [ROUTER_DIRECTIVES, Codemirror]
 })
 export class ScriptComponent {
