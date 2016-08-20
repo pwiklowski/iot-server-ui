@@ -50,7 +50,7 @@ func main() {
 
 		scriptVersion := ScriptVersion{}
 		scriptVersion.Version = 1
-		scriptVersion.Content = "//Fill me"
+		scriptVersion.Content = "Ly9GaWxsIG1l"
 
 		script.Scripts = append(script.Scripts, scriptVersion)
 
