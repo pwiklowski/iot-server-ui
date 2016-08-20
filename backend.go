@@ -35,7 +35,7 @@ func main() {
 
 	api.Get("/scripts", func(c *iris.Context) {
 		scripts := []Script{}
-		scriptsDb.Find(nil).All(&scripts)
+		scriptsDb.Find(nil).Select(bson.M{"scripts": bson.M{"$slice": -1}}).All(&scripts)
 		c.JSON(iris.StatusOK, scripts)
 	})
 
@@ -116,7 +116,7 @@ func main() {
 		scriptUuid := c.Param("scriptUuid")
 		fmt.Println(scriptUuid)
 
-		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).Select(bson.M{"scripts": 0}).One(&script)
+		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).Select(bson.M{"scripts": bson.M{"$slice": -1}}).One(&script)
 		if err != nil {
 			println("error: " + err.Error())
 		}
