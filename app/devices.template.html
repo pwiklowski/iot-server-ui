@@ -1,4 +1,12 @@
-Devices:
-<div>
-    <div *ngFor="let device of devices">{{ device.name}}</div>
+<div class="iot-device-details">
+
+    Variables:
+    <div class="iot-variable" *ngFor="let v of variables">
+        Name: {{ v.name }}<br>
+        
+        <div  *ngFor="let variable of v.values | mapToIterable">
+            Value: {{ variable.key }}
+        </div>
+
+    </div>
 </div>
