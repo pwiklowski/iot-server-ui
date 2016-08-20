@@ -51,7 +51,8 @@ export class ScriptComponent {
 
         this.http.get("/api/script/" + id + "/" + version).toPromise().then(res => {
             console.log(res.json());
-            this.scriptVersion = res.json();
+            this.scriptVersion.Content = window.atob(res.json().Content);
+            this.scriptVersion.Version = res.json().Version;
             this.codeEditor.writeValue(this.scriptVersion.Content);
         }).catch(err => {
         
@@ -59,10 +60,13 @@ export class ScriptComponent {
     }
 
     saveScript(){
-        let content = '{"Content":"' + this.scriptVersion.Content + '"}';
+        let content = '{"Content":"' + window.btoa(this.codeEditor.value) + '"}';
+        console.log(content);
 
         this.http.post("/api/script/" + this.id + "/version", content).toPromise().then(res => {
-            this.scriptVersion = res.json();
+            this.scriptVersion.Content = window.atob(res.json().Content);
+            this.scriptVersion.Version = res.json().Version;
+            this.codeEditor.writeValue(this.scriptVersion.Content);
         }).catch(err => {
         
         });
