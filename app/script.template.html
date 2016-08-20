@@ -2,7 +2,7 @@ script
 
 <div>
     <div>Version: {{ scriptVersion.Version }}</div>
-    <textarea class="iot-textarea" [(ngModel)]="scriptVersion.Content"></textarea>
+    <codemirror #code [config]="editorConfig"></codemirror>
     <button (click)="saveScript()">Save</button>
 
 </div>
