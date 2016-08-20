@@ -2,6 +2,12 @@ script
 
 <div>
     <div>Version: {{ scriptVersion.Version }}</div>
+
+    <select [ngModel]="scriptVersion.Version" #versionValue (change)="getScript(id, versionValue.value)">
+        <option *ngFor="let version of versions" value="{{version}}">{{version}}</option>
+    </select>
+
+
     <codemirror #code [config]="editorConfig"></codemirror>
     <button (click)="saveScript()">Save</button>
 

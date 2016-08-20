@@ -123,6 +123,24 @@ func main() {
 		c.JSON(iris.StatusOK, script)
 	})
 
+	api.Get("/scriptVersions/:scriptUuid", func(c *iris.Context) {
+		script := Script{}
+		scriptUuid := c.Param("scriptUuid")
+
+		err := scriptsDb.Find(bson.M{"scriptuuid": scriptUuid}).One(&script)
+		if err != nil {
+			println("error: " + err.Error())
+		}
+
+		var versions []int
+
+		for _, version := range script.Scripts {
+			versions = append(versions, version.Version)
+		}
+
+		c.JSON(iris.StatusOK, versions)
+
+	})
 	api.Get("/script/:scriptUuid/:version", func(c *iris.Context) {
 		script := Script{}
 		scriptUuid := c.Param("scriptUuid")

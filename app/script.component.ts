@@ -16,17 +16,18 @@ import 'codemirror/mode/javascript/javascript';
 })
 export class ScriptComponent {
     scriptVersion: ScriptVersion = new ScriptVersion();
+    versions: Array<string> = new Array<string>();
     private sub: Subscription;
     id: string;
 
     editorConfig: Object;
     @ViewChild('code') codeEditor; 
 
-
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             this.id = params['id'];
             this.getScript(this.id, null);
+            this.getScriptVersions(this.id);
         });
     }
     ngOnDestroy() {
@@ -34,7 +35,6 @@ export class ScriptComponent {
     }
 
     constructor(private route: ActivatedRoute, private http: Http){
-
         this.editorConfig = {
             lineNumbers: true,
             mode: {
@@ -59,6 +59,17 @@ export class ScriptComponent {
         });
     }
 
+    getScriptVersions(id: string){
+        this.http.get("/api/scriptVersions/" + id).toPromise().then(res => {
+            console.log(res.json());
+            this.versions = res.json();
+            
+        }).catch(err => {
+        
+        });
+
+    }
+
     saveScript(){
         let content = '{"Content":"' + window.btoa(this.codeEditor.value) + '"}';
         console.log(content);
@@ -67,6 +78,9 @@ export class ScriptComponent {
             this.scriptVersion.Content = window.atob(res.json().Content);
             this.scriptVersion.Version = res.json().Version;
             this.codeEditor.writeValue(this.scriptVersion.Content);
+
+            this.getScriptVersions(this.id);
+
         }).catch(err => {
         
         });
