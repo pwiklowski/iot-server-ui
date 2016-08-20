@@ -17,7 +17,7 @@ type Script struct {
 	Id         bson.ObjectId `_id`
 	Name       string
 	ScriptUuid string `bson:"scriptuuid"`
-	DeviceUuid string
+	DeviceUuid []string
 	Scripts    []ScriptVersion
 }
 
@@ -38,7 +38,12 @@ func main() {
 		scriptsDb.Find(nil).Select(bson.M{"scripts": bson.M{"$slice": -1}}).All(&scripts)
 		c.JSON(iris.StatusOK, scripts)
 	})
-
+	api.Get("/scripts/device/:deviceUuid", func(c *iris.Context) {
+		scripts := []Script{}
+		deviceUuid := c.Param("deviceUuid")
+		scriptsDb.Find(bson.M{"deviceuuid": deviceUuid}).Select(bson.M{"scripts": bson.M{"$slice": -1}}).All(&scripts)
+		c.JSON(iris.StatusOK, scripts)
+	})
 	api.Post("/scripts", func(c *iris.Context) {
 		script := Script{}
 		c.ReadJSON(&script)
