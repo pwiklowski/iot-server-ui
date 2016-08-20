@@ -6,7 +6,7 @@ import { Device, Script } from './models.ts';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app',
+    selector: '[application]',
     templateUrl: 'app/app.template.html',
     directives: [ROUTER_DIRECTIVES]
 })

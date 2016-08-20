@@ -1,16 +1,27 @@
 <div class="iot-devices">
-    Devices:
-    <div *ngFor="let device of devices" class="iot-device">
-        {{ device.name}}
-    </div>
-    <button (click)="createNewScript()">New</button>
-    Scripts:
-    <div *ngFor="let script of scripts" class="iot-device">
-        <a href="/#/script/{{script.ScriptUuid}}">
-        <b>Name:</b>{{ script.Name }} <br>
-        {{ script.ScriptUuid}} 
+    <img src="static/logo.png">iot.wiklosoft.com<br>
+    <b>Devices:</b>
+
+    <template ngFor let-device [ngForOf]="devices">
+        <a href="/#/device/{{device.id}}">
+            <div class="iot-device">
+                {{ device.name}}<br>
+                <span class="iot-id">{{ device.id }}</span>
+            </div>
         </a>
-    </div>
+    </template>
+
+    <button (click)="createNewScript()">New</button>
+    <b>Scripts:</b>
+
+    <template ngFor let-script [ngForOf]="scripts">
+        <a href="/#/script/{{script.ScriptUuid}}">
+            <div class="iot-device">
+                    <b>{{ script.Name }}</b><br>
+                    <span class="iot-id">{{ script.ScriptUuid}} </span>
+            </div>
+        </a>
+    </template>
 </div>
 
 <div class="iot-content">
