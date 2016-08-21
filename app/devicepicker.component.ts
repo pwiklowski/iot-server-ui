@@ -58,16 +58,8 @@ export class DevicePickerComponent{
     private allItems:Array<any> = [];
     private selectedItem = 0;
 
-    public setDevices(devices: Array<Device>){
-        console.log("setDevices" + devices);
-        devices.forEach(device => {
-            console.log(device);
-            this.allItems.push( {
-                id  : device.id,
-                html: `<div style="font-size: 12px"><b>${device.name}</b></div><div style="font-size: 10px" >${device.id}</div>`,
-                content: device.id + device.name
-            });
-        });
+    public setItems(items){
+        this.allItems = items;
     }
 
     public filter(event, value, inputField){
