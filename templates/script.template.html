@@ -3,6 +3,8 @@ script
 <div>
     <div>Version: {{ scriptVersion.Version }}</div>
 
+    <device-picker #devicePicker></device-picker>
+
     <select [ngModel]="scriptVersion.Version" #versionValue (change)="getScript(id, versionValue.value)">
         <option *ngFor="let version of versions" value="{{version}}">{{version}}</option>
     </select>
