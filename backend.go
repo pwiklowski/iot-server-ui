@@ -165,5 +165,5 @@ func main() {
 
 	})
 
-	api.Listen(":8001")
+	api.Listen("0.0.0.0:8001")
 }
