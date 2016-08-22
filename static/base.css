@@ -68,3 +68,51 @@ a{
     background: #FFF;
     padding: 5px;
 }
+
+
+.tag-input, .tag-input-field{
+
+    border-radius: 3px;
+    border: 0;
+    box-shadow: none;
+    outline: none;
+
+
+}
+
+.tag-dropdown{
+    width: 300px;
+    background-color: #FAFAFA !important;
+}
+
+
+.tag-dropdown-item{
+    padding: 3px 8px;
+}
+
+.tag-dropdown-selected{
+    color: white;
+    background-color: #9000ff;
+
+}
+
+.tag-selected-item  {
+    padding: 5px 35px 5px 8px;
+    background-color: #9000ff;
+    color: white;
+    margin: 3px 1px;
+    border-radius: 3px;
+
+
+}
+
+.tag-delete{
+    background-image: url(x_white.png);
+    background-size: 20px 20px;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    top:9px;
+    cursor: pointer; cursor: hand; 
+}
+

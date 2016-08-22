@@ -68,7 +68,8 @@ export class ScriptComponent {
                 console.log(device);
                 items.push( {
                     id  : device.id,
-                    html: `<div style="font-size: 12px"><b>${device.name}</b></div><div style="font-size: 10px" >${device.id}</div>`,
+                    listHtml: `<div style="font-size: 14px"><b>${device.name}</b></div><div style="font-size: 12px" >${device.id}</div>`,
+                    inputHtml: `<div style="font-size: 16px"><b>${device.name}</b></div>`,
                     content: device.id + device.name
                 });
             });

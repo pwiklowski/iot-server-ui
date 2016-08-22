@@ -24,27 +24,31 @@ class SanitizeHtml implements PipeTransform  {
   template: `<div class="tag-input" >
                 <div class="tag-selected" #inputField>
                     <template ngFor let-item [ngForOf]="selectedItems">
-                        <div [innerHtml]="item.html | sanitizeHtml" class="tag-selected-item"></div>
+                        <div [innerHtml]="item.inputHtml | sanitizeHtml" class="tag-selected-item"></div>
                         <div class="tag-delete-container">
-                            <div class="tag-delete" (click)="remove(item)">X</div>
+                            <div class="tag-delete" (click)="remove(item)"></div>
                         </div>
                     </template>
 
                     <input class="tag-input-field" #value (keyup)="filter($event, value, inputField)">
+                    <div class="tag-dropdown-container">
+                         <div class="tag-dropdown">
+                            <div class="tag-dropdown-item" [class.tag-dropdown-selected]="i==selectedItem" *ngFor="let item of items;let i=index; " 
+                                    [innerHtml]="item.listHtml | sanitizeHtml" (click)="add(item)">
+                            </div>
+                         </div>
+                     </div>
                 </div>
              </div>
-             <div class="tag-dropdownmenu">
-                <div class="tag-dropdown-item" [class.selected-item]="i==selectedItem" *ngFor="let item of items;let i=index; " 
-                        [innerHtml]="item.html | sanitizeHtml" (click)="add(item)">
-                </div>
-             </div>`,
+  `,
   styles: [`
-      .selected-item {border: 1px solid green;}
-      .tag-input { background-color: white; width: 100%; height: 40px; display:flex; flex-direction: row;}
+      .tag-dropdownmenu-selected {}
+      .tag-input { border: 1px solid #DDD; background-color: white; 100%; height: 40px; display:flex; flex-direction: row;}
       .tag-input-field { font-size: 30px; flex: 1 1 auto; order: 100}
       .tag-selected { flex: 1 1 auto;  display:flex; flex-direction: row; }
-      .tag-selected-item { flex: 0 0 auto; border: 1px solid blue; width: 250px;margin: 3px; position:relative;}
-      .tag-dropdownmenu{ z-index: 1000; }
+      .tag-selected-item { flex: 0 0 auto; }
+      .tag-dropdown{ z-index: 1000;background-color: white; position:absolute; top:100%;}
+      .tag-dropdown-container { position: relative; }
       .tag-delete-container { position:relative; }
       .tag-delete { position:absolute; right:10px; }
       `],
