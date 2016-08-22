@@ -24,7 +24,8 @@ class SanitizeHtml implements PipeTransform  {
   template: `<div class="tag-input" >
                 <div class="tag-selected" #inputField>
                     <template ngFor let-item [ngForOf]="selectedItems">
-                        <div [innerHtml]="item.inputHtml | sanitizeHtml" class="tag-selected-item"></div>
+                        <div *ngIf="!useSimpleSelectedItems" [innerHtml]="item.inputHtml | sanitizeHtml" class="tag-selected-item"></div>
+                        <div *ngIf="useSimpleSelectedItems"  class="tag-selected-item"> {{ item }} </div>
                         <div class="tag-delete-container">
                             <div class="tag-delete" (click)="remove(item)"></div>
                         </div>
@@ -62,15 +63,25 @@ export class DevicePickerComponent{
     private allItems:Array<any> = [];
     private selectedItem = 0;
 
+    private useSimpleSelectedItems = true;
+    private allowCustomValues = true; //when custom values are used only simple selcted items are supported
+
+    addedCallback;
+    removedCallback;
+    selectionChanged;
+
     public setItems(items){
         this.allItems = items;
     }
 
-    public filter(event, value, inputField){
-        console.log(event);
-        console.log("filter " + value);
+    setSelectedItems(items: Array<any>){
+        console.log(items);
+        this.selectedItems = items;
+    }
 
-        if (event.keyCode == 38){//uparrowh
+    public filter(event, value, inputField){
+
+        if (event.keyCode == 38) {//uparrow
             if (this.selectedItem == 0) return;
             this.selectedItem--;
             return;
@@ -79,16 +90,25 @@ export class DevicePickerComponent{
                 this.selectedItem++;
             return;
         }else if(event.keyCode == 13){ //enter
-            if (this.items.length == 0){
-                return;
+            if (this.allowCustomValues){
+                if (this.selectedItem == -1){
+                    this.add(value.value); 
+                }else{
+                    this.add(this.items[this.selectedItem].text); 
+                }
+            }else{
+                if (this.items.length == 0){
+                    return;
+                }
+                this.add(this.items[this.selectedItem]); 
             }
 
-            this.add(this.items[this.selectedItem]); 
             value.value = "";
-
         }
 
-        this.selectedItem = 0;
+        if (this.allowCustomValues) this.selectedItem = -1;
+        else this.selectedItem = 0;
+
         this.items = [];
         
         if (value.value == "") return;
@@ -103,13 +123,22 @@ export class DevicePickerComponent{
 
     public add(item){
         this.selectedItems.push(item);
-        console.log('added id' + item.id);
+        if (this.addedCallback != undefined) this.addedCallback(item);
+        this.notifyDataChanged();
     }
 
     public remove(item):void {
-        console.log('removed ', item.id);
         var index = this.selectedItems.indexOf(item);
         this.selectedItems.splice(index, 1);
+        if (this.removedCallback != undefined) this.removedCallback(item);
+        this.notifyDataChanged();
     }
+
+    notifyDataChanged(){
+        if (this.selectionChanged != undefined){
+            this.selectionChanged(this.selectedItems);
+        }
+    }
+
 }
 

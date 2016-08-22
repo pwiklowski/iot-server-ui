@@ -1,8 +1,15 @@
 script
 
 <div>
+    Id: {{ script.Id }}<br>
+    ScriptUuid {{ script.ScriptUuid }}<br>
+
+    Name: <input [(ngModel)]="script.Name" (keydown.enter)="saveName()"   ><br>
+
+
     <div>Version: {{ scriptVersion.Version }}</div>
 
+    <h3>Select device:</h3>
     <device-picker #devicePicker></device-picker>
 
     <select [ngModel]="scriptVersion.Version" #versionValue (change)="getScript(id, versionValue.value)">

@@ -9,7 +9,7 @@ export class Script {
 	Id: string;
     Name: string;
 	ScriptUuid: string;
-	DeviceUuid: string
+	DeviceUuid: Array<string>;
 }
 export class ScriptVersion{
 	Version: number;
