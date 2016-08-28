@@ -24,7 +24,7 @@ export class ScriptComponent {
     id: string;
 
     editorConfig: Object;
-    @ViewChild('code') codeEditor; 
+    @ViewChild(CodeEditorDirective) codeEditor : CodeEditorDirective;
     @ViewChild('devicePicker') devicePicker; 
 
     constructor(private route: ActivatedRoute, private http: Http){ }
@@ -78,9 +78,9 @@ export class ScriptComponent {
             this.scriptVersion.Version = res.json().Scripts[0].Version;
             
             this.devicePicker.setSelectedItems(res.json().DeviceUuid);
-
-            this.codeEditor.writeValue(this.scriptVersion.Content);
+            this.codeEditor.setContent(this.scriptVersion.Content);
         }).catch(err => {
+            console.error(err);
         
         });
     }
@@ -88,7 +88,6 @@ export class ScriptComponent {
         this.http.get("/iot/devices").toPromise().then(res => {
             let items = [];
             res.json().devices.forEach(device => {
-                console.log(device);
                 items.push( {
                     id  : device.id,
                     text: device.id,
@@ -98,6 +97,7 @@ export class ScriptComponent {
                 });
             });
 
+            this.codeEditor.setDevices(res.json().devices);
             this.devicePicker.setItems(items);
         }).catch(err => {
             console.error(err);
@@ -106,7 +106,6 @@ export class ScriptComponent {
 
     getScriptVersions(id: string){
         this.http.get("/api/scriptVersions/" + id).toPromise().then(res => {
-            console.log(res.json());
             this.versions = res.json();
             
         }).catch(err => {
@@ -116,13 +115,12 @@ export class ScriptComponent {
     }
 
     saveScript(){
-        let content = '{"Content":"' + window.btoa(this.codeEditor.value) + '"}';
-        console.log(content);
+        let content = '{"Content":"' + window.btoa(this.codeEditor.getValue()) + '"}';
 
         this.http.post("/api/script/" + this.id + "/version", content).toPromise().then(res => {
             this.scriptVersion.Content = window.atob(res.json().Content);
             this.scriptVersion.Version = res.json().Version;
-            this.codeEditor.writeValue(this.scriptVersion.Content);
+            this.codeEditor.setContent(this.scriptVersion.Content);
 
             this.getScriptVersions(this.id);
 
