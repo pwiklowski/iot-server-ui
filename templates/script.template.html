@@ -16,8 +16,7 @@ script
         <option *ngFor="let version of versions" value="{{version}}">{{version}}</option>
     </select>
 
-
-    <codemirror #code [config]="editorConfig"></codemirror>
+    <textarea #code codeeditor></textarea>
     <button (click)="saveScript()">Save</button>
 
 </div>

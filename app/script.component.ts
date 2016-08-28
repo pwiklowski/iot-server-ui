@@ -5,14 +5,16 @@ import 'rxjs/add/operator/toPromise';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { ScriptVersion, Script } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
-import {Codemirror} from 'ng2-codemirror';
-import 'codemirror/mode/javascript/javascript';
+
 import { DevicePickerComponent } from './devicepicker.component';
+import { CodeEditorDirective } from './codeeditor.component';
+
+
 
 @Component({
     selector: '[application]',
     templateUrl: "templates/script.template.html",
-    directives: [ROUTER_DIRECTIVES, Codemirror, DevicePickerComponent]
+    directives: [ROUTER_DIRECTIVES, DevicePickerComponent, CodeEditorDirective]
 })
 export class ScriptComponent {
     scriptVersion: ScriptVersion = new ScriptVersion();
@@ -25,6 +27,8 @@ export class ScriptComponent {
     @ViewChild('code') codeEditor; 
     @ViewChild('devicePicker') devicePicker; 
 
+    constructor(private route: ActivatedRoute, private http: Http){ }
+
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             this.id = params['id'];
@@ -32,14 +36,10 @@ export class ScriptComponent {
             this.getScriptVersions(this.id);
         });
         this.getDevices();
-        };
         this.devicePicker.selectionChanged = itemIds => {
             console.log("data" + itemIds);
             this.saveDevices(itemIds);
         };
-
-
-
     }
 
     saveDevices(devices){
@@ -68,17 +68,6 @@ export class ScriptComponent {
         this.sub.unsubscribe();
     }
 
-    constructor(private route: ActivatedRoute, private http: Http){
-        this.editorConfig = {
-            lineNumbers: true,
-            mode: {
-                name: 'javascript',
-                json: true
-            }
-        }
-
-
-    }
 
     getScript(id:string, version){
 
