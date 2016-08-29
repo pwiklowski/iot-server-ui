@@ -68,6 +68,7 @@ func main() {
 	api.Post("/script/:scriptUuid", func(c *iris.Context) {
 		script := Script{}
 		sentScript := Script{}
+		sentScript.DeviceUuid = nil
 		c.ReadJSON(&sentScript)
 		scriptUuid := c.Param("scriptUuid")
 
@@ -76,13 +77,18 @@ func main() {
 			println("error: " + err.Error())
 		}
 
-		i := bson.NewObjectId()
-		script.Id = i
 		script.ScriptUuid = scriptUuid
-		script.Name = sentScript.Name
-		script.DeviceUuid = sentScript.DeviceUuid
 
-		err = scriptsDb.Insert(script)
+		fmt.Println(sentScript.DeviceUuid)
+		if sentScript.Name != "" {
+			script.Name = sentScript.Name
+		}
+
+		if sentScript.DeviceUuid != nil {
+			script.DeviceUuid = sentScript.DeviceUuid
+		}
+
+		err = scriptsDb.Update(bson.M{"scriptuuid": scriptUuid}, script)
 		if err != nil {
 			panic(err)
 		}
