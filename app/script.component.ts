@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/toPromise';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { ScriptVersion, Script } from './models.ts';
+import { ScriptVersion, Script, Log } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
 
 import { DevicePickerComponent } from './devicepicker.component';
@@ -23,6 +23,7 @@ export class ScriptComponent {
     versions: Array<string> = new Array<string>();
     private sub: Subscription;
     id: string;
+    logs: Array<Log> = new Array<Log>();
 
     editorConfig: Object;
     @ViewChild(CodeEditorDirective) codeEditor : CodeEditorDirective;
@@ -36,6 +37,7 @@ export class ScriptComponent {
             this.id = params['id'];
             this.getScript(this.id, null);
             this.getScriptVersions(this.id);
+            this.getLogs();
         });
         this.getDevices();
         this.devicePicker.selectionChanged = itemIds => {
@@ -140,6 +142,15 @@ export class ScriptComponent {
             console.error(err);
         });
 
+    }
+
+
+    getLogs(){
+        this.http.get("/api/logs/" +this.id+ "/" + 0).toPromise().then(res => {
+            this.logs = res.json();
+        }).catch(err => {
+            console.error(err);
+        });
     }
 
 }

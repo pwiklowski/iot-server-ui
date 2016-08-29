@@ -25,3 +25,9 @@ export class DeviceVariable{
     
 }
 
+export class Log{
+    Content: string;
+    Timestamp: number;
+
+}
+
