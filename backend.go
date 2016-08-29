@@ -7,6 +7,13 @@ import "gopkg.in/mgo.v2/bson"
 import "github.com/satori/go.uuid"
 import "fmt"
 import "strconv"
+import "time"
+
+type Log struct {
+	Timestamp  int64
+	Content    string
+	ScriptUuid string
+}
 
 type ScriptVersion struct {
 	Version int `bson:"version"`
@@ -30,8 +37,38 @@ func main() {
 
 	db := session.DB("iot-webui")
 	scriptsDb := db.C("scripts")
+	logsDb := db.C("scripts")
 
 	api := iris.New(config.Iris{MaxRequestBodySize: 32 << 20})
+
+	api.Get("/logs/:uuid/:timestamp", func(c *iris.Context) {
+		logs := []Log{}
+
+		uuid := c.Param("uuid")
+		timestampString := c.Param("timestamp")
+		timestamp, _ := strconv.Atoi(timestampString)
+
+		err := logsDb.Find(bson.M{"scriptuuid": uuid, "timestamp": bson.M{"$gt": timestamp}}).All(&logs)
+		if err != nil {
+			println("error: " + err.Error())
+		}
+
+		c.JSON(iris.StatusOK, logs)
+	})
+
+	api.Post("/logs/:uuid", func(c *iris.Context) {
+		log := Log{}
+
+		uuid := c.Param("uuid")
+
+		log = Log{time.Now().Unix(), string(c.Request.Body()), uuid}
+
+		err = logsDb.Insert(log)
+		if err != nil {
+			panic(err)
+		}
+		c.JSON(iris.StatusOK, log)
+	})
 
 	api.Get("/scripts", func(c *iris.Context) {
 		scripts := []Script{}
