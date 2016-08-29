@@ -72,6 +72,7 @@ export class CodeEditorDirective {
                  "properties" : ["getValue(", "setValue("]
                 },
                 {"obj" : "Device", "properties" : ["id(", "name("] },
+                {"obj" : "Event", "properties" : ["source", "resource", "value"] },
                 {"obj" : "name(", "properties" : [] },
                 {"obj" : "id(", "properties" : [] },
 
