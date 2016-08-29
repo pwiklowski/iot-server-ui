@@ -16,6 +16,9 @@ script
         <option *ngFor="let version of versions" value="{{version}}">{{version}}</option>
     </select>
 
+    
+    <textarea eventeditor></textarea><br><br>
+
     <textarea #code codeeditor></textarea>
     <button (click)="saveScript()">Save</button>
     <button (click)="runScript()">Run</button>
