@@ -129,4 +129,14 @@ export class ScriptComponent {
         });
     }
 
+    runScript(){
+
+        this.http.post("/iot/script/" + this.id + "/run", "").toPromise().then(res => {
+
+        }).catch(err => {
+            console.error(err);
+        });
+
+    }
+
 }
