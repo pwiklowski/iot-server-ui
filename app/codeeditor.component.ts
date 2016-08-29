@@ -11,11 +11,13 @@ export class CodeEditorDirective {
 
     constructor(private _renderer: Renderer) {}
 
+    devices;
     deviceIds = [];
     deviceNames = [];
 
     setDevices(devices: Array<Device>){
         console.log("devices" + devices);
+        this.editor.devices = devices;
         devices.forEach(device => {
             this.editor.deviceNames.push(device.name);
             this.editor.deviceIds.push(device.id);
@@ -85,7 +87,21 @@ export class CodeEditorDirective {
             }
 
             function match(str, it) {
-                return str.indexOf(it) != -1;
+                return str.toLowerCase().indexOf(it.toLowerCase()) != -1;
+            }
+
+
+            function getDeviceResources(editor, deviceId){
+                var list = [];
+
+                for (let i=0; i<editor.devices.length; i++){
+                    if(editor.devices[i].id == deviceId){
+                        return editor.devices[i].variables;
+                    }
+                }
+
+
+                return 
             }
 
             CodeMirror.showHint(cm, (editor, options) => {
@@ -96,19 +112,44 @@ export class CodeEditorDirective {
                 console.log(token);
 
                 let cursor = cm.getCursor();
+                console.log(cursor);
 
                 if (token.type == "string"){
-                    let prevToken =  getCoffeeScriptToken(editor, CodeMirror.Pos(cursor.line, cursor.ch -2));
 
-                    console.log(prevToken);
-                    console.log(editor);
+                    if (match(token.string, "id:") && match(token.string, "/")) {
+                        let s1 = token.string.indexOf("id:");
+                        let s = token.string.indexOf("/");
+                        
+                        let id = token.string.substring(s1+3, s-s1+1);
+                        console.log(id);
 
-                    if (prevToken.string == "id")
-                        list = editor.deviceIds;
-                    else if (prevToken.string == "name")
+                        list = getDeviceResources(editor, id);
+
+                        token.start += (s );
+                    } else if (match(token.string,"id:")){
+
+                        var id = token.string.replace("id:", "").replace(new RegExp('"', 'g'),'');
+                        console.log(id);
+
+                        for (let i=0; i<editor.devices.length; i++){
+                            console.log(editor.devices[i].id + " - " + id);
+                            if(match(editor.devices[i].id, id))
+                            {
+                                list.push(editor.devices[i].id);
+                                console.log(editor.devices[i].id);
+                            }
+                        }
+
+                        token.start +=4;
+                    } else if (match(token.string, "name:")) {
                         list = editor.deviceNames;
-                    
-                    token.start +=1;
+                        token.start +=1;
+                    } else if (match(token.string, '""')) {
+                        list.push("id:");
+                        list.push("name:");
+                        token.start +=1;
+                    }
+
                 } else if (token.type == null || token.type == "variable"){
                     for (let i=0; i<suggestions.length; i++){
                         if (match(suggestions[i].obj, token.string))
