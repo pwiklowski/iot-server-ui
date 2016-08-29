@@ -7,6 +7,7 @@ import { ScriptVersion, Script } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
 
 import { DevicePickerComponent } from './devicepicker.component';
+import { EventEditorDirective } from './eventeditor.directive';
 import { CodeEditorDirective } from './codeeditor.component';
 
 
@@ -14,7 +15,7 @@ import { CodeEditorDirective } from './codeeditor.component';
 @Component({
     selector: '[application]',
     templateUrl: "templates/script.template.html",
-    directives: [ROUTER_DIRECTIVES, DevicePickerComponent, CodeEditorDirective]
+    directives: [ROUTER_DIRECTIVES, DevicePickerComponent, CodeEditorDirective, EventEditorDirective]
 })
 export class ScriptComponent {
     scriptVersion: ScriptVersion = new ScriptVersion();
@@ -25,6 +26,7 @@ export class ScriptComponent {
 
     editorConfig: Object;
     @ViewChild(CodeEditorDirective) codeEditor : CodeEditorDirective;
+    @ViewChild(EventEditorDirective) eventEditor: EventEditorDirective;
     @ViewChild('devicePicker') devicePicker; 
 
     constructor(private route: ActivatedRoute, private http: Http){ }
@@ -130,8 +132,9 @@ export class ScriptComponent {
     }
 
     runScript(){
+        let content = this.eventEditor.getValue();
 
-        this.http.post("/iot/script/" + this.id + "/run", "").toPromise().then(res => {
+        this.http.post("/iot/script/" + this.id + "/run", content).toPromise().then(res => {
 
         }).catch(err => {
             console.error(err);
