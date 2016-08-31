@@ -32,6 +32,7 @@ export class ScriptComponent {
     @ViewChild('devicePicker') devicePicker; 
 
     timer;
+    timerSubscription;
 
     constructor(private route: ActivatedRoute, private http: Http){ }
 
@@ -50,7 +51,7 @@ export class ScriptComponent {
         };
 
         this.timer = Observable.timer(1000,1000);
-        this.timer.subscribe(()=>{ this.getLogs()});
+        this.timerSubscription = this.timer.subscribe(()=>{ this.getLogs()});
     }
     ngAfterViewInit(){
         this.eventEditor.setValue(` { "source": "id", "resource": "res", "value" : {"val":4} } `);
@@ -80,7 +81,7 @@ export class ScriptComponent {
 
     ngOnDestroy() {
         this.sub.unsubscribe();
-        this.timer.unsubscribe();
+        this.timerSubscription.unsubscribe();
     }
 
 
