@@ -17,16 +17,16 @@ script
     </select>
 
     
-    <textarea eventeditor></textarea><br><br>
+    <textarea eventeditor></textarea><br>
 
     <textarea #code codeeditor></textarea>
     <button (click)="saveScript()">Save</button>
     <button (click)="runScript()">Run</button>
 
-    <div>
-        <div *ngFor="let log of logs">
-            <span>{{log.Timestamp}}</span>
-            <span>{{log.Content}}</span>
+    <div id="iot-logs">
+        <div class="iot-log" *ngFor="let log of logs ">
+            <div class="iot-log-timestamp">{{log.Timestamp}}</div>
+            <div class="iot-log-item">{{log.Content}}</div>
 
         </div>
 

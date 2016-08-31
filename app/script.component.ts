@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { DevicePickerComponent } from './devicepicker.component';
 import { EventEditorDirective } from './eventeditor.directive';
 import { CodeEditorDirective } from './codeeditor.component';
+import {Observable} from 'rxjs/Rx';
 
 
 
@@ -30,6 +31,8 @@ export class ScriptComponent {
     @ViewChild(EventEditorDirective) eventEditor: EventEditorDirective;
     @ViewChild('devicePicker') devicePicker; 
 
+    timer;
+
     constructor(private route: ActivatedRoute, private http: Http){ }
 
     ngOnInit() {
@@ -37,6 +40,7 @@ export class ScriptComponent {
             this.id = params['id'];
             this.getScript(this.id, null);
             this.getScriptVersions(this.id);
+            this.logs = new Array<Log>();
             this.getLogs();
         });
         this.getDevices();
@@ -44,6 +48,12 @@ export class ScriptComponent {
             console.log("data" + itemIds);
             this.saveDevices(itemIds);
         };
+
+        this.timer = Observable.timer(1000,1000);
+        this.timer.subscribe(()=>{ this.getLogs()});
+    }
+    ngAfterViewInit(){
+        this.eventEditor.setValue(` { "source": "id", "resource": "res", "value" : {"val":4} } `);
     }
 
     saveDevices(devices){
@@ -70,6 +80,7 @@ export class ScriptComponent {
 
     ngOnDestroy() {
         this.sub.unsubscribe();
+        this.timer.unsubscribe();
     }
 
 
@@ -143,11 +154,26 @@ export class ScriptComponent {
         });
 
     }
+    
+    getLastLogTimeStamp() : number{
+        if(this.logs.length > 0)
+            return this.logs[this.logs.length-1].Timestamp;
+        else
+            return 0;
+    }
 
 
     getLogs(){
-        this.http.get("/api/logs/" +this.id+ "/" + 0).toPromise().then(res => {
-            this.logs = res.json();
+        this.http.get("/api/logs/" +this.id+ "/" + this.getLastLogTimeStamp()).toPromise().then(res => {
+            let logs : Array<Log>  =  res.json();
+            logs.forEach(log=>{
+                this.logs.push(log);
+                
+            });
+
+            var myDiv = document.getElementById('iot-logs');
+            myDiv.scrollTop = 0;
+
         }).catch(err => {
             console.error(err);
         });
