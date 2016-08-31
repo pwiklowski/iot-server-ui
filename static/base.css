@@ -139,3 +139,30 @@ a{
     cursor: pointer; cursor: hand; 
 }
 
+
+.iot-log{
+     font-family: monospace;
+     background-color: white;
+     flex: 0 0 auto;
+
+}
+.iot-log:hover{
+     background-color: #EEE;
+
+}
+.iot-log-timestamp{
+    width: 100px;
+    display: inline;
+}
+.iot-log-item{
+    width: 100px;
+    display: inline;
+}
+#iot-logs{
+    height: 300px;
+    overflow: scroll;
+    display: flex;
+     flex-flow: column-reverse;
+     font-size: 11px;
+
+}
