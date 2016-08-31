@@ -31,5 +31,7 @@ export class EventEditorDirective {
                 mode: "application/ld+json",
             } 
         );
+
+        this.editor.setSize("100%",50);
     }
 }
