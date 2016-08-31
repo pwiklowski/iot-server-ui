@@ -51,5 +51,29 @@ export class AppComponent {
 
     }
 
+    isDeviceMenuOpen = false;
+    isScriptMenuOpen = false;
+    openDevices(){
+        let menu = document.getElementById("iot-devices");
+        if (this.isDeviceMenuOpen){
+            menu.style.transform = "translate(0px)";
+            this.isDeviceMenuOpen = false;
+        } else {
+            menu.style.transform = "translate(" + 370 + "px)";
+            this.isDeviceMenuOpen = true;
+        }
+    }
+
+    openScripts(){
+        let menu = document.getElementById("iot-scripts");
+        if (this.isScriptMenuOpen){
+            menu.style.transform = "translate(0px)";
+            this.isScriptMenuOpen = false;
+        } else {
+            menu.style.transform = "translate(" + 370 + "px)";
+            this.isScriptMenuOpen = true;
+        }
+    }
+
 
 }

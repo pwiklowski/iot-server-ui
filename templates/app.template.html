@@ -1,7 +1,15 @@
-<div class="iot-devices">
-    <img src="static/logo.png">iot.wiklosoft.com<br>
-    <b>Devices:</b>
+<div class="iot-icon-menu">
 
+    <div class="iot-icon-button" ><img class="iot-icon-hamburger" src="static/menu.png"></div>
+    <div class="iot-icon-button"><img class="iot-icon-hamburger" src="static/menu2.png"></div>
+    <div class="iot-icon-button" (click)="openDevices()"><img class="iot-icon-img" src="static/microchip.png"></div>
+    <div class="iot-icon-button" (click)="openScripts()"><img class="iot-icon-img" src="static/browser.png"></div>
+
+</div>
+
+
+<div id="iot-devices" class="iot-menu-items">
+    <b>Devices:</b>
     <template ngFor let-device [ngForOf]="devices">
         <a href="/#/device/{{device.id}}">
             <div class="iot-device">
@@ -10,7 +18,8 @@
             </div>
         </a>
     </template>
-
+</div>
+<div id="iot-scripts" class="iot-menu-items">
     <button (click)="createNewScript()">New</button>
     <b>Scripts:</b>
 
@@ -23,6 +32,9 @@
         </a>
     </template>
 </div>
+
+
+
 
 <div class="iot-content">
     <router-outlet></router-outlet>

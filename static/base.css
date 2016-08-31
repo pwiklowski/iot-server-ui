@@ -23,17 +23,39 @@ a{
     color: black;
 }
 
-.iot-devices{
+
+
+.iot-icon-menu{
+    width: 70px;
+    background: red;
+    z-index: 10;
+    flex: 0 0 auto;
+}
+
+.iot-icon-img{
+    width: 50px;
+}
+.iot-icon-hamburger{
+    width: 30px;
+    margin: 0px 10px; 
+}
+
+.iot-icon-button:hover{
+    background-color: white;
+}
+.iot-icon-button{
+    padding: 10px;
+}
+
+.iot-menu-items{
     width: 300px;
-    margin: 20px;
-    border-radius: 2px;
+    position:absolute;
+    left: -300px;
     border: 1px solid #CCC;
     background: #FFF;
     padding: 5px;
-
-    flex: 0 0 auto;
-
-
+     transition: transform 300ms ease-out;
+     z-index: 5;
 }
 
 .iot-id{
@@ -41,6 +63,7 @@ a{
 }
 
 .iot-content{
+    padding: 20px;
     flex: 1 1 auto;
 
 }
