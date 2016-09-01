@@ -53,9 +53,10 @@ export class AppComponent {
 
     isDeviceMenuOpen = false;
     isScriptMenuOpen = false;
-    openDevices(){
+
+    slideDevices(open: bool){
         let menu = document.getElementById("iot-devices");
-        if (this.isDeviceMenuOpen){
+        if (open){
             menu.style.transform = "translate(0px)";
             this.isDeviceMenuOpen = false;
         } else {
@@ -64,9 +65,11 @@ export class AppComponent {
         }
     }
 
-    openScripts(){
+    
+
+    slideScripts(open: bool){
         let menu = document.getElementById("iot-scripts");
-        if (this.isScriptMenuOpen){
+        if (open){
             menu.style.transform = "translate(0px)";
             this.isScriptMenuOpen = false;
         } else {
