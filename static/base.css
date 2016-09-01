@@ -91,7 +91,31 @@ a{
     background: #FFF;
     padding: 5px;
 }
+.iot-script-name{
+    font-size: 30px;
+    border: none;
+    width: 90%;
+    padding: 10px;
+}
+.iot-script-name:focus{
+    border-bottom: 1px solid #9000ff;
+    outline:none;
+}
 
+
+
+.iot-script{
+    margin: 10px;
+    height: 100%;
+    width: 70%;
+    float: left;
+    border-radius: 3px;
+    border: 1px solid #CCC;
+    background: #FFF;
+    padding: 5px;
+
+    box-shadow: 1px 1px 2px 2px #ddd;
+}
 
 .tag-input, .tag-input-field{
 
