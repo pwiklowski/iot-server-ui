@@ -1,8 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { ActivatedRoute } from '@angular/router';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Device, DeviceValue, DeviceVariable } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
 import { Pipe } from '@angular/core';
@@ -26,24 +24,19 @@ export class MapToIterable {
     selector: '[application]',
     templateUrl: "templates/devices.template.html",
     pipes: [MapToIterable],
-    directives: [ROUTER_DIRECTIVES]
+    directives: []
 })
 export class DevicesComponent {
     private sub: Subscription;
     id: string;
     variables: Array<DeviceVariable> = new Array<DeviceVariable>();
 
+    constructor(private http: Http){ }
+
     ngOnInit() {
-        this.sub = this.route.params.subscribe(params => {
-            this.id = params['id'];
-            this.getValues(this.id);
-        });
+        this.getValues(this.id);
     }
 
-    ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
-    constructor(private route: ActivatedRoute, private http: Http){ }
 
     getValues(uuid: string){
         this.http.get("/iot/values/"+uuid).toPromise().then(res => {
