@@ -21,7 +21,7 @@ export class MapToIterable {
 
 
 @Component({
-    selector: '[application]',
+    selector: '[window]',
     templateUrl: "templates/devices.template.html",
     pipes: [MapToIterable],
     directives: []
@@ -29,6 +29,7 @@ export class MapToIterable {
 export class DevicesComponent {
     private sub: Subscription;
     id: string;
+    device: Device = new Device();
     variables: Array<DeviceVariable> = new Array<DeviceVariable>();
 
     constructor(private http: Http){ }

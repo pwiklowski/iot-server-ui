@@ -5,6 +5,7 @@ import { Device, Script } from './models.ts';
 import { BrowserModule} from '@angular/platform-browser';
 import { WMComponent } from './wm.component';
 import { DevicesComponent} from './devices.component';
+import { ScriptComponent} from './script.component';
 
 import { HTTP_PROVIDERS } from '@angular/http';
 import {provide} from '@angular/core';
@@ -19,6 +20,7 @@ export class AppComponent {
     scripts: Array<Script> = new Array<Script>();
 
     @ViewChild('windowManager') windowManager: WMComponent;
+    @ViewChild('scriptManager') scriptManager: WMComponent;
 
     constructor(private http: Http){
         this.getDevices();
@@ -86,6 +88,11 @@ export class AppComponent {
     attachDevice(device){
         let d = this.windowManager.attach(DevicesComponent);
         d.instance.id = device.id;
+        d.instance.device = device;
+    }
+    attachScript(script){
+        let d = this.windowManager.attach(ScriptComponent);
+        d.instance.id = script.ScriptUuid;
     }
 
 
@@ -95,7 +102,7 @@ export class AppComponent {
 @NgModule({
   imports: [ BrowserModule ],
   declarations: [ AppComponent ],
-  entryComponents: [ DevicesComponent ],
+  entryComponents: [ DevicesComponent, ScriptComponent ],
   bootstrap: [ AppComponent ],
   providers: [ HTTP_PROVIDERS, WMComponent]
 })

@@ -1,4 +1,8 @@
-<div class="iot-device-details">
+<div class="iot-device">
+    <h3 class="">{{ device.name }}</h3>
+
+    {{ device.id}}<br><br>
+
     Variables:
     <div class="iot-variable" *ngFor="let v of variables">
         Name: {{ v.name }}<br>

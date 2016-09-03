@@ -12,10 +12,8 @@ html{
 body{
     width: 100%;
     height: 100%;
-
     display: flex;
-    flex-direction: row;
-
+    overflow: hidden;
 }
 
 a{
@@ -27,8 +25,10 @@ a{
 
 .iot-icon-menu{
     width: 70px;
+    height: 100%;
     background: red;
     z-index: 10;
+
     flex: 0 0 auto;
 }
 
@@ -56,6 +56,7 @@ a{
     padding: 5px;
      transition: transform 300ms ease-out;
      z-index: 5;
+
 }
 
 .iot-id{
@@ -65,9 +66,11 @@ a{
 .iot-content{
     padding: 20px;
     flex: 1 1 auto;
+    display: flex;
 
+   overflow: scroll;
 }
-.iot-device{
+.iot-menu-item{
     padding: 10px;
     border: 1px solid green;
     background-color: white;
@@ -104,17 +107,15 @@ a{
 
 
 
-.iot-script{
-    margin: 10px;
-    height: 100%;
-    width: 70%;
-    float: left;
-    border-radius: 3px;
-    border: 1px solid #CCC;
-    background: #FFF;
-    padding: 5px;
+.iot-device{
+    width: 400px;
+    padding: 15px;
 
-    box-shadow: 1px 1px 2px 2px #ddd;
+}
+
+.iot-script{
+    width: 1000px;
+    padding: 15px;
 }
 
 .tag-input, .tag-input-field{
@@ -164,6 +165,12 @@ a{
 }
 
 
+.CodeMirror-hints {
+  max-width: 29em;
+
+}
+
+
 .iot-log{
      font-family: monospace;
      background-color: white;
@@ -190,3 +197,27 @@ a{
      font-size: 11px;
 
 }
+
+
+
+
+.wm-container{
+    flex: 1 1 auto;
+    padding: 5px;
+}
+
+.wm-window{
+    border-radius: 2px;
+    border: 1px solid #CCC;
+    background: #FFF;
+    padding: 5px;
+    margin: 5px;
+
+}
+
+.wm-container{
+}
+
+
+
+

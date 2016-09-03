@@ -1,8 +1,6 @@
 import { Component, ViewContainerRef, ViewChild } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/toPromise';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { ScriptVersion, Script, Log } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -14,9 +12,9 @@ import {Observable} from 'rxjs/Rx';
 
 
 @Component({
-    selector: '[application]',
+    selector: '[script]',
     templateUrl: "templates/script.template.html",
-    directives: [ROUTER_DIRECTIVES, DevicePickerComponent, CodeEditorDirective, EventEditorDirective]
+    directives: [DevicePickerComponent, CodeEditorDirective, EventEditorDirective]
 })
 export class ScriptComponent {
     scriptVersion: ScriptVersion = new ScriptVersion();
@@ -34,16 +32,13 @@ export class ScriptComponent {
     timer;
     timerSubscription;
 
-    constructor(private route: ActivatedRoute, private http: Http){ }
+    constructor(private http: Http){ }
 
     ngOnInit() {
-        this.sub = this.route.params.subscribe(params => {
-            this.id = params['id'];
-            this.getScript(this.id, null);
-            this.getScriptVersions(this.id);
-            this.logs = new Array<Log>();
-            this.getLogs();
-        });
+        this.getScript(this.id, null);
+        this.getScriptVersions(this.id);
+        this.logs = new Array<Log>();
+        this.getLogs();
         this.getDevices();
         this.devicePicker.selectionChanged = itemIds => {
             console.log("data" + itemIds);
@@ -80,7 +75,6 @@ export class ScriptComponent {
     
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
         this.timerSubscription.unsubscribe();
     }
 

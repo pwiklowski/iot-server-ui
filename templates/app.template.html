@@ -12,7 +12,7 @@
     <b>Devices:</b>
     <template ngFor let-device [ngForOf]="devices">
         <a href="/#/device/{{device.id}}" (click)="attachDevice(device);slideDevices(false)">
-            <div class="iot-device">
+            <div class="iot-menu-item">
                 {{ device.name}}<br>
                 <span class="iot-id">{{ device.id }}</span>
             </div>
@@ -24,16 +24,12 @@
     <b>Scripts:</b>
 
     <template ngFor let-script [ngForOf]="scripts">
-        <a href="/#/script/{{script.ScriptUuid}}">
-            <div class="iot-device" (click)="slideScripts(false);">
-                    <b>{{ script.Name }}</b><br>
-                    <span class="iot-id">{{ script.ScriptUuid}} </span>
-            </div>
-        </a>
+        <div class="iot-menu-item" (click)="attachScript(script); slideScripts(false);">
+            <b>{{ script.Name }}</b><br>
+            <span class="iot-id">{{ script.ScriptUuid}} </span>
+        </div>
     </template>
 </div>
 
 
-
-
-<div wm #windowManager class="iot-content"> </div>
+<div class="iot-content" wm #windowManager ></div>
