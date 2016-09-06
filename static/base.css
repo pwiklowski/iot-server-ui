@@ -211,8 +211,11 @@ a{
     border: 1px solid #CCC;
     background: #FFF;
     padding: 5px;
-    margin: 5px;
-    position: relative;
+    position: absolute;
+    min-height: 300px;
+    min-width: 300px;
+     resize: both;
+    overflow: auto;
 
 }
 .wm-window-selected{

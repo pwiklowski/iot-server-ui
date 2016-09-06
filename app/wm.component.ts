@@ -12,11 +12,19 @@ import { ClassUtils } from './class.utils';
     `,
 })
 export class WMComponent {
+    offsetX = 0;
+    offsetY = 0;
+
 
     @ViewChild('container', { read: ViewContainerRef })
     container: ViewContainerRef;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+        let panel = document.getElementById("iot-content");
+        panel.addEventListener("dragover", function( event ) {
+            event.preventDefault();
+        }, false);
+    }
 
     windows: Array<any> = new Array<any>();
 
@@ -33,6 +41,28 @@ export class WMComponent {
         let c = this.container.createComponent(factory);  
 
         c.location.nativeElement.setAttribute("class", "wm-window");
+
+
+
+        c.location.nativeElement.setAttribute('draggable', 'true');
+        c.location.nativeElement.addEventListener("drag", function( event ) {
+            c.location.nativeElement.style.left = (event.pageX-this.offsetX) + "px";
+            c.location.nativeElement.style.top= (event.pageY-this.offsetY) +"px";
+        }, false);
+
+        c.location.nativeElement.addEventListener("dragstart", function( event ) {
+            var ghost = this.cloneNode(true);
+            ghost.style.backgroundColor = "red";
+            ghost.style.display = "none"; /* or visibility: hidden, or any of the above */
+            document.body.appendChild(ghost);
+            event.dataTransfer.setDragImage(ghost, 0, 0);
+
+            this.offsetX = event.offsetX;
+            this.offsetY = event.offsetY;
+        }, false);
+  
+
+        
 
         this.windows.push(c);
         return c;
