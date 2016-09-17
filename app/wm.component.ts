@@ -7,7 +7,7 @@ import { ClassUtils } from './class.utils';
 
 @Component({
     selector: '[wm]',
-    template: `<div (window:keydown)="eventHandler($event)"></div>
+    template: `<div (window:resize)="redraw()" (window:keydown)="eventHandler($event)"></div>
         <div #container> </div>
     `,
 })
@@ -38,10 +38,9 @@ export class WMComponent {
             let w = c.location.nativeElement;
             w.setAttribute("class", "wm-window wm-window-script");
 
-            let MARGIN = 15;
-            w.style.height = (this.panel.offsetHeight - 4*MARGIN)+ "px";
 
             this.window = w;
+            this.redraw();
             callback(c);
 
             this.show(w);
@@ -52,6 +51,11 @@ export class WMComponent {
             };
 
         }, this.translateTime);
+    }
+
+    redraw(){
+        let MARGIN = 15;
+        this.window.style.height = (this.panel.offsetHeight - 4*MARGIN)+ "px";
     }
 
     hide(window){
