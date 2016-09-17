@@ -17,7 +17,6 @@ export class WMDevicesComponent {
     panel;
     translateTime = 300;
 
-
     @ViewChild('devContainer', { read: ViewContainerRef })
     container: ViewContainerRef;
 
@@ -27,7 +26,7 @@ export class WMDevicesComponent {
 
     window;
   
-    attach(component, callback) : any{ 
+    attach(component, callback, detachCallback) : any{ 
         this.hide(this.window);
 
         setTimeout(()=>{
@@ -42,6 +41,11 @@ export class WMDevicesComponent {
 
             this.show(w);
 
+            (<any>c.instance).onClose = () => {
+                this.hide(this.window);
+                detachCallback();
+            };
+
         }, this.translateTime);
     }
 
@@ -51,10 +55,12 @@ export class WMDevicesComponent {
             window.style.opacity = "0";
             setTimeout(()=>{
                  this.container.clear();
+                 this.window = undefined;
             
             }, this.translateTime);
         }
     }
+
     show(window){
         if(window != undefined){
             window.style.transform = "translateX(0px)";

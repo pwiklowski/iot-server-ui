@@ -202,11 +202,13 @@ a{
 
 #iot-script-manager{
     position: relative;
+    transition: all 300ms ease-out;
 }
 
 
 #iot-device-manager{
     position: relative;
+    transition: all 300ms ease-out;
 }
 
 

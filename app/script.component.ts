@@ -17,6 +17,7 @@ import {Observable} from 'rxjs/Rx';
     directives: [DevicePickerComponent, CodeEditorDirective, EventEditorDirective]
 })
 export class ScriptComponent {
+    onClose = undefined;
     scriptVersion: ScriptVersion = new ScriptVersion();
     script: Script = new Script();
     versions: Array<string> = new Array<string>();
@@ -172,6 +173,11 @@ export class ScriptComponent {
         }).catch(err => {
             console.error(err);
         });
+    }
+
+
+    close(){
+        if (this.onClose) this.onClose();
     }
 
 }

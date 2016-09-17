@@ -32,6 +32,8 @@ export class DevicesComponent {
     device: Device = new Device();
     variables: Array<DeviceVariable> = new Array<DeviceVariable>();
 
+    onClose = undefined;
+
     constructor(private http: Http){ }
 
     ngOnInit() {
@@ -48,6 +50,10 @@ export class DevicesComponent {
         
         });
 
+    }
+
+    close(){
+        if (this.onClose) this.onClose();
     }
 
 }

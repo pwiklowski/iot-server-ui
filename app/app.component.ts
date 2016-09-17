@@ -20,8 +20,8 @@ import {provide} from '@angular/core';
 export class AppComponent {
     devices: Array<Device> = new Array<Device>();
     scripts: Array<Script> = new Array<Script>();
-    showScript : boolean;
-    showDevices: boolean;
+    showScript : boolean = false;
+    showDevice: boolean = false;
 
 
     @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
@@ -97,16 +97,29 @@ export class AppComponent {
 
 
     attachDevice(device){
+        this.showDevice = true;
+        this.redraw();
+
         this.deviceManager.attach(DevicesComponent, (d)=>{
             d.instance.id = device.id;
             d.instance.device = device;
-        this.redraw();
+            this.redraw();
+        }, ()=>{
+            this.showDevice = false;
+            this.redraw();
         });
     }
+
     attachScript(script){
+        this.showScript = true;
+        this.redraw();
         this.scriptManager.attach(ScriptComponent, (d)=>{
             d.instance.id = script.ScriptUuid;
             this.redraw();
+        }, ()=>{
+            this.showScript = false;
+            this.redraw();
+        
         });
     }
 
@@ -118,9 +131,9 @@ export class AppComponent {
 
         let width = panel.offsetWidth;
 
-        let devicesWidth = 400;
+        let devicesWidth = this.showDevice ? 400 : 0;
 
-        let scriptsWidth = width - devicesWidth;;
+        let scriptsWidth = this.showScript ? (width - devicesWidth) : 0;
 
         scripts.style.width = scriptsWidth + "px";
         devices.style.width = devicesWidth + "px";

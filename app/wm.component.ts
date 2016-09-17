@@ -27,12 +27,14 @@ export class WMComponent {
         this.panel = document.getElementById("iot-content");
     }
 
-    attach(component, callback) : any{ 
+    attach(component, callback, detachCallback) : any{ 
         this.hide(this.window);
 
         setTimeout(()=>{
             let factory = this.componentFactoryResolver.resolveComponentFactory(component);
             let c = this.container.createComponent(factory);  
+
+
             let w = c.location.nativeElement;
             w.setAttribute("class", "wm-window wm-window-script");
 
@@ -44,6 +46,11 @@ export class WMComponent {
 
             this.show(w);
 
+            (<any>c.instance).onClose = () => {
+                this.hide(this.window);
+                detachCallback();
+            };
+
         }, this.translateTime);
     }
 
@@ -53,6 +60,7 @@ export class WMComponent {
             window.style.opacity = "0";
             setTimeout(()=>{
                  this.container.clear();
+                 this.window = undefined;
             
             }, this.translateTime);
         }
