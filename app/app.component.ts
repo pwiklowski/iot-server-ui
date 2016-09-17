@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Device, Script } from './models.ts';
 import { BrowserModule} from '@angular/platform-browser';
-import { WMComponent } from './wm.component';
+import { WMScriptsComponent } from './wm-scripts.component';
 import { WMDevicesComponent } from './wm-devices.component';
 import { DevicesComponent} from './devices.component';
 import { ScriptComponent} from './script.component';
@@ -15,7 +15,7 @@ import {provide} from '@angular/core';
 @Component({
     selector: '[application]',
     templateUrl: 'templates/app.template.html',
-    directives: [WMComponent, WMDevicesComponent]
+    directives: [ WMScriptsComponent, WMDevicesComponent]
 })
 export class AppComponent {
     devices: Array<Device> = new Array<Device>();
@@ -28,7 +28,7 @@ export class AppComponent {
 
 
     @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
-    @ViewChild('scriptManager') scriptManager: WMComponent;
+    @ViewChild('scriptManager') scriptManager: WMScriptsComponent;
 
     constructor(private http: Http){
         this.getDevices();
@@ -130,11 +130,8 @@ export class AppComponent {
 
 
     redraw(){
-
         let width = this.panelView.offsetWidth;
-
         let devicesWidth = this.showDevice ? (this.showScript ? 400 : 700 ) : 0;
-
         let scriptsWidth = this.showScript ? (width - devicesWidth) : 0;
 
         if (scriptsWidth == 0){
@@ -156,8 +153,8 @@ export class AppComponent {
 @NgModule({
   imports: [ BrowserModule ],
   declarations: [ AppComponent ],
-  entryComponents: [ DevicesComponent, ScriptComponent, WindowComponent],
+  entryComponents: [ DevicesComponent, ScriptComponent],
   bootstrap: [ AppComponent ],
-  providers: [ HTTP_PROVIDERS, WMComponent]
+  providers: [ HTTP_PROVIDERS],
 })
 export class AppModule {}

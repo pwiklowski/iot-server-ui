@@ -7,24 +7,27 @@ import { ClassUtils } from './class.utils';
 
 @Component({
     selector: '[wm]',
-    template: `<div (window:resize)="redraw()" (window:keydown)="eventHandler($event)"></div>
-        <div #container> </div>
-    `,
+    template: `<div (window:resize)="redraw()" #container> </div>`,
 })
 export class WMComponent {
-    offsetX = 0;
-    offsetY = 0;
     panel;
     translateTime = 300;
-
 
     @ViewChild('container', { read: ViewContainerRef })
     container: ViewContainerRef;
 
     window = undefined;
+    componentFactoryResolver: ComponentFactoryResolver;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+    transformOpen = "translateY(1200px)";
+    transformClosed = "translateY(0px)";
+
+    customWindowClass = "wm-window-script";
+
+
+    constructor(componentFactoryResolver: ComponentFactoryResolver) {
         this.panel = document.getElementById("iot-content");
+        this.componentFactoryResolver = componentFactoryResolver;
     }
 
     attach(component, callback, detachCallback) : any{ 
@@ -36,7 +39,7 @@ export class WMComponent {
 
 
             let w = c.location.nativeElement;
-            w.setAttribute("class", "wm-window wm-window-script");
+            w.setAttribute("class", "wm-window " + this.customWindowClass);
 
 
             this.window = w;
@@ -54,6 +57,7 @@ export class WMComponent {
     }
 
     redraw(){
+        console.log("redraw " + this.customWindowClass);;
         let MARGIN = 15;
         if (this.window)
             this.window.style.height = (this.panel.offsetHeight - 4*MARGIN)+ "px";
@@ -61,7 +65,7 @@ export class WMComponent {
 
     hide(window){
         if(window != undefined){
-            window.style.transform = "translateY(1200px)";
+            window.style.transform = this.transformOpen;
             window.style.opacity = "0";
             setTimeout(()=>{
                  this.container.clear();
@@ -72,7 +76,7 @@ export class WMComponent {
     }
     show(window){
         if(window != undefined){
-            window.style.transform = "translateY(0px)";
+            window.style.transform = this.transformClosed;
             window.style.opacity = "100";
         }
     }

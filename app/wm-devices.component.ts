@@ -3,73 +3,24 @@ import { Component, ViewChild, AfterViewInit, ApplicationRef, Injector,
          ViewContainerRef } from '@angular/core';
 
 import { ClassUtils } from './class.utils';
+import { WMComponent } from './wm.component';
 
 
 @Component({
     selector: '[wmDevices]',
-    template: `<div (window:keydown)="eventHandler($event)"></div>
-        <div class="iot-script-container" #devContainer> </div>
-    `,
+    template: `<div class="iot-script-container" #devContainer> </div>`,
 })
-export class WMDevicesComponent {
-    offsetX = 0;
-    offsetY = 0;
-    panel;
-    translateTime = 300;
+export class WMDevicesComponent extends WMComponent {
 
     @ViewChild('devContainer', { read: ViewContainerRef })
     container: ViewContainerRef;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+    transformOpen = "translateX(500px)";
+    transformClosed = "translateX(0px)";
 
+    customWindowClass = "wm-window-device";
+
+    constructor(componentFactoryResolver: ComponentFactoryResolver) {
+        super(componentFactoryResolver);
     }
-
-    window;
-  
-    attach(component, callback, detachCallback) : any{ 
-        this.hide(this.window);
-
-        setTimeout(()=>{
-            let factory = this.componentFactoryResolver.resolveComponentFactory(component);
-            let c = this.container.createComponent(factory);  
-            let w = c.location.nativeElement;
-            w.setAttribute("class", "wm-window wm-window-device");
-
-            let MARGIN = 15;
-            this.window = w;
-            callback(c);
-
-            this.show(w);
-
-            (<any>c.instance).onClose = () => {
-                this.hide(this.window);
-                detachCallback();
-            };
-
-        }, this.translateTime);
-    }
-
-    hide(window){
-        if(window != undefined){
-            window.style.transform = "translateX(500px)";
-            window.style.opacity = "0";
-            setTimeout(()=>{
-                 this.container.clear();
-                 this.window = undefined;
-            
-            }, this.translateTime);
-        }
-    }
-
-    show(window){
-        if(window != undefined){
-            window.style.transform = "translateX(0px)";
-            window.style.opacity = "100";
-        }
-    }
-
-
-
-
-
 }
