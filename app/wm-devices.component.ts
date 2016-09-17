@@ -6,27 +6,27 @@ import { ClassUtils } from './class.utils';
 
 
 @Component({
-    selector: '[wm]',
+    selector: '[wmDevices]',
     template: `<div (window:keydown)="eventHandler($event)"></div>
-        <div #container> </div>
+        <div class="iot-script-container" #devContainer> </div>
     `,
 })
-export class WMComponent {
+export class WMDevicesComponent {
     offsetX = 0;
     offsetY = 0;
     panel;
     translateTime = 300;
 
 
-    @ViewChild('container', { read: ViewContainerRef })
+    @ViewChild('devContainer', { read: ViewContainerRef })
     container: ViewContainerRef;
 
-    window = undefined;
-
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
-        this.panel = document.getElementById("iot-content");
+
     }
 
+    window;
+  
     attach(component, callback) : any{ 
         this.hide(this.window);
 
@@ -34,11 +34,9 @@ export class WMComponent {
             let factory = this.componentFactoryResolver.resolveComponentFactory(component);
             let c = this.container.createComponent(factory);  
             let w = c.location.nativeElement;
-            w.setAttribute("class", "wm-window wm-window-script");
+            w.setAttribute("class", "wm-window wm-window-device");
 
             let MARGIN = 15;
-            w.style.height = (this.panel.offsetHeight - 4*MARGIN)+ "px";
-
             this.window = w;
             callback(c);
 
@@ -49,7 +47,7 @@ export class WMComponent {
 
     hide(window){
         if(window != undefined){
-            window.style.transform = "translateY(1200px)";
+            window.style.transform = "translateX(500px)";
             window.style.opacity = "0";
             setTimeout(()=>{
                  this.container.clear();
@@ -59,9 +57,13 @@ export class WMComponent {
     }
     show(window){
         if(window != undefined){
-            window.style.transform = "translateY(0px)";
+            window.style.transform = "translateX(0px)";
             window.style.opacity = "100";
         }
     }
+
+
+
+
 
 }

@@ -4,8 +4,10 @@ import 'rxjs/add/operator/toPromise';
 import { Device, Script } from './models.ts';
 import { BrowserModule} from '@angular/platform-browser';
 import { WMComponent } from './wm.component';
+import { WMDevicesComponent } from './wm-devices.component';
 import { DevicesComponent} from './devices.component';
 import { ScriptComponent} from './script.component';
+import { WindowComponent } from './window.component';
 
 import { HTTP_PROVIDERS } from '@angular/http';
 import {provide} from '@angular/core';
@@ -13,13 +15,16 @@ import {provide} from '@angular/core';
 @Component({
     selector: '[application]',
     templateUrl: 'templates/app.template.html',
-    directives: [WMComponent]
+    directives: [WMComponent, WMDevicesComponent]
 })
 export class AppComponent {
     devices: Array<Device> = new Array<Device>();
     scripts: Array<Script> = new Array<Script>();
+    showScript : boolean;
+    showDevices: boolean;
 
-    @ViewChild('windowManager') windowManager: WMComponent;
+
+    @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
     @ViewChild('scriptManager') scriptManager: WMComponent;
 
     constructor(private http: Http){
@@ -27,12 +32,18 @@ export class AppComponent {
         this.getScripts();
     }
 
+
+
+
+    ngAfterViewInit(){
+        window.addEventListener("resize", this.redraw, true);
+    }
+
     getDevices(){
         this.http.get("/iot/devices").toPromise().then(res => {
-            console.log(res.json());
             this.devices = res.json().devices;
         }).catch(err => {
-        
+            console.log(err);
         });
 
     }
@@ -86,15 +97,34 @@ export class AppComponent {
 
 
     attachDevice(device){
-        let d = this.windowManager.attach(DevicesComponent);
-        d.instance.id = device.id;
-        d.instance.device = device;
+        this.deviceManager.attach(DevicesComponent, (d)=>{
+            d.instance.id = device.id;
+            d.instance.device = device;
+        this.redraw();
+        });
     }
     attachScript(script){
-        let d = this.windowManager.attach(ScriptComponent);
-        d.instance.id = script.ScriptUuid;
+        this.scriptManager.attach(ScriptComponent, (d)=>{
+            d.instance.id = script.ScriptUuid;
+            this.redraw();
+        });
     }
 
+
+    redraw(){
+        let panel = document.getElementById("iot-content");
+        let devices = document.getElementById("iot-device-manager");
+        let scripts = document.getElementById("iot-script-manager");
+
+        let width = panel.offsetWidth;
+
+        let devicesWidth = 400;
+
+        let scriptsWidth = width - devicesWidth;;
+
+        scripts.style.width = scriptsWidth + "px";
+        devices.style.width = devicesWidth + "px";
+    }
 
 }
 
@@ -102,7 +132,7 @@ export class AppComponent {
 @NgModule({
   imports: [ BrowserModule ],
   declarations: [ AppComponent ],
-  entryComponents: [ DevicesComponent, ScriptComponent ],
+  entryComponents: [ DevicesComponent, ScriptComponent, WindowComponent],
   bootstrap: [ AppComponent ],
   providers: [ HTTP_PROVIDERS, WMComponent]
 })
