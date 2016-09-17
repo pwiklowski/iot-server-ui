@@ -21,7 +21,7 @@ export class DeviceValue{
 }
 export class DeviceVariable{
     name: string;
-    valies: Array<DeviceValue>;
+    values: Array<DeviceValue>;
     
 }
 

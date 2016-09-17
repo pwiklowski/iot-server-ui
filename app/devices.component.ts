@@ -1,23 +1,14 @@
-import { Component, ViewContainerRef } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Device, DeviceValue, DeviceVariable } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
-import { Pipe } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ApplicationRef, Injector,
+         ComponentRef, DynamicComponentLoader,ComponentFactoryResolver,
+         ViewContainerRef } from '@angular/core';
 
+import { VariableGenericComponent } from './variable-generic.component';
 
-
-
-@Pipe({
-    name: 'mapToIterable'
-})
-export class MapToIterable {
-    transform(map: {}, args: any[] = null): any {
-        if (!map)
-            return null;
-        return Object.keys(map).map((key) => ({ 'key': key, 'value': map[key] }));
-    }
-}
+import { MapToIterable } from './pipes';
 
 
 @Component({
@@ -34,7 +25,11 @@ export class DevicesComponent {
 
     onClose = undefined;
 
-    constructor(private http: Http){ }
+    @ViewChild('container', { read: ViewContainerRef })
+    container: ViewContainerRef;
+
+
+    constructor(private componentFactoryResolver: ComponentFactoryResolver, private http: Http){ }
 
     ngOnInit() {
         this.getValues(this.id);
@@ -42,14 +37,29 @@ export class DevicesComponent {
 
 
     getValues(uuid: string){
+
+
+
         this.http.get("/iot/values/"+uuid).toPromise().then(res => {
-            console.log(res.json());
             this.variables = res.json();
-            console.log(this.variables[0].name);
+
+            this.variables.forEach(v => {
+                let factory = this.componentFactoryResolver.resolveComponentFactory(this.variableComponentFactory("dsf"));
+                let c = this.container.createComponent(factory);  
+                (<any>c.instance).variable = v;
+            });
+
+            
         }).catch(err => {
+            console.error(err);
         
         });
 
+    }
+
+    variableComponentFactory(rt){
+        console.log("create component for variable " + rt);
+        return VariableGenericComponent;
     }
 
     close(){

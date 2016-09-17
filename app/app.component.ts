@@ -7,10 +7,13 @@ import { WMScriptsComponent } from './wm-scripts.component';
 import { WMDevicesComponent } from './wm-devices.component';
 import { DevicesComponent} from './devices.component';
 import { ScriptComponent} from './script.component';
-import { WindowComponent } from './window.component';
 
 import { HTTP_PROVIDERS } from '@angular/http';
 import {provide} from '@angular/core';
+
+import { VariableGenericComponent } from './variable-generic.component';
+
+
 
 @Component({
     selector: '[application]',
@@ -141,8 +144,6 @@ export class AppComponent {
         }
 
 
-        console.log(width + " " + devicesWidth + " " + scriptsWidth);
-
         this.scriptsView.style.width = scriptsWidth + "px";
         this.devicesView.style.width = devicesWidth + "px";
     }
@@ -153,7 +154,7 @@ export class AppComponent {
 @NgModule({
   imports: [ BrowserModule ],
   declarations: [ AppComponent ],
-  entryComponents: [ DevicesComponent, ScriptComponent],
+  entryComponents: [ DevicesComponent, ScriptComponent, VariableGenericComponent],
   bootstrap: [ AppComponent ],
   providers: [ HTTP_PROVIDERS],
 })
