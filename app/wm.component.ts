@@ -55,7 +55,8 @@ export class WMComponent {
 
     redraw(){
         let MARGIN = 15;
-        this.window.style.height = (this.panel.offsetHeight - 4*MARGIN)+ "px";
+        if (this.window)
+            this.window.style.height = (this.panel.offsetHeight - 4*MARGIN)+ "px";
     }
 
     hide(window){
