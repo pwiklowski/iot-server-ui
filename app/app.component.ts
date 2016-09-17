@@ -22,6 +22,9 @@ export class AppComponent {
     scripts: Array<Script> = new Array<Script>();
     showScript : boolean = false;
     showDevice: boolean = false;
+    panelView;
+    devicesView;
+    scriptsView;
 
 
     @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
@@ -37,6 +40,11 @@ export class AppComponent {
 
     ngAfterViewInit(){
         window.addEventListener("resize", this.redraw, true);
+
+        this.panelView = document.getElementById("iot-content");
+        this.devicesView = document.getElementById("iot-device-manager");
+        this.scriptsView = document.getElementById("iot-script-manager");
+        
     }
 
     getDevices(){
@@ -125,18 +133,24 @@ export class AppComponent {
 
 
     redraw(){
-        let panel = document.getElementById("iot-content");
-        let devices = document.getElementById("iot-device-manager");
-        let scripts = document.getElementById("iot-script-manager");
 
-        let width = panel.offsetWidth;
+        let width = this.panelView.offsetWidth;
 
-        let devicesWidth = this.showDevice ? 400 : 0;
+        let devicesWidth = this.showDevice ? (this.showScript ? 400 : 700 ) : 0;
 
         let scriptsWidth = this.showScript ? (width - devicesWidth) : 0;
 
-        scripts.style.width = scriptsWidth + "px";
-        devices.style.width = devicesWidth + "px";
+        if (scriptsWidth == 0){
+            this.devicesView.style.left = (width/2 - devicesWidth/2) + "px";
+        }else{
+            this.devicesView.style.left = "0px";
+        }
+
+
+        console.log(width + " " + devicesWidth + " " + scriptsWidth);
+
+        this.scriptsView.style.width = scriptsWidth + "px";
+        this.devicesView.style.width = devicesWidth + "px";
     }
 
 }
