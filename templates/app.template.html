@@ -30,7 +30,7 @@
 
 </div>
 
-<div id="iot-content" >
+<div id="iot-content" (window:resize)="redraw()" >
     <div id="iot-script-manager" wm #scriptManager></div>
     <div id="iot-device-manager" wmDevices #deviceManager></div>
 </div>

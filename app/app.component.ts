@@ -39,14 +39,11 @@ export class AppComponent {
 
 
     ngAfterViewInit(){
-        window.addEventListener("resize", this.redraw, true);
-
         this.panelView = document.getElementById("iot-content");
         this.devicesView = document.getElementById("iot-device-manager");
         this.scriptsView = document.getElementById("iot-script-manager");
         
     }
-
     getDevices(){
         this.http.get("/iot/devices").toPromise().then(res => {
             this.devices = res.json().devices;
