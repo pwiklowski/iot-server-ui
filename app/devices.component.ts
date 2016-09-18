@@ -27,7 +27,7 @@ export class DevicesComponent {
     onClose = undefined;
     @ViewChild('container', { read: ViewContainerRef })
     container: ViewContainerRef;
-
+    variablesComponents = {};
     socket; 
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver, private http: Http){
@@ -36,7 +36,7 @@ export class DevicesComponent {
     ngOnInit() {
         this.getValues(this.id);
         this.socket = new WebSocket("ws://192.168.1.4:16000/device/" + this.id + "/value");
-        this.socket.onmessage = this.onMessage;
+        this.socket.onmessage = (e) => { this.onMessage(e);} ;
     }
 
 
@@ -45,12 +45,18 @@ export class DevicesComponent {
             this.variables = res.json();
 
             this.variables.forEach(v => {
-                let factory = this.componentFactoryResolver.resolveComponentFactory(this.variableComponentFactory(v.values["rt"]));
+                let factory = this.componentFactoryResolver.resolveComponentFactory(
+                    this.variableComponentFactory(v.values["rt"]));
+
                 let c = this.container.createComponent(factory);  
                 (<any>c.instance).setValue(v.name, v.values);
                 (<any>c.instance).onValueChanged = (r,v) => {
                     this.onValueChanged(r, v);
                 };
+
+                this.variablesComponents[v.name] = c;
+                console.log(this.variablesComponents);
+
             });
             
         }).catch(err => {
@@ -70,14 +76,21 @@ export class DevicesComponent {
     }
 
     onMessage(event){
-        console.log("onMessage");
-        console.log(event);
+        let data = JSON.parse(event.data);
+        let resource = data.resource;
+        let value = data.value;
 
+        Object.keys(this.variablesComponents).forEach( key => {
+            if (key === resource){
+                let c = this.variablesComponents[key];
+                (<any>c.instance).setValue(resource, value);
+            }
+        });
     }
 
 
 
-    variableComponentFactory(rt){
+    variableComponentFactory(rt) : any{
         if (rt == "oic.r.light.dimming"){
             return VariableLightDimmingComponent;
         }else if(rt === "oic.r.colour.rgb"){
