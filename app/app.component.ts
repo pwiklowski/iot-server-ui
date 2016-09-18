@@ -11,8 +11,10 @@ import { ScriptComponent} from './script.component';
 import { HTTP_PROVIDERS } from '@angular/http';
 import {provide} from '@angular/core';
 
-import { VariableGenericComponent } from './variable-generic.component';
 
+import { VariableGenericComponent } from './variable-generic.component';
+import { VariableLightDimmingComponent } from './variable-dimming.component';
+import { VariableColourRgbComponent } from './variable-rgb.component';
 
 
 @Component({
@@ -152,9 +154,9 @@ export class AppComponent {
 
 
 @NgModule({
-  imports: [ BrowserModule ],
+  imports: [ BrowserModule],
   declarations: [ AppComponent ],
-  entryComponents: [ DevicesComponent, ScriptComponent, VariableGenericComponent],
+  entryComponents: [ DevicesComponent, ScriptComponent, VariableGenericComponent, VariableLightDimmingComponent, VariableColourRgbComponent],
   bootstrap: [ AppComponent ],
   providers: [ HTTP_PROVIDERS],
 })

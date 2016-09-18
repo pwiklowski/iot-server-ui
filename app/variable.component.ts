@@ -16,8 +16,9 @@ import { MapToIterable } from './pipes';
         </div>
     </div>`,
 })
-export class VariableGenericComponent {
+export class VariableComponent {
     variable: DeviceVariable;
+    onValueChanged = undefined;
 
     setValue(variable){
         this.variable = variable;

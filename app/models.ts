@@ -15,13 +15,10 @@ export class ScriptVersion{
 	Version: number;
 	Content: string;
 }
-export class DeviceValue{
-    rt: string;
-    value: any;
-}
+
 export class DeviceVariable{
     name: string;
-    values: Array<DeviceValue>;
+    values: any;
     
 }
 
