@@ -10,7 +10,7 @@ import { VariableComponent } from './variable.component';
     selector: '[variable]',
     template: `
     <div class="iot-variable">
-        <b>{{variable.name}}</b><br>
+        <b>{{ name}}</b><br>
         {{ red }}
         <input #r [value]="red" type="range" min="0" max="255" 
             (input)="onChange(r.value, g.value, b.value)"/> 
@@ -23,14 +23,13 @@ import { VariableComponent } from './variable.component';
     </div>`
 })
 export class VariableColourRgbComponent extends VariableComponent {
-    variable: DeviceVariable;
     red: number;
     green: number;
     blue: number;
 
-    setValue(variable){
-        this.variable = variable;
-        let values = this.variable.values["dimmingSetting"].split(",");
+    setValue(name, value){
+        this.name = name;
+        let values = value["dimmingSetting"].split(",");
         this.red = parseInt(values[0]);
         this.green = parseInt(values[1]);
         this.blue = parseInt(values[2]);
@@ -45,7 +44,7 @@ export class VariableColourRgbComponent extends VariableComponent {
             "dimmingSetting": '"' + this.red + "," + this.green + "," + this.blue + '"'
         };
 
-        this.onValueChanged(this.variable.name, obj);
+        this.onValueChanged(this.name, obj);
     }
 }
 

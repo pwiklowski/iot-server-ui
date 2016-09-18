@@ -10,18 +10,18 @@ import { MapToIterable } from './pipes';
     selector: '[variable]',
     template: `
     <div>
-        {{variable.name}}
-        <div *ngFor="let v of variable.values | mapToIterable">
+        {{name}}
+        <div *ngFor="let v of values | mapToIterable">
             {{v.key}}: {{ v.value}}
         </div>
     </div>`,
 })
 export class VariableComponent {
-    variable: DeviceVariable;
     onValueChanged = undefined;
+    name: string;
 
-    setValue(variable){
-        this.variable = variable;
+    setValue(name, value){
+
     }
 }
 

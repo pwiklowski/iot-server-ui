@@ -4,23 +4,24 @@ import 'rxjs/add/operator/toPromise';
 import { Device, DeviceVariable } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
 import { MapToIterable } from './pipes';
+import { VariableComponent } from './variable.component';
 
 
 @Component({
     selector: '[variable]',
     template: `
     <div>
-        {{variable.name}}
-        <div *ngFor="let v of variable.values | mapToIterable">
+        {{name}}
+        <div *ngFor="let v of value | mapToIterable">
             {{v.key}}: {{ v.value}}
         </div>
     </div>`,
 })
-export class VariableGenericComponent {
-    variable: DeviceVariable;
-
-    setValue(variable){
-        this.variable = variable;
+export class VariableGenericComponent extends VariableComponent {
+    value;
+    setValue(name, value){
+        this.name = name;
+        this.value = value;
     }
 }
 

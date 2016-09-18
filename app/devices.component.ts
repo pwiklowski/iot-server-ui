@@ -47,7 +47,7 @@ export class DevicesComponent {
             this.variables.forEach(v => {
                 let factory = this.componentFactoryResolver.resolveComponentFactory(this.variableComponentFactory(v.values["rt"]));
                 let c = this.container.createComponent(factory);  
-                (<any>c.instance).setValue(v);
+                (<any>c.instance).setValue(v.name, v.values);
                 (<any>c.instance).onValueChanged = (r,v) => {
                     this.onValueChanged(r, v);
                 };
