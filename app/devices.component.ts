@@ -21,21 +21,22 @@ import { MapToIterable } from './pipes';
     directives: []
 })
 export class DevicesComponent {
-    private sub: Subscription;
     id: string;
     device: Device = new Device();
     variables: Array<DeviceVariable> = new Array<DeviceVariable>();
-
     onClose = undefined;
-
     @ViewChild('container', { read: ViewContainerRef })
     container: ViewContainerRef;
 
+    socket; 
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver, private http: Http){ }
+    constructor(private componentFactoryResolver: ComponentFactoryResolver, private http: Http){
+    }
 
     ngOnInit() {
         this.getValues(this.id);
+        this.socket = new WebSocket("ws://192.168.1.4:16000/device/" + this.id + "/value");
+        this.socket.onmessage = this.onMessage;
     }
 
 
@@ -47,7 +48,9 @@ export class DevicesComponent {
                 let factory = this.componentFactoryResolver.resolveComponentFactory(this.variableComponentFactory(v.values["rt"]));
                 let c = this.container.createComponent(factory);  
                 (<any>c.instance).setValue(v);
-                (<any>c.instance).onValueChanged = this.onValueChanged;
+                (<any>c.instance).onValueChanged = (r,v) => {
+                    this.onValueChanged(r, v);
+                };
             });
             
         }).catch(err => {
@@ -58,9 +61,17 @@ export class DevicesComponent {
 
     onValueChanged(resource, value){
         console.log("onValueChanged " + resource);
-        console.log(value);
+        let message = {
+            "resource": resource,
+            "value": value
 
+        };
+        this.socket.send(JSON.stringify(message));
+    }
 
+    onMessage(event){
+        console.log("onMessage");
+        console.log(event);
 
     }
 
