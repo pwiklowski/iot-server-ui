@@ -1,0 +1,7 @@
+mongo:  
+  image: mvertes/alpine-mongo:latest
+  volumes:
+    - /home/pawwik/dev/iot-webui-2/mydatabase:/data/db
+  ports:
+    - "27017:27017"
+  command: mongod --smallfiles
