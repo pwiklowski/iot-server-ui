@@ -35,7 +35,7 @@ export class DevicesComponent {
 
     ngOnInit() {
         this.getValues(this.id);
-        this.socket = new WebSocket("ws://192.168.1.4:16000/device/" + this.id + "/value");
+        this.socket = new WebSocket("ws://192.168.1.4:9000/ws/");
         this.socket.onmessage = (e) => { this.onMessage(e);} ;
     }
 
