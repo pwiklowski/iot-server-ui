@@ -16,6 +16,8 @@ import { VariableGenericComponent } from './variable-generic.component';
 import { VariableLightDimmingComponent } from './variable-dimming.component';
 import { VariableColourRgbComponent } from './variable-rgb.component';
 
+import { IotService } from './iot.service';
+
 
 @Component({
     selector: '[application]',
@@ -35,9 +37,13 @@ export class AppComponent {
     @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
     @ViewChild('scriptManager') scriptManager: WMScriptsComponent;
 
-    constructor(private http: Http){
-        this.getDevices();
+    constructor(private http: Http, private iot: IotService){
         this.getScripts();
+
+        iot.onConnected(()=>{
+            this.getDevices();
+        });
+
     }
 
 
@@ -50,12 +56,9 @@ export class AppComponent {
         
     }
     getDevices(){
-        this.http.get("/iot/devices").toPromise().then(res => {
-            this.devices = res.json().devices;
-        }).catch(err => {
-            console.log(err);
+        this.iot.getDevices((payload)=>{
+            this.devices = payload.devices;
         });
-
     }
     getScripts(){
         this.http.get("/api/scripts").toPromise().then(res => {
@@ -158,6 +161,6 @@ export class AppComponent {
   declarations: [ AppComponent ],
   entryComponents: [ DevicesComponent, ScriptComponent, VariableGenericComponent, VariableLightDimmingComponent, VariableColourRgbComponent],
   bootstrap: [ AppComponent ],
-  providers: [ HTTP_PROVIDERS],
+  providers: [ HTTP_PROVIDERS, IotService],
 })
 export class AppModule {}
