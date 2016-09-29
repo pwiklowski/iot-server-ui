@@ -43,11 +43,7 @@ export class AppComponent {
         iot.onConnected(()=>{
             this.getDevices();
         });
-
     }
-
-
-
 
     ngAfterViewInit(){
         this.panelView = document.getElementById("iot-content");
@@ -60,6 +56,7 @@ export class AppComponent {
             this.devices = payload.devices;
         });
     }
+
     getScripts(){
         this.http.get("/api/scripts").toPromise().then(res => {
             this.scripts = res.json();

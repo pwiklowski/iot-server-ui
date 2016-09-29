@@ -5,6 +5,7 @@ import { Device, DeviceVariable } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
 import { MapToIterable } from './pipes';
 import { VariableComponent } from './variable.component';
+import { IotService } from './iot.service';
 
 @Component({
     selector: '[variable]',
@@ -27,12 +28,31 @@ export class VariableColourRgbComponent extends VariableComponent {
     green: number;
     blue: number;
 
-    setValue(name, value){
+    sub;
+
+    constructor(private iot: IotService){
+        super();
+        iot.onConnected(()=>{
+            this.sub = iot.subscribe("VALUE", "", (data)=>{
+                if (data.resource == this.name){
+                    this.setValues(data.value);
+                }
+            });
+        });
+    }
+
+    init(di, name, value){
+        this.di = di;
         this.name = name;
+        this.setValues(value);
+    }
+
+    setValues(value){
         let values = value["dimmingSetting"].split(",");
         this.red = parseInt(values[0]);
         this.green = parseInt(values[1]);
         this.blue = parseInt(values[2]);
+
     }
 
     onChange(red, green, blue){
@@ -44,7 +64,7 @@ export class VariableColourRgbComponent extends VariableComponent {
             "dimmingSetting": '"' + this.red + "," + this.green + "," + this.blue + '"'
         };
 
-        this.onValueChanged(this.name, obj);
+        this.iot.setValue(this.di, this.name, obj);
     }
 }
 

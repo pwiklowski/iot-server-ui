@@ -19,7 +19,7 @@ import { VariableComponent } from './variable.component';
 })
 export class VariableGenericComponent extends VariableComponent {
     value;
-    setValue(name, value){
+    init(name, value){
         this.name = name;
         this.value = value;
     }

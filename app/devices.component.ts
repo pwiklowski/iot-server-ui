@@ -28,15 +28,13 @@ export class DevicesComponent {
     @ViewChild('container', { read: ViewContainerRef })
     container: ViewContainerRef;
     variablesComponents = {};
-    socket; 
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver, private http: Http){
+    constructor(private componentFactoryResolver: ComponentFactoryResolver,
+                private http: Http){
     }
 
     ngOnInit() {
         this.getValues(this.id);
-        this.socket = new WebSocket("ws://192.168.1.4:9000/ws/");
-        this.socket.onmessage = (e) => { this.onMessage(e);} ;
     }
 
 
@@ -49,14 +47,9 @@ export class DevicesComponent {
                     this.variableComponentFactory(v.values["rt"]));
 
                 let c = this.container.createComponent(factory);  
-                (<any>c.instance).setValue(v.name, v.values);
-                (<any>c.instance).onValueChanged = (r,v) => {
-                    this.onValueChanged(r, v);
-                };
+                (<any>c.instance).init(this.id, v.name, v.values);
 
                 this.variablesComponents[v.name] = c;
-                console.log(this.variablesComponents);
-
             });
             
         }).catch(err => {
@@ -64,31 +57,6 @@ export class DevicesComponent {
         });
 
     }
-
-    onValueChanged(resource, value){
-        console.log("onValueChanged " + resource);
-        let message = {
-            "resource": resource,
-            "value": value
-
-        };
-        this.socket.send(JSON.stringify(message));
-    }
-
-    onMessage(event){
-        let data = JSON.parse(event.data);
-        let resource = data.resource;
-        let value = data.value;
-
-        Object.keys(this.variablesComponents).forEach( key => {
-            if (key === resource){
-                let c = this.variablesComponents[key];
-                (<any>c.instance).setValue(resource, value);
-            }
-        });
-    }
-
-
 
     variableComponentFactory(rt) : any{
         if (rt == "oic.r.light.dimming"){

@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MapToIterable } from './pipes';
 import { VariableComponent } from './variable.component';
 
+import { IotService } from './iot.service';
 
 @Component({
     selector: '[variable]',
@@ -22,8 +23,23 @@ export class VariableLightDimmingComponent extends VariableComponent{
     max: number;
     min: number;
 
-    setValue(name, value){
+    sub;
+
+    constructor(private iot: IotService){
+        super();
+
+        iot.onConnected(()=>{
+            this.sub = iot.subscribe("VALUE", "", (data)=>{
+                if (data.resource == this.name){ //TODO: move it to iot.service -> do not trigger callaback if not needed
+                    this.value = data.value["dimmingSetting"];
+                }
+            });
+        });
+    }
+
+    init(di, name, value){
         this.name = name;
+        this.di = di;
         this.value = value["dimmingSetting"];
         this.min = value["range"].split(",")[0];
         this.max = value["range"].split(",")[1];
@@ -35,7 +51,7 @@ export class VariableLightDimmingComponent extends VariableComponent{
         let obj = {
             "dimmingSetting": parseInt(value)
         };
-        this.onValueChanged(this.name, obj);
+        this.iot.setValue(this.di, this.name, obj);
     }
 }
 

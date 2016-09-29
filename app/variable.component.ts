@@ -17,10 +17,10 @@ import { MapToIterable } from './pipes';
     </div>`,
 })
 export class VariableComponent {
-    onValueChanged = undefined;
     name: string;
+    di: string;
 
-    setValue(name, value){
+    init(di, name, value){
 
     }
 }
