@@ -37,11 +37,18 @@ export class AppComponent {
     @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
     @ViewChild('scriptManager') scriptManager: WMScriptsComponent;
 
+    sub;
+
     constructor(private http: Http, private iot: IotService){
         this.getScripts();
 
         iot.onConnected(()=>{
-            this.getDevices();
+            this.iot.getDevices((payload)=>{
+                this.devices = payload.devices;
+            });
+            this.sub = this.iot.subscribe("EventDeviceListUpdate", {}, (payload)=>{
+                this.devices = payload.devices;
+            });
         });
     }
 
@@ -50,11 +57,6 @@ export class AppComponent {
         this.devicesView = document.getElementById("iot-device-manager");
         this.scriptsView = document.getElementById("iot-script-manager");
         
-    }
-    getDevices(){
-        this.iot.getDevices((payload)=>{
-            this.devices = payload.devices;
-        });
     }
 
     getScripts(){
