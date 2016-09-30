@@ -17,9 +17,9 @@ class Subscription{
 
 @Injectable()
 export class IotService{
-    static GET_DEVICES = "GET_DEVICES";
-    static GET_SCRIPTS = "GET_SCRIPTS";
-    static SET_VALUE = "SET_VALUE";
+
+    static ReqestGetDevices = "ReqestGetDevices";
+    static RequestSetValue = "RequestSetValue";
 
     static EventDeviceListUpdate = "EventDeviceListUpdate";
     static EventValueUpdate = "EventValueUpdate";
@@ -93,12 +93,12 @@ export class IotService{
     }
 
     getDevices(callback){
-        this.send({"request": IotService.GET_DEVICES}, callback);
+        this.send({"request": IotService.ReqestGetDevices}, callback);
     }
 
     setValue(di, variable, value){
         this.send({
-            "request": IotService.SET_VALUE,
+            "request": IotService.RequestSetValue,
             "di" : di,
             "resource" : variable,
             "value" : value
