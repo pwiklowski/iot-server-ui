@@ -60,7 +60,7 @@ export class VariableColourRgbComponent extends VariableComponent {
         this.blue = blue;
 
         let obj = {
-            "dimmingSetting": '"' + this.red + "," + this.green + "," + this.blue + '"'
+            "dimmingSetting": this.red + "," + this.green + "," + this.blue
         };
 
         this.iot.setValue(this.di, this.name, obj);
