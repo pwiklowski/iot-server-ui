@@ -21,6 +21,9 @@ export class IotService{
     static GET_SCRIPTS = "GET_SCRIPTS";
     static SET_VALUE = "SET_VALUE";
 
+    static EventDeviceListUpdate = "EventDeviceListUpdate";
+    static EventValueUpdate = "EventValueUpdate";
+
     subscriptions = new Map<number, Subscription>();
     subscriptionId = 0;
 
@@ -60,23 +63,29 @@ export class IotService{
     }
     
 
-    private onMessage(event){
-        let data = JSON.parse(event.data);
-        let method = data.method;
+    private onMessage(e){
+        let data = JSON.parse(e.data);
+        let event = data.event;
         let mid = data.mid; 
 
         let callback = this.callbacks[mid];
 
         if (callback !== undefined){
             callback(data.payload);
-
             delete this.callbacks[mid];
         }else{
-            //TODO: add checking params and call only callbacs intreseted in specific resources
             for(let sub in this.subscriptions){
                 let s = this.subscriptions[sub];
-                if (s.event == method)
-                    s.callback(data.payload);
+
+                if (s.event == event){
+                    if (event == IotService.EventValueUpdate){
+                        if(s.params.di == data.payload.di && s.params.resource == data.payload.resource){
+                            s.callback(data.payload);
+                        }
+                    }else{
+                        s.callback(data.payload);
+                    }
+                }
             }
         }
 

@@ -32,19 +32,18 @@ export class VariableColourRgbComponent extends VariableComponent {
 
     constructor(private iot: IotService){
         super();
-        iot.onConnected(()=>{
-            this.sub = iot.subscribe("VALUE", "", (data)=>{
-                if (data.resource == this.name){
-                    this.setValues(data.value);
-                }
-            });
-        });
     }
 
     init(di, name, value){
         this.di = di;
         this.name = name;
         this.setValues(value);
+
+        this.iot.onConnected(()=>{
+            this.sub = this.iot.subscribe("EventValueUpdate", {di: this.di, resource: this.name }, (data)=>{
+                this.setValues(data.value);
+            });
+        });
     }
 
     setValues(value){

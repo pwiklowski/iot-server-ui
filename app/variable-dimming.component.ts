@@ -28,13 +28,6 @@ export class VariableLightDimmingComponent extends VariableComponent{
     constructor(private iot: IotService){
         super();
 
-        iot.onConnected(()=>{
-            this.sub = iot.subscribe("VALUE", "", (data)=>{
-                if (data.resource == this.name){ //TODO: move it to iot.service -> do not trigger callaback if not needed
-                    this.value = data.value["dimmingSetting"];
-                }
-            });
-        });
     }
 
     init(di, name, value){
@@ -43,6 +36,12 @@ export class VariableLightDimmingComponent extends VariableComponent{
         this.value = value["dimmingSetting"];
         this.min = value["range"].split(",")[0];
         this.max = value["range"].split(",")[1];
+
+        this.iot.onConnected(()=>{
+            this.sub = this.iot.subscribe("EventValueUpdate", {di: this.di, resource: this.name }, (data)=>{
+                this.value = data.value["dimmingSetting"];
+            });
+        });
     }
 
     onChange(value){
