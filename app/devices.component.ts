@@ -10,7 +10,7 @@ import { VariableGenericComponent } from './variable-generic.component';
 import { VariableLightDimmingComponent } from './variable-dimming.component';
 import { VariableColourRgbComponent } from './variable-rgb.component';
 
-
+import { IotService } from './iot.service';
 import { MapToIterable } from './pipes';
 
 
@@ -29,33 +29,25 @@ export class DevicesComponent {
     container: ViewContainerRef;
     variablesComponents = {};
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver,
-                private http: Http){
+    constructor(private componentFactoryResolver: ComponentFactoryResolver, private http: Http, private iot: IotService){
+
     }
 
     ngOnInit() {
-        this.getValues(this.id);
-    }
+        this.iot.onConnected(()=>{
+            this.iot.getDeviceResources(this.id, (payload)=>{
+                this.variables = payload;
+                payload.forEach(v => {
+                    let factory = this.componentFactoryResolver.resolveComponentFactory(
+                        this.variableComponentFactory(v.values["rt"]));
 
+                    let c = this.container.createComponent(factory);  
+                    (<any>c.instance).init(this.id, v.name, v.values);
 
-    getValues(uuid: string){
-        this.http.get("/iot/values/"+uuid).toPromise().then(res => {
-            this.variables = res.json();
-
-            this.variables.forEach(v => {
-                let factory = this.componentFactoryResolver.resolveComponentFactory(
-                    this.variableComponentFactory(v.values["rt"]));
-
-                let c = this.container.createComponent(factory);  
-                (<any>c.instance).init(this.id, v.name, v.values);
-
-                this.variablesComponents[v.name] = c;
+                    this.variablesComponents[v.name] = c;
+                });
             });
-            
-        }).catch(err => {
-            console.error(err);
         });
-
     }
 
     variableComponentFactory(rt) : any{

@@ -19,6 +19,7 @@ class Subscription{
 export class IotService{
 
     static RequestGetDevices = "RequestGetDevices";
+    static RequestGetDeviceResources = "RequestGetDeviceResources";
     static RequestSetValue = "RequestSetValue";
 
     static EventDeviceListUpdate = "EventDeviceListUpdate";
@@ -93,7 +94,15 @@ export class IotService{
     }
 
     getDevices(callback){
-        this.send({"request": IotService.ReqestGetDevices}, callback);
+        this.send({"request": IotService.RequestGetDevices}, callback);
+    }
+
+    getDeviceResources(uuid, callback){
+        this.send({
+            "request": IotService.RequestGetDeviceResources,
+            "uuid" : uuid
+        }, callback);
+    }
     }
 
     setValue(di, variable, value){
