@@ -18,7 +18,7 @@ class Subscription{
 @Injectable()
 export class IotService{
 
-    static ReqestGetDevices = "ReqestGetDevices";
+    static RequestGetDevices = "RequestGetDevices";
     static RequestSetValue = "RequestSetValue";
 
     static EventDeviceListUpdate = "EventDeviceListUpdate";
