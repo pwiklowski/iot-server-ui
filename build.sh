@@ -2,7 +2,7 @@
 npm run build-prod
 
 #gobackend
-#go build backend.go
+go build backend.go
 
 #iotserver
 
