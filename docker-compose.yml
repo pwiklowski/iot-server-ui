@@ -1,7 +1,25 @@
-mongo:  
-  image: mvertes/alpine-mongo:latest
-  volumes:
-    - /home/pawwik/dev/iot-webui-2/mydatabase:/data/db
-  ports:
-    - "27017:27017"
-  command: mongod --smallfiles
+version: '2'
+
+services:
+  mongo:  
+    image: mvertes/alpine-mongo:latest
+    volumes:
+      - /home/pawwik/dev/iot-webui-2/mydatabase:/data/db
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles
+
+  dbbackend:
+    build:
+      context: .
+      dockerfile: Dockerfile-gobackend
+
+  iotserver:
+    build:
+      context: .
+      dockerfile: Dockerfile-iot-server
+
+  webui:
+    build:
+      context: .
+      dockerfile: Dockerfile-webui

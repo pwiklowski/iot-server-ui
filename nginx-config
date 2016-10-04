@@ -10,17 +10,17 @@ server {
 
 	server_name _;
 
+
+	location /iot/ {
+		proxy_pass http://iotserver:7000/;
+	}
+	location /api/ {
+		proxy_pass http://dbbackend:7001/;
+	}
 	location /ws/ {
-		proxy_pass http://127.0.0.1:7002/;
+		proxy_pass http://iotserver:7002/;
         	proxy_http_version 1.1;
         	proxy_set_header Upgrade $http_upgrade;
         	proxy_set_header Connection "upgrade";
-	}
-
-	location /iot/ {
-		proxy_pass http://127.0.0.1:7000/;
-	}
-	location /api/ {
-		proxy_pass http://127.0.0.1:8001/;
 	}
 }

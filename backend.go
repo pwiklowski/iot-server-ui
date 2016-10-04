@@ -29,7 +29,7 @@ type Script struct {
 }
 
 func main() {
-	session, err := mgo.Dial("172.17.0.2:27017")
+	session, err := mgo.Dial("mongo:27017")
 	if err != nil {
 		panic(err)
 	}
@@ -208,5 +208,5 @@ func main() {
 
 	})
 
-	api.Listen("0.0.0.0:8001")
+	api.Listen("0.0.0.0:7001")
 }
