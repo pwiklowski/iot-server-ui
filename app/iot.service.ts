@@ -37,7 +37,7 @@ export class IotService{
     callbacks = {};
 
     constructor() {
-        this.socket = new WebSocket("ws://192.168.1.4:7002/");
+        this.socket = new WebSocket("ws://" + location.host + "/ws/");
         this.socket.onmessage = (e) => { this.onMessage(e);} ;
 
         this.socket.onopen = (e)=> {
