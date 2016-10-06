@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, ApplicationRef, Injector,
-         ComponentRef, DynamicComponentLoader,ComponentFactoryResolver,
+         ComponentRef, ComponentFactoryResolver,
          ViewContainerRef } from '@angular/core';
 
 import { ClassUtils } from './class.utils';

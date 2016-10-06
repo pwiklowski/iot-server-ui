@@ -14,7 +14,6 @@ import {Observable} from 'rxjs/Rx';
 @Component({
     selector: '[script]',
     templateUrl: "templates/script.template.html",
-    directives: [DevicePickerComponent, CodeEditorDirective, EventEditorDirective]
 })
 export class ScriptComponent {
     onClose = undefined;

@@ -1,21 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgClass} from '@angular/common';
 import { Device } from './models.ts';
-import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizationService, SafeHtml } from '@angular/platform-browser';
 
 
-@Pipe({
-    name: 'sanitizeHtml'
-})
-class SanitizeHtml implements PipeTransform  {
-
-   constructor(private _sanitizer: DomSanitizationService){}  
-
-   transform(v: string) : SafeHtml {
-      return this._sanitizer.bypassSecurityTrustHtml(v); 
-   } 
-} 
 
 
 
@@ -53,8 +39,6 @@ class SanitizeHtml implements PipeTransform  {
       .tag-delete-container { position:relative; }
       .tag-delete { position:absolute; right:10px; }
       `],
-  directives: [NgClass, CORE_DIRECTIVES, FORM_DIRECTIVES],
-  pipes: [SanitizeHtml],
   encapsulation: ViewEncapsulation.None  // Enable dynamic HTML styles
 })
 export class DevicePickerComponent{

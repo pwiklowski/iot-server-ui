@@ -3,7 +3,7 @@ import 'rxjs/add/operator/toPromise';
 import { Device, DeviceVariable } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, ViewChild, AfterViewInit, ApplicationRef, Injector,
-         ComponentRef, DynamicComponentLoader,ComponentFactoryResolver,
+         ComponentRef, ComponentFactoryResolver,
          ViewContainerRef } from '@angular/core';
 
 import { VariableGenericComponent } from './variable-generic.component';
@@ -17,8 +17,6 @@ import { MapToIterable } from './pipes';
 @Component({
     selector: '[window]',
     templateUrl: "templates/devices.template.html",
-    pipes: [MapToIterable],
-    directives: []
 })
 export class DevicesComponent {
     id: string;
