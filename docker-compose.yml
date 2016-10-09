@@ -10,6 +10,8 @@ services:
     command: mongod --smallfiles
 
   dbbackend:
+    ports:
+      - "7001:7001"
     build:
       context: .
       dockerfile: Dockerfile-gobackend
@@ -20,6 +22,8 @@ services:
       dockerfile: Dockerfile-iot-server
 
   webui:
+    ports:
+      - "7000:7000"
     build:
       context: .
       dockerfile: Dockerfile-webui

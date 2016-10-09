@@ -6,4 +6,4 @@ COPY dist /webui/dist/
 COPY static /webui/static/
 COPY templates /webui/templates
 
-EXPOSE 9000
+EXPOSE 7000

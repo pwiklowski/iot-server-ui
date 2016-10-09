@@ -1,4 +1,4 @@
 FROM ubuntu:14.04
 ADD backend /backend
-EXPOSE 8001
+EXPOSE 7001
 ENTRYPOINT ["/backend"]
