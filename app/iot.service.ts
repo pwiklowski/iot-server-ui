@@ -37,16 +37,26 @@ export class IotService{
     callbacks = {};
 
     constructor() {
+        this.connect();
+    }
+
+    connect(){
         this.socket = new WebSocket("ws://" + location.host + "/ws/");
         this.socket.onmessage = (e) => { this.onMessage(e);} ;
 
         this.socket.onopen = (e)=> {
+            console.log('Connected!');
             this.onConnectedCallbacks.forEach((callback)=>{
                 callback();
             });
-
             this.onConnectedCallbacks = [];
         };
+
+        this.socket.onclose = (e) =>{
+            console.log('Disconnected! reconnect!');
+            setTimeout( ()=> this.connect(), 1000);
+        };
+
     }
 
     private send(request, callback=undefined){
