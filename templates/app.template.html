@@ -7,11 +7,12 @@
 
 
 <div id="iot-devices" class="iot-menu-items">
-    <b>Devices:</b>
+    <b>Devices:</b><br>
+    <input placeholder="Filter devices" class="iot-menu-items-search"/>
     <template ngFor let-device [ngForOf]="devices">
         <a href="/#/device/{{device.id}}" (click)="attachDevice(device);slideDevices(false)">
             <div class="iot-menu-item">
-                {{ device.name}}<br>
+                <span class="iot-name">{{ device.name}}</span><br>
                 <span class="iot-id">{{ device.id }}</span>
             </div>
         </a>
