@@ -5,6 +5,12 @@ npm run build-prod
 go build backend.go
 
 #iotserver
+rm tmp/iot_server -rf
+rm tmp/liboic -rf
+rm tmp/libcoap -rf
+rm tmp/std -rf
+rm tmp/rfm69-driver -rf
+
 
 git clone git@bitbucket.org:pawwik/iot_server.git -b oic tmp/iot_server
 git clone git@bitbucket.org:pawwik/liboic.git tmp/liboic
