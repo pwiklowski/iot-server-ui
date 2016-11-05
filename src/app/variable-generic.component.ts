@@ -3,10 +3,7 @@ import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Device, DeviceVariable } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
-import { MapToIterable } from './pipes';
 import { VariableComponent } from './variable.component';
-
-
 @Component({
     selector: '[variable]',
     template: `

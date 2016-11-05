@@ -43,7 +43,7 @@ class SanitizeHtml implements PipeTransform  {
 } 
 
 @NgModule({
-  imports: [ BrowserModule, FormsModule, HttpModule],
+  imports: [ BrowserModule, FormsModule,MaterialModule.forRoot(), HttpModule],
   declarations: [
       AppComponent,
       DevicePickerComponent,
@@ -59,6 +59,7 @@ class SanitizeHtml implements PipeTransform  {
       CodeEditorDirective,
       EventEditorDirective
   ],
+
   entryComponents: [
       DevicesComponent,
       ScriptComponent,
