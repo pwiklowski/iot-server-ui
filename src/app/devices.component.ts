@@ -16,7 +16,7 @@ import { MapToIterable } from './pipes';
 
 @Component({
     selector: '[window]',
-    templateUrl: "templates/devices.template.html",
+    templateUrl: "devices.template.html",
 })
 export class DevicesComponent {
     id: string;

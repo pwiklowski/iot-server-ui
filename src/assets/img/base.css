@@ -335,8 +335,8 @@ input[type=range]::-moz-range-track {
 }
 input[type=range]::-moz-range-thumb {
     border: none;
-    height: 56px;
-    width: 56px;
+    height: 20px;
+    width: 20px;
     border-radius: 50%;
     background: goldenrod;
 }

@@ -21,6 +21,7 @@ export class IotService{
     static RequestGetDevices = "RequestGetDevices";
     static RequestGetDeviceResources = "RequestGetDeviceResources";
     static RequestSetValue = "RequestSetValue";
+    static RequestRunScript= "RequestRunScript";
 
     static EventDeviceListUpdate = "EventDeviceListUpdate";
     static EventValueUpdate = "EventValueUpdate";
@@ -41,7 +42,7 @@ export class IotService{
     }
 
     connect(){
-        this.socket = new WebSocket("ws://" + location.host + "/ws/");
+        this.socket = new WebSocket("ws://127.0.0.1:7002/");
         this.socket.onmessage = (e) => { this.onMessage(e);} ;
 
         this.socket.onopen = (e)=> {
@@ -113,6 +114,14 @@ export class IotService{
             "uuid" : uuid
         }, callback);
     }
+
+    runScript(uuid, obj){
+        this.send({
+            "request": IotService.RequestRunScript,
+            "uuid": uuid,
+            "object" : obj
+        
+        });
     }
 
     setValue(di, variable, value){

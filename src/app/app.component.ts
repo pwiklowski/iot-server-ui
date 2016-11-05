@@ -13,22 +13,14 @@ import { DevicesComponent} from './devices.component';
 import { ScriptComponent} from './script.component';
 import { DevicePickerComponent } from './devicepicker.component';
 
-import { EventEditorDirective } from './eventeditor.directive';
-import { CodeEditorDirective } from './codeeditor.component';
 
-import { VariableGenericComponent } from './variable-generic.component';
-import { VariableLightDimmingComponent } from './variable-dimming.component';
-import { VariableColourRgbComponent } from './variable-rgb.component';
+
 
 import { IotService } from './iot.service';
-import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { MapToIterable } from './pipes';
-
 
 @Component({
     selector: '[application]',
-    templateUrl: 'templates/app.template.html',
+    templateUrl: 'app.template.html',
 })
 export class AppComponent {
     devices: Array<Device> = new Array<Device>();
@@ -37,6 +29,7 @@ export class AppComponent {
     showDevice: boolean = false;
     panelView;
     devicesView;
+    
     scriptsView;
 
 
@@ -159,44 +152,3 @@ export class AppComponent {
     }
 
 }
-
-@Pipe({
-    name: 'sanitizeHtml'
-})
-class SanitizeHtml implements PipeTransform  {
-
-   constructor(private _sanitizer: DomSanitizer){}  
-
-   transform(v: string) : SafeHtml {
-      return this._sanitizer.bypassSecurityTrustHtml(v); 
-   } 
-} 
-
-@NgModule({
-  imports: [ BrowserModule, FormsModule, HttpModule],
-  declarations: [
-      AppComponent,
-      DevicePickerComponent,
-      DevicesComponent,
-      ScriptComponent,
-      SanitizeHtml,
-      MapToIterable,
-      VariableGenericComponent,
-      VariableLightDimmingComponent,
-      VariableColourRgbComponent,
-      WMDevicesComponent,
-      WMScriptsComponent,
-      CodeEditorDirective,
-      EventEditorDirective
-  ],
-  entryComponents: [
-      DevicesComponent,
-      ScriptComponent,
-      VariableGenericComponent,
-      VariableLightDimmingComponent,
-      VariableColourRgbComponent
-  ],
-  bootstrap: [ AppComponent ],
-  providers: [IotService],
-})
-export class AppModule {}

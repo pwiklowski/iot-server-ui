@@ -8,12 +8,12 @@ import { DevicePickerComponent } from './devicepicker.component';
 import { EventEditorDirective } from './eventeditor.directive';
 import { CodeEditorDirective } from './codeeditor.component';
 import {Observable} from 'rxjs/Rx';
-
+import { IotService } from './iot.service';
 
 
 @Component({
     selector: '[script]',
-    templateUrl: "templates/script.template.html",
+    templateUrl: "script.template.html",
 })
 export class ScriptComponent {
     onClose = undefined;
@@ -32,7 +32,7 @@ export class ScriptComponent {
     timer;
     timerSubscription;
 
-    constructor(private http: Http){ }
+    constructor(private http: Http, private iot: IotService){ }
 
     ngOnInit() {
         this.getScript(this.id, null);
@@ -141,13 +141,7 @@ export class ScriptComponent {
 
     runScript(){
         let content = this.eventEditor.getValue();
-
-        this.http.post("/iot/script/" + this.id + "/run", content).toPromise().then(res => {
-
-        }).catch(err => {
-            console.error(err);
-        });
-
+        this.iot.runScript(this.id, content);
     }
     
     getLastLogTimeStamp() : number{
