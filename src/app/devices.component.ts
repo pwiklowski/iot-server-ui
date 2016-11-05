@@ -9,6 +9,7 @@ import { Component, ViewChild, AfterViewInit, ApplicationRef, Injector,
 import { VariableGenericComponent } from './variable-generic.component';
 import { VariableLightDimmingComponent } from './variable-dimming.component';
 import { VariableColourRgbComponent } from './variable-rgb.component';
+import { VariableBinnaryComponent } from './variable-binnary.component';
 
 import { IotService } from './iot.service';
 import { MapToIterable } from './pipes';
@@ -53,6 +54,8 @@ export class DevicesComponent {
             return VariableLightDimmingComponent;
         }else if(rt === "oic.r.colour.rgb"){
             return VariableColourRgbComponent;
+        }else if(rt === "oic.r.switch.binary"){
+            return VariableBinnaryComponent;
         }else{
             return VariableGenericComponent;
         }

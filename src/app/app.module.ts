@@ -54,6 +54,7 @@ class SanitizeHtml implements PipeTransform  {
       VariableGenericComponent,
       VariableLightDimmingComponent,
       VariableColourRgbComponent,
+      VariableBinnaryComponent,
       WMDevicesComponent,
       WMScriptsComponent,
       CodeEditorDirective,
@@ -65,6 +66,7 @@ class SanitizeHtml implements PipeTransform  {
       ScriptComponent,
       VariableGenericComponent,
       VariableLightDimmingComponent,
+      VariableBinnaryComponent,
       VariableColourRgbComponent
   ],
   bootstrap: [ AppComponent ],
