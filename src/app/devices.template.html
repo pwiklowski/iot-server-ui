@@ -1,10 +1,20 @@
-<div class="iot-device wm-box">
+<mdl-card class="iot-device" mdl-shadow="2" mdl-card-expand>
+    <mdl-card-menu>
+      <button mdl-button mdl-button-type="icon" mdl-ripple (click)="close()">
+        <mdl-icon>close</mdl-icon>
+      </button>
+    </mdl-card-menu>
+    <mdl-card-title>
+      <h2 mdl-card-title-text>{{device.name}}</h2>
+    </mdl-card-title>
+    <mdl-card-supporting-text>
+        {{ device.id}}
+    </mdl-card-supporting-text>
+    <mdl-card-supporting-text  mdl-card-border>
+      <div #container > </div>
+    </mdl-card-supporting-text>
+    <div logs [deviceId]="device.id">
+    </div>
+</mdl-card>
 
-    <div (click)="close()">Close</div>
 
-    <h3 class="">{{ device.name }}</h3>
-
-    {{ device.id}}<br><br>
-
-    <div #container> </div>
-</div>

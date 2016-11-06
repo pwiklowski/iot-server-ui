@@ -2,9 +2,7 @@ import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Device, DeviceVariable } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
-import { Component, ViewChild, AfterViewInit, ApplicationRef, Injector,
-         ComponentRef, ComponentFactoryResolver,
-         ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ApplicationRef, Injector, ComponentRef, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 
 import { VariableGenericComponent } from './variable-generic.component';
 import { VariableLightDimmingComponent } from './variable-dimming.component';
@@ -18,6 +16,12 @@ import { MapToIterable } from './pipes';
 @Component({
     selector: '[window]',
     templateUrl: "devices.template.html",
+    styles:[`
+    .iot-device{
+      width: 600px;
+      height: 100%;
+    }
+    `]
 })
 export class DevicesComponent {
     id: string;
@@ -27,6 +31,10 @@ export class DevicesComponent {
     @ViewChild('container', { read: ViewContainerRef })
     container: ViewContainerRef;
     variablesComponents = {};
+
+
+    sub;
+
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver, private http: Http, private iot: IotService){
 
@@ -63,6 +71,7 @@ export class DevicesComponent {
 
     close(){
         if (this.onClose) this.onClose();
+        console.log("close");
     }
 
 }
