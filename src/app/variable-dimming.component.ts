@@ -18,8 +18,7 @@ import {IotService} from './iot.service';
           type="range"
           min="{{min}}"
           max="{{max}}"
-          (slide)="onSlide($event)"
-          (click)="onClick($event)">
+          (ngModelChange)="updateValue($event)">
         </mdl-slider>
     </div>`
 })
@@ -55,27 +54,9 @@ export class VariableLightDimmingComponent extends VariableComponent {
     }, 10); 
   }
   
-  onSlide(event){
-    this.updateValue(this.calculateValue(event.center.x));
-  }
- 
-  //very ugly hack to trigger iot.setValue only when user changed value, using ngModelChange will lead to endless loop of updates 
-  // onClick is called before value is updated and makes it useless
-  calculateValue(pos){
-    var offset = this.slider._sliderDimensions.left;
-    var size = this.slider._sliderDimensions.width;
-    var percent = this.slider.clamp((pos - offset) / size);
-    var exactValue = this.slider.calculateValue(percent);
-    return Math.round((exactValue - this.slider.min)  + this.slider.min);
-  }
-  
-  onClick(event){
-    this.updateValue(this.calculateValue(event.clientX));
-  }
-  
   updateValue(value){
     let obj = {
-      "dimmingSetting": value
+      "dimmingSetting": parseInt(value)
     };
     this.iot.setValue(this.di, this.name, obj);
   }

@@ -16,21 +16,18 @@ import {IotService} from './iot.service';
           min="0"
           max="255"
           [(ngModel)]="red" 
-          (slide)="onSlide(r, $event)"
-          (click)="onClick(r, $event)"> 
-        </mdl-slider><br>
+          (ngModelChange)="onChange(r, $event)"> 
+        </mdl-slider>
         Green:<br>
         <mdl-slider #g type="range" min="0" max="255"
           [(ngModel)]="green" 
-          (slide)="onSlide(g, $event)"
-          (click)="onClick(g, $event)"> 
-        </mdl-slider><br>
+          (ngModelChange)="onChange(g, $event)"> 
+        </mdl-slider>
         Blue:<br>
         <mdl-slider #b type="range" min="0" max="255"
           [(ngModel)]="blue" 
-          (slide)="onSlide(b, $event)"
-          (click)="onClick(b, $event)"> 
-        </mdl-slider><br>
+          (ngModelChange)="onChange(b, $event)">
+        </mdl-slider>
     </div>`})
 export class VariableColourRgbComponent extends VariableComponent {
   red : number = 0;
@@ -69,30 +66,12 @@ export class VariableColourRgbComponent extends VariableComponent {
     this.blue = parseInt(values[2]);
   }
   
-  onSlide(slider, event){
-    let v = this.calculateValue(slider, event.center.x);
+  onChange(slider, value){
+    let v = parseInt(value);
     if(slider === this.r) this.updateValue(v, this.green, this.blue);
     if(slider === this.g) this.updateValue(this.red, v, this.blue);
     if(slider === this.b) this.updateValue(this.red, this.green, v);
   }
- 
-  //very ugly hack to trigger iot.setValue only when user changed value, using ngModelChange will lead to endless loop of updates 
-  // onClick is called before value is updated and makes it useless
-  calculateValue(slider, pos){
-    var offset = slider._sliderDimensions.left;
-    var size = slider._sliderDimensions.width;
-    var percent = slider.clamp((pos - offset) / size);
-    var exactValue =  slider.calculateValue(percent);
-    return Math.round((exactValue - slider.min)  + slider.min);
-  }
-  
-  onClick(slider, event){
-    let v = this.calculateValue(slider, event.clientX);
-    if(slider === this.r) this.updateValue(v, this.green, this.blue);
-    if(slider === this.g) this.updateValue(this.red, v, this.blue);
-    if(slider === this.b) this.updateValue(this.red, this.green, v);
-  }
-
 
   updateValue(red, green, blue){
     let obj = {
