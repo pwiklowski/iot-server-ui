@@ -13,7 +13,7 @@ import {IotService} from './iot.service';
   template: `
     <div class="iot-resource">
       <b>{{name}}</b><br>
-      <md-slide-toggle [(ngModel)]="value" (change)="onChange($event)"></md-slide-toggle>
+      <mdl-switch [(ngModel)]="value" (change)="onChange($event)"></mdl-switch>
     </div>`
 })
 export class VariableBinnaryComponent extends VariableComponent {

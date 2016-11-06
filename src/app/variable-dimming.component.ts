@@ -12,15 +12,15 @@ import {IotService} from './iot.service';
   selector: '[variable]',
   template: `
     <div class="iot-resource">
-        <b>{{name}}</b><br>
-        <md-slider #slider
+        <b>{{name}}</b>{{rawValue}}<br>
+        <mdl-slider #slider
           [(ngModel)]="value" 
           type="range"
           min="{{min}}"
           max="{{max}}"
           (slide)="onSlide($event)"
           (click)="onClick($event)">
-        </md-slider>
+        </mdl-slider>
     </div>`
 })
 export class VariableLightDimmingComponent extends VariableComponent {

@@ -11,26 +11,26 @@ import {IotService} from './iot.service';
     <div class="iot-resource">
         <b>{{ name}}</b><br>
         Red:<br>
-        <md-slider #r 
+        <mdl-slider #r 
           type="range"
           min="0"
           max="255"
           [(ngModel)]="red" 
           (slide)="onSlide(r, $event)"
           (click)="onClick(r, $event)"> 
-        </md-slider><br>
+        </mdl-slider><br>
         Green:<br>
-        <md-slider #g type="range" min="0" max="255"
+        <mdl-slider #g type="range" min="0" max="255"
           [(ngModel)]="green" 
           (slide)="onSlide(g, $event)"
           (click)="onClick(g, $event)"> 
-        </md-slider><br>
+        </mdl-slider><br>
         Blue:<br>
-        <md-slider #b type="range" min="0" max="255"
+        <mdl-slider #b type="range" min="0" max="255"
           [(ngModel)]="blue" 
           (slide)="onSlide(b, $event)"
           (click)="onClick(b, $event)"> 
-        </md-slider><br>
+        </mdl-slider><br>
     </div>`})
 export class VariableColourRgbComponent extends VariableComponent {
   red : number = 0;

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from '@angular/material';
+import { MdlModule } from 'angular2-mdl';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
 import { ENV_PROVIDERS } from './environment';
@@ -43,7 +43,7 @@ class SanitizeHtml implements PipeTransform  {
 } 
 
 @NgModule({
-  imports: [ BrowserModule, FormsModule,MaterialModule.forRoot(), HttpModule],
+  imports: [ BrowserModule, FormsModule,MdlModule, HttpModule],
   declarations: [
       AppComponent,
       DevicePickerComponent,
