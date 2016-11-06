@@ -2,9 +2,6 @@ import { Component,ViewChild, ViewContainerRef, NgModule } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Device, Script } from './models.ts';
-import { BrowserModule} from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 
 import { WMScriptsComponent } from './wm-scripts.component';
@@ -19,7 +16,7 @@ import { DevicePickerComponent } from './devicepicker.component';
 import { IotService } from './iot.service';
 
 @Component({
-    selector: '[application]',
+    selector: 'application',
     templateUrl: 'app.template.html',
 })
 export class AppComponent {

@@ -42,14 +42,11 @@
   <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
 </head>
   <body >
-    <div id="app" application>
-    </div>
-
-  <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
-  <!-- Webpack Dev Server reload -->
-  <script src="/webpack-dev-server.js"></script>
-  <% } %>
-
-
+    <application id="app" >
+    </application>
+    <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
+    <!-- Webpack Dev Server reload -->
+    <script src="/webpack-dev-server.js"></script>
+    <% } %>
 </body>
 </html>
