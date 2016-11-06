@@ -9,7 +9,8 @@ import {IotService} from './iot.service';
 
 @Component({selector: '[variable]', template: `
     <div class="iot-resource">
-        <b>{{ name}}</b><br>
+        <b>{{ name}}</b>
+        <div class="iot-device-raw-value">{{rawValue}}</div>
         Red:<br>
         <mdl-slider #r 
           type="range"
@@ -30,6 +31,7 @@ import {IotService} from './iot.service';
         </mdl-slider>
     </div>`})
 export class VariableColourRgbComponent extends VariableComponent {
+  rawValue: string;
   red : number = 0;
   green : number = 0;
   blue : number = 0;
@@ -47,6 +49,7 @@ export class VariableColourRgbComponent extends VariableComponent {
     this.iot.onConnected(() => {
       this.sub = this.iot.subscribe("EventValueUpdate", { di: this.di, resource: this.name }, (data) => {
         this.setValues(data.value);
+        this.rawValue = JSON.stringify(data.value);
       });
     });
   }
@@ -54,6 +57,7 @@ export class VariableColourRgbComponent extends VariableComponent {
   init(di, name, value) {
     this.di = di;
     this.name = name;
+    this.rawValue = JSON.stringify(value);
     setTimeout(()=>{
       this.setValues(value);
     }, 100); 

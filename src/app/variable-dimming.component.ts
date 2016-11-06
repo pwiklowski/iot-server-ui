@@ -12,7 +12,8 @@ import {IotService} from './iot.service';
   selector: '[variable]',
   template: `
     <div class="iot-resource">
-        <b>{{name}}</b>{{rawValue}}<br>
+        <b>{{name}}</b>
+        <div class="iot-device-raw-value">{{rawValue}}</div>
         <mdl-slider #slider
           [(ngModel)]="value" 
           type="range"
@@ -23,6 +24,7 @@ import {IotService} from './iot.service';
     </div>`
 })
 export class VariableLightDimmingComponent extends VariableComponent {
+  rawValue: string;
   value : number = 0;
   max : number;
   min : number;
@@ -39,11 +41,13 @@ export class VariableLightDimmingComponent extends VariableComponent {
     this.iot.onConnected(() => {
       this.sub = this.iot.subscribe("EventValueUpdate", { di: this.di, resource: this.name }, (data) => {
         this.value = data.value["dimmingSetting"];
+        this.rawValue = JSON.stringify(data.value);
       });
     });
   }
 
   init(di, name, value) {
+    this.rawValue = JSON.stringify(value);
     this.name = name;
     this.di = di;
     this.min = value["range"].split(",")[0];
