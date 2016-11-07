@@ -74,6 +74,23 @@ export class IotService{
         this.socket.send(JSON.stringify(message));
     }
     
+    private filterEvent(filter, event){
+        if (filter !== undefined){
+            for (var prop in filter) {
+                console.log("check ", prop);
+                if (!filter.hasOwnProperty(prop)) {
+                    console.log("has own ", prop);
+                    continue;
+                }
+                console.log(filter[prop], event[prop]);
+                if ((event[prop] !==undefined) && filter[prop] !== event[prop]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     private onMessage(e){
         let data = JSON.parse(e.data);
@@ -91,7 +108,7 @@ export class IotService{
 
                 if (s.event == event){
                     if (event == IotService.EventValueUpdate){
-                        if(s.params.di == data.payload.di && s.params.resource == data.payload.resource){
+                        if (this.filterEvent(s.params,data.payload)){
                             s.callback(data.payload);
                         }
                     }else{
