@@ -29,6 +29,7 @@ import { MapToIterable } from './pipes';
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { LogsComponent } from './log.component';
 
 @Pipe({
     name: 'sanitizeHtml'
@@ -58,7 +59,8 @@ class SanitizeHtml implements PipeTransform  {
       WMDevicesComponent,
       WMScriptsComponent,
       CodeEditorDirective,
-      EventEditorDirective
+      EventEditorDirective,
+      LogsComponent
   ],
 
   entryComponents: [
@@ -70,7 +72,7 @@ class SanitizeHtml implements PipeTransform  {
       VariableColourRgbComponent
   ],
   bootstrap: [ AppComponent ],
-  providers: [IotService],
+  providers: [ENV_PROVIDERS, IotService],
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef) {}
