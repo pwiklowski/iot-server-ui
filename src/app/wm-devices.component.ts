@@ -8,7 +8,7 @@ import { WMComponent } from './wm.component';
 
 @Component({
     selector: '[wmDevices]',
-    template: `<div class="iot-script-container" #devContainer> </div>`,
+    template: `<div class="iot-device-container" #devContainer> </div>`,
 })
 export class WMDevicesComponent extends WMComponent {
 

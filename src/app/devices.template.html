@@ -7,11 +7,12 @@
     <mdl-card-title>
       <h2 mdl-card-title-text>{{device.name}}</h2>
     </mdl-card-title>
+
     <mdl-card-supporting-text>
         {{ device.id}}
     </mdl-card-supporting-text>
-    <mdl-card-supporting-text  mdl-card-border>
-      <div #container > </div>
+    <mdl-card-supporting-text class="iot-device-resources" mdl-card-border>
+      <div #container> </div>
     </mdl-card-supporting-text>
     <div logs [deviceId]="device.id">
     </div>

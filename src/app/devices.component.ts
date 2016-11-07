@@ -18,8 +18,12 @@ import { MapToIterable } from './pipes';
     templateUrl: "devices.template.html",
     styles:[`
     .iot-device{
-      width: 600px;
+      width: 100%;
       height: 100%;
+    }
+    .iot-device-resources{
+        max-height: 50%;
+
     }
     `]
 })

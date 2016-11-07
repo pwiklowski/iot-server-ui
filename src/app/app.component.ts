@@ -18,6 +18,11 @@ import { IotService } from './iot.service';
 @Component({
     selector: 'application',
     templateUrl: 'app.template.html',
+    styles:[`
+    #iot-device-manager{
+        padding:20px;
+    }
+    `]
 })
 export class AppComponent {
     devices: Array<Device> = new Array<Device>();
