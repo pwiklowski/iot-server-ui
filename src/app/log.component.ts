@@ -1,13 +1,15 @@
-import {Component, Input} from '@angular/core';
+import {Component, ViewChild, ViewContainerRef, Input} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {IotService} from './iot.service';
 
 @Component({
   selector: '[logs]',
   templateUrl: `
-    <div class="iot-device-logs">
-      <div *ngFor="let log of logs">
-        {{log}}
+    <div #logsContainer class="iot-device-logs">
+      <div #logsList>
+        <div *ngFor="let log of logs">
+          {{log}}
+        </div>
       </div>
 
     </div>  
@@ -15,7 +17,7 @@ import {IotService} from './iot.service';
   styles:[`
     .iot-device-logs{
       height: 200px;
-      overflow: scroll;
+      overflow-y: scroll;
       display: flex;
       flex-flow: column;
       font-size: 11px;
@@ -28,15 +30,24 @@ export class LogsComponent {
   sub : any;
   logs = [];
   @Input() deviceId: string;
+  @ViewChild('logsContainer', { read: ViewContainerRef }) logsContainer: ViewContainerRef;
+  @ViewChild('logsList', { read: ViewContainerRef }) logsList: ViewContainerRef;
 
   constructor(private iot : IotService) {}
 
   ngOnInit() {
     this.sub = this.iot.subscribe("EventValueUpdate", { di: this.deviceId }, (data) => {
-      console.log("[LOG]" + data.resource, data.value);
-      this.logs.push("[LOG] " + data.resource, JSON.stringify(data.value));
+      let today = new Date();
+      let timestamp = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      this.logs.push("["+timestamp+"] " + data.resource + " " + JSON.stringify(data.value));
+
+      this.logsContainer.element.nativeElement.scrollTop = this.logsList.element.nativeElement.clientHeight + 200;
     });
   }
 
   ngOnDestroy() {}
+
+  clearLogs(){
+    this.logs = [];
+  }
 }

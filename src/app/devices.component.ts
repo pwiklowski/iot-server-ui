@@ -19,11 +19,6 @@ import { MapToIterable } from './pipes';
     styles:[`
     .iot-device{
       width: 100%;
-      height: 100%;
-    }
-    .iot-device-resources{
-        max-height: 50%;
-
     }
     `]
 })
@@ -34,6 +29,7 @@ export class DevicesComponent {
     onClose = undefined;
     @ViewChild('container', { read: ViewContainerRef })
     container: ViewContainerRef;
+
     variablesComponents = {};
 
 

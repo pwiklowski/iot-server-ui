@@ -139,7 +139,7 @@ export class AppComponent {
 
     redraw(){
         let width = this.panelView.offsetWidth;
-        let devicesWidth = this.showDevice ? (this.showScript ? 400 : 700 ) : 0;
+        let devicesWidth = this.showDevice ? (this.showScript ? 500 : 700 ) : 0;
         let scriptsWidth = this.showScript ? (width - devicesWidth) : 0;
 
         if (scriptsWidth == 0){
