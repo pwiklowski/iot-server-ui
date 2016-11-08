@@ -8,7 +8,7 @@ import { WMComponent } from './wm.component';
 
 @Component({
     selector: '[wm]',
-    template: `<div (window:resize)="redraw()" #container> </div>`,
+    template: `<div #container> </div>`,
 })
 export class WMScriptsComponent extends WMComponent{
     @ViewChild('container', { read: ViewContainerRef })
@@ -24,10 +24,4 @@ export class WMScriptsComponent extends WMComponent{
         this.panel = document.getElementById("iot-content");
     }
 
-    redraw(){
-        console.log("redraw " + this.customWindowClass);;
-        let MARGIN = 15;
-        if (this.window)
-            this.window.style.height = (this.panel.offsetHeight - 4*MARGIN)+ "px";
-    }
 }

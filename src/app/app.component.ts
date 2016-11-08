@@ -22,6 +22,9 @@ import { IotService } from './iot.service';
     #iot-device-manager{
         padding:20px;
     }
+    #iot-script-manager{
+        padding:20px;
+    }
     `]
 })
 export class AppComponent {

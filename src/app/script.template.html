@@ -1,29 +1,42 @@
-<div class="iot-script wm-box">    
+<mdl-card class="iot-script" mdl-shadow="2" mdl-card-expand>
+  <mdl-card-menu>
+    <button mdl-button mdl-button-type="icon" mdl-ripple (click)="close()">
+        <mdl-icon>close</mdl-icon>
+      </button>
+  </mdl-card-menu>
+  <mdl-card-title>
+    <mdl-textfield class="iot-script-name" type="text" [(ngModel)]="script.Name" placeholder="Enter script name" (keydown.enter)="saveName()" (blur)="saveName()" autofocus>
+    </mdl-textfield>
+  </mdl-card-title>
 
-    <div (click)="close()">Close</div>
-    <input class="iot-script-name" [(ngModel)]="script.Name" (keydown.enter)="saveName()"   ><br>
-
+  <mdl-card-supporting-text>
     <h3>Select device:</h3>
     <device-picker #devicePicker></device-picker>
-
     <select [ngModel]="scriptVersion.Version" #versionValue (change)="getScript(id, versionValue.value)">
-        <option *ngFor="let version of versions" value="{{version}}">{{version}}</option>
+          <option *ngFor="let version of versions" value="{{version}}">{{version}}</option>
     </select>
 
-    
     <textarea eventeditor></textarea><br>
 
     <textarea #code codeeditor></textarea>
-    <button (click)="saveScript()">Save</button>
-    <button (click)="runScript()">Run</button>
 
     <div id="iot-logs">
-        <div class="iot-log" *ngFor="let log of logs ">
-            <div class="iot-log-timestamp">{{log.Timestamp}}</div>
-            <div class="iot-log-item">{{log.Content}}</div>
+      <div class="iot-log" *ngFor="let log of logs ">
+        <div class="iot-log-timestamp">{{log.Timestamp}}</div>
+        <div class="iot-log-item">{{log.Content}}</div>
 
-        </div>
+      </div>
 
     </div>
 
-</div>
+  </mdl-card-supporting-text>
+  <mdl-card-actions mdl-card-border>
+    <button mdl-button mdl-colored mdl-ripple (click)="saveScript()">
+        Save
+      </button>
+    <button mdl-button mdl-colored mdl-ripple (click)="runScript()">
+        Run
+      </button>
+  </mdl-card-actions>
+
+</mdl-card>
