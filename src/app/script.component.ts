@@ -38,7 +38,9 @@ export class ScriptComponent {
     constructor(private http: Http, private iot: IotService){ }
 
     ngOnInit() {
-        this.iot.subscribeScript(this.id);
+        this.iot.onConnected(()=>{
+            this.iot.subscribeScript(this.id);
+        });
         this.getScript(this.id, null);
         this.getScriptVersions(this.id);
     }
