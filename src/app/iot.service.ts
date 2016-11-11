@@ -32,6 +32,8 @@ export class IotService{
     static EventDeviceListUpdate = "EventDeviceListUpdate";
     static EventValueUpdate = "EventValueUpdate";
 
+    static EventLog = "EventLog";
+
     subscriptions = new Map<number, Subscription>();
     subscriptionId = 0;
 
@@ -170,7 +172,7 @@ export class IotService{
         });
     }
 
-    subscribeScript(uuid, callback){
+    subscribeScript(uuid){
         this.send({
             "request": IotService.RequestSubscribeScript,
             "uuid" : uuid

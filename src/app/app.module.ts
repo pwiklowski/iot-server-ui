@@ -30,6 +30,7 @@ import { MapToIterable } from './pipes';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LogsComponent } from './log.component';
+import { ScriptLogsComponent } from './scriptlog.component';
 
 @Pipe({
     name: 'sanitizeHtml'
@@ -60,7 +61,8 @@ class SanitizeHtml implements PipeTransform  {
       WMScriptsComponent,
       CodeEditorDirective,
       EventEditorDirective,
-      LogsComponent
+      LogsComponent,
+      ScriptLogsComponent
   ],
 
   entryComponents: [

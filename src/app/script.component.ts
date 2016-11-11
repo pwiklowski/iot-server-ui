@@ -35,19 +35,12 @@ export class ScriptComponent {
     @ViewChild(EventEditorDirective) eventEditor: EventEditorDirective;
     @ViewChild('devicePicker') devicePicker; 
 
-    timer;
-
     constructor(private http: Http, private iot: IotService){ }
 
     ngOnInit() {
+        this.iot.subscribeScript(this.id);
         this.getScript(this.id, null);
         this.getScriptVersions(this.id);
-        this.devicePicker.selectionChanged = itemIds => {
-            console.log("data" + itemIds);
-            this.saveDevices(itemIds);
-        };
-
-        this.timer = Observable.timer(1000,1000);
     }
     ngAfterViewInit(){
         this.eventEditor.setValue(` { "source": "id", "resource": "res", "value" : {"val":4} } `);
@@ -76,6 +69,7 @@ export class ScriptComponent {
     
 
     ngOnDestroy() {
+        this.iot.unsubscribeScript(this.id);
     }
 
 
@@ -86,8 +80,6 @@ export class ScriptComponent {
             this.script = res.json();
             this.scriptVersion.Content = window.atob(res.json().Scripts[0].Content);
             this.scriptVersion.Version = res.json().Scripts[0].Version;
-            
-            this.devicePicker.setSelectedItems(res.json().DeviceUuid);
             this.codeEditor.setContent(this.scriptVersion.Content);
         }).catch(err => {
             console.error(err);
@@ -121,17 +113,9 @@ export class ScriptComponent {
     }
 
     runScript(){
-        let content = this.eventEditor.getValue();
+        let content = JSON.parse(this.eventEditor.getValue());
         this.iot.runScript(this.id, content);
     }
-    
-    getLastLogTimeStamp() : number{
-        if(this.logs.length > 0)
-            return this.logs[this.logs.length-1].Timestamp;
-        else
-            return 0;
-    }
-
 
     close(){
         if (this.onClose) this.onClose();
