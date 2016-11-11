@@ -113,13 +113,8 @@ export class IotService{
         }else{
             for(let sub in this.subscriptions){
                 let s = this.subscriptions[sub];
-
                 if (s.event == event){
-                    if (event == IotService.EventValueUpdate){
-                        if (this.filterEvent(s.params,data.payload)){
-                            s.callback(data.payload);
-                        }
-                    }else{
+                    if (this.filterEvent(s.params,data.payload)){
                         s.callback(data.payload);
                     }
                 }
