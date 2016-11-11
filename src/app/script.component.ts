@@ -25,6 +25,7 @@ export class ScriptComponent {
     onClose = undefined;
     scriptVersion: ScriptVersion = new ScriptVersion();
     script: Script = new Script();
+    devices = [];
     versions: Array<string> = new Array<string>();
     private sub: Subscription;
     id: string;
@@ -40,7 +41,28 @@ export class ScriptComponent {
     ngOnInit() {
         this.iot.onConnected(()=>{
             this.iot.subscribeScript(this.id);
+            this.iot.getDevices((payload)=>{
+                console.log(payload);
+                this.devices = payload.devices;
+                let items = [];
+                this.devices.forEach(device => {
+                    items.push( {
+                        id  : device.id,
+                        text: device.id,
+                        listHtml: `<div style="font-size: 14px"><b>${device.name}</b></div><div style="font-size: 12px" >${device.id}</div>`,
+                        inputHtml: `<div style="font-size: 16px"><b>${device.id}</b></div>`,
+                        content: device.id + device.name
+                    });
+                });
+
+                this.codeEditor.setDevices(this.devices);
+                this.devicePicker.setItems(items);
+            });
         });
+        this.devicePicker.selectionChanged = itemIds => {
+            console.log("data" + itemIds);
+            this.saveDevices(itemIds);
+        };
         this.getScript(this.id, null);
         this.getScriptVersions(this.id);
     }
@@ -83,6 +105,7 @@ export class ScriptComponent {
             this.scriptVersion.Content = window.atob(res.json().Scripts[0].Content);
             this.scriptVersion.Version = res.json().Scripts[0].Version;
             this.codeEditor.setContent(this.scriptVersion.Content);
+            this.devicePicker.setSelectedItems(res.json().DeviceUuid);
         }).catch(err => {
             console.error(err);
         
