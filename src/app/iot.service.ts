@@ -23,6 +23,12 @@ export class IotService{
     static RequestSetValue = "RequestSetValue";
     static RequestRunScript= "RequestRunScript";
 
+    static RequestSubscribeScript= "RequestSubscribeScript";
+    static RequestUnsubscribeScript= "RequestUnsubscribeScript";
+
+    static RequestSubscribeDevice= "RequestSubscribeDevice";
+    static RequestUnsubscribeDevice= "RequestUnsubscribeDevice";
+
     static EventDeviceListUpdate = "EventDeviceListUpdate";
     static EventValueUpdate = "EventValueUpdate";
 
@@ -147,6 +153,34 @@ export class IotService{
             "di" : di,
             "resource" : variable,
             "value" : value
+        });
+    }
+
+    subscribeDevice(uuid, callback){
+        this.send({
+            "request": IotService.RequestSubscribeDevice,
+            "uuid" : uuid
+        });
+    }
+
+    unsubscribeDevice(uuid){
+        this.send({
+            "request": IotService.RequestUnsubscribeDevice,
+            "uuid" : uuid
+        });
+    }
+
+    subscribeScript(uuid, callback){
+        this.send({
+            "request": IotService.RequestSubscribeScript,
+            "uuid" : uuid
+        });
+    }
+
+    unsubscribeScript(uuid){
+        this.send({
+            "request": IotService.RequestUnsubscribeScript,
+            "uuid" : uuid
         });
     }
 
