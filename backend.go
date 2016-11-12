@@ -18,6 +18,14 @@ type ScriptVersion struct {
 	Version int `bson:"version"`
 	Content string
 }
+type Aliases struct {
+	Alias map[string]string
+}
+
+type Alias struct {
+	ID   string
+	Name string
+}
 
 type Script struct {
 	Id         bson.ObjectId `_id`
@@ -36,8 +44,34 @@ func main() {
 
 	db := session.DB("iot-webui")
 	scriptsDb := db.C("scripts")
+	aliasDb := db.C("alias")
 
 	api := iris.New(config.Iris{MaxRequestBodySize: 32 << 20})
+
+	api.Get("/aliases", func(c *iris.Context) {
+		aliases := Aliases{}
+		aliasDb.Find(nil).One(&aliases)
+		c.JSON(iris.StatusOK, aliases)
+	})
+	api.Post("/aliases", func(c *iris.Context) {
+		aliases := Aliases{}
+
+		newAlias := Alias{}
+		c.ReadJSON(&newAlias)
+
+		err := aliasDb.Find(nil).One(&aliases)
+
+		if err != nil {
+			println("error: " + err.Error())
+			aliases.Alias = make(map[string]string)
+			aliases.Alias[newAlias.ID] = newAlias.Name
+			aliasDb.Insert(aliases)
+		} else {
+			aliases.Alias[newAlias.ID] = newAlias.Name
+			aliasDb.Update(bson.M{}, aliases)
+		}
+		c.JSON(iris.StatusOK, aliases)
+	})
 
 	api.Get("/scripts", func(c *iris.Context) {
 		scripts := []Script{}
