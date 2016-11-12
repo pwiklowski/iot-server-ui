@@ -21,6 +21,7 @@ import {IotService} from './iot.service';
       display: flex;
       flex-flow: column;
       font-size: 11px;
+      line-height: 12px;
       font-family: monospace;
     }
 

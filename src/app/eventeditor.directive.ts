@@ -32,6 +32,6 @@ export class EventEditorDirective {
             } 
         );
 
-        this.editor.setSize("100%",50);
+        this.editor.setSize("100%",40);
     }
 }

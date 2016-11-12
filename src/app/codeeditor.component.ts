@@ -16,7 +16,6 @@ export class CodeEditorDirective {
     deviceNames = [];
 
     setDevices(devices: Array<Device>){
-        console.log("devices" + devices);
         this.editor.devices = devices;
         devices.forEach(device => {
             this.editor.deviceNames.push(device.name);
@@ -46,6 +45,7 @@ export class CodeEditorDirective {
                 mode: { name: 'javascript', json: true }
             } 
         );
+        this.editor.setSize("100%", 250);
 
         this.editor.deviceNames = this.deviceNames;
         this.editor.deviceIds = this.deviceIds;
