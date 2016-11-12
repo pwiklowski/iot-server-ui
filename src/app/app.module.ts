@@ -25,7 +25,7 @@ import { VariableColourRgbComponent } from './variable-rgb.component';
 import { VariableLightDimmingComponent } from './variable-dimming.component';
 import { VariableGenericComponent } from './variable-generic.component';
 import { VariableBinnaryComponent } from './variable-binnary.component';
-import { MapToIterable } from './pipes';
+import { MapToIterable, DeviceAlias } from './pipes';
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -53,6 +53,7 @@ class SanitizeHtml implements PipeTransform  {
       ScriptComponent,
       SanitizeHtml,
       MapToIterable,
+      DeviceAlias,
       VariableGenericComponent,
       VariableLightDimmingComponent,
       VariableColourRgbComponent,

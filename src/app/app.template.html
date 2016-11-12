@@ -12,7 +12,7 @@
     <template ngFor let-device [ngForOf]="devices">
         <a href="/#/device/{{device.id}}" (click)="attachDevice(device);slideDevices(false)">
             <div class="iot-menu-item">
-                <span class="iot-name">{{ device.name}}</span><br>
+                <span class="iot-name">{{ device.id | deviceAlias}}</span><br>
                 <span class="iot-id">{{ device.id }}</span>
             </div>
         </a>

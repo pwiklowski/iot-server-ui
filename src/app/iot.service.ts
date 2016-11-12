@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-
-
+import { Http, Response } from '@angular/http';
 
 class Subscription{
     callback;
@@ -45,8 +44,34 @@ export class IotService{
     mid = 0;
     callbacks = {};
 
-    constructor() {
+    deviceAliases = new Map<string, string>();
+    devices = [];
+
+    constructor(private http: Http) {
         this.connect();
+        this.refreshAliases();
+    }
+
+    getAlias(uuid: string){
+        if (this.deviceAliases[uuid] !== undefined ){
+            return this.deviceAliases[uuid];
+        }else{
+            for(let device of this.devices){
+                if (device.id == uuid){
+                    return device.name;
+                }
+            }
+        }
+        return uuid;
+    }
+
+    refreshAliases(){
+        this.http.get("/api/aliases").toPromise().then(res => {
+            this.deviceAliases = res.json().Alias;
+            console.log(this.deviceAliases);
+        }).catch(err => {
+            console.error(err);
+        });
     }
 
     connect(){
@@ -85,12 +110,9 @@ export class IotService{
     private filterEvent(filter, event){
         if (filter !== undefined){
             for (var prop in filter) {
-                console.log("check ", prop);
                 if (!filter.hasOwnProperty(prop)) {
-                    console.log("has own ", prop);
                     continue;
                 }
-                console.log(filter[prop], event[prop]);
                 if ((event[prop] !==undefined) && filter[prop] !== event[prop]){
                     return false;
                 }
@@ -106,6 +128,11 @@ export class IotService{
         let mid = data.mid; 
 
         let callback = this.callbacks[mid];
+
+        if (event== IotService.EventDeviceListUpdate){
+            this.devices = data.payload.devices;
+            console.log(this.devices);
+        }
 
         if (callback !== undefined){
             callback(data.payload);

@@ -1,4 +1,5 @@
 import { Pipe } from '@angular/core';
+import { IotService } from './iot.service';
 
 @Pipe({
     name: 'mapToIterable'
@@ -12,3 +13,15 @@ export class MapToIterable {
 }
 
 
+
+@Pipe({
+    name: 'deviceAlias'
+})
+export class DeviceAlias{
+    constructor(private iot: IotService) {}
+
+    transform(uuid: string): string{
+        console.log("transform", uuid);
+        return this.iot.getAlias(uuid);
+    }
+}
