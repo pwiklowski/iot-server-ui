@@ -7,7 +7,7 @@ import { ClassUtils } from './class.utils';
 
 @Component({
     selector: '[wm]',
-    template: `<div (window:resize)="redraw()" #container> </div>`,
+    template: `<div #container> </div>`,
 })
 export class WMComponent {
     panel;
@@ -37,13 +37,10 @@ export class WMComponent {
             let factory = this.componentFactoryResolver.resolveComponentFactory(component);
             let c = this.container.createComponent(factory);  
 
-
             let w = c.location.nativeElement;
             w.setAttribute("class", "wm-window " + this.customWindowClass);
 
-
             this.window = w;
-            this.redraw();
             callback(c);
 
             this.show(w);
@@ -54,13 +51,6 @@ export class WMComponent {
             };
 
         }, this.translateTime);
-    }
-
-    redraw(){
-        console.log("redraw " + this.customWindowClass);;
-        let MARGIN = 15;
-        if (this.window)
-            this.window.style.height = (this.panel.offsetHeight - 4*MARGIN)+ "px";
     }
 
     hide(window){
