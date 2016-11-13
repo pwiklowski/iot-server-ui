@@ -18,8 +18,10 @@ import { IotService } from './iot.service';
     .iot-script{
       width: 100%;
       height: 100%;
-    },
-    .iot-script-name { font-size: 24px;   font-family: 'Roboto', sans-serif;  }
+    }
+    .iot-script-content{
+        padding: 10px;
+    }
     `]
 })
 export class ScriptComponent {

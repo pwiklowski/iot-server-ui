@@ -5,11 +5,12 @@
     </button>
   </mdl-card-menu>
   <mdl-card-title>
-    <mdl-textfield class="iot-script-name" type="text" [(ngModel)]="script.Name" placeholder="Enter script name" (keydown.enter)="saveName()" (blur)="saveName()">
+    <mdl-textfield class="iot-script-name" type="text" [(ngModel)]="script.Name"
+       placeholder="Enter script name" (keydown.enter)="saveName()" (blur)="saveName()">
     </mdl-textfield>
   </mdl-card-title>
 
-  <mdl-card-supporting-text class="iot-script-content">
+  <div class="iot-script-content">
     <device-picker #devicePicker></device-picker>
 
     <textarea eventeditor></textarea><br>
@@ -22,7 +23,8 @@
     <div scriptlogs></div>
 
 
-  </mdl-card-supporting-text>
+  </div>
+
   <mdl-card-actions mdl-card-border>
     <button mdl-button mdl-colored mdl-ripple (click)="saveScript()">
         Save
