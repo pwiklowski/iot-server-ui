@@ -4,32 +4,26 @@
       <mdl-layout-header-row>
         <mdl-layout-title>IoT Platform Dashboard</mdl-layout-title>
         <mdl-layout-spacer></mdl-layout-spacer>
-        <!-- Navigation. We hide it in small screens. -->
-        <nav class="mdl-navigation mdl-layout--large-screen-only">
-          <a class="mdl-navigation__link">Link</a>
-          <a class="mdl-navigation__link">Link</a>
-          <a class="mdl-navigation__link">Link</a>
-        </nav>
       </mdl-layout-header-row>
     </mdl-layout-header>
     <mdl-layout-drawer>
       <mdl-layout-title>Devices</mdl-layout-title>
       <nav class="mdl-navigation">
         <template ngFor let-device [ngForOf]="devices">
-          <div class="mdl-navigation__link" (click)="attachDevice(device); layout.toggleDrawer()">
-              {{ device.id | deviceAlias}}
+          <div class="mdl-navigation__link" (click)="attachDevice(device);  layout.toggleDrawer()">
+            {{ device.id | deviceAlias}}
           </div>
         </template>
       </nav>
       <mdl-layout-title>Scripts</mdl-layout-title>
       <nav class="mdl-navigation">
         <template ngFor let-script [ngForOf]="scripts">
-            <div class="mdl-navigation__link" (click)="attachScript(script); layout.toggleDrawer()">
-                {{ script.Name }}
-            </div>
+          <div class="mdl-navigation__link" (click)="attachScript(script); layout.toggleDrawer()">
+            {{ script.Name }}
+          </div>
         </template>
       </nav>
-    </mdl-layout-drawer>>
+    </mdl-layout-drawer>
     <mdl-layout-content id="iot-container" (window:resize)="redraw()">
       <div id="iot-content">
         <div id="iot-script-manager" wm #scriptManager></div>
@@ -37,4 +31,12 @@
       </div>
     </mdl-layout-content>
   </mdl-layout>
+  <div class="iot-add-script-button" [class.visible]="layout.isDrawerVisible">
+    <div class="iot-button-label">
+      Create new script
+    </div>
+    <button mdl-button mdl-button-type="fab" mdl-colored="accent" mdl-ripple (click)="createNewScript()">
+            <mdl-icon>add</mdl-icon>
+        </button>
+  </div>
 </div>

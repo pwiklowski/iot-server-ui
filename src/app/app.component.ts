@@ -25,6 +25,30 @@ import { IotService } from './iot.service';
     #iot-script-manager{
         padding:20px;
     }
+    .iot-add-script-button {
+        z-index:5;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        transform: translateX(300px);
+        transition: all 200ms ease-out;
+    }
+    .visible {
+        transform: translateX(0px);
+    }
+    .iot-button-label{
+        float: left;
+        height: 36px;
+        line-height: 36px;
+        background-color: rgba(0,0,0, 0.5);
+        margin: 10px;
+        padding: 0 10px;
+        color: white;
+        border-radius: 4px;
+    }
+
+
+
     `]
 })
 export class AppComponent {
@@ -40,6 +64,7 @@ export class AppComponent {
 
     @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
     @ViewChild('scriptManager') scriptManager: WMScriptsComponent;
+    @ViewChild('layout')layout;
 
     sub;
 
@@ -77,6 +102,9 @@ export class AppComponent {
         this.http.post("/api/scripts", content).toPromise().then(res => {
             let uuid = res.json().ScriptUuid;
             this.getScripts();
+            this.attachScript(res.json());
+            this.layout.closeDrawer();
+
 
         }).catch(err => {
         
@@ -97,8 +125,6 @@ export class AppComponent {
             this.isDeviceMenuOpen = true;
         }
     }
-
-    
 
     slideScripts(open: boolean){
         let menu = document.getElementById("iot-scripts");
