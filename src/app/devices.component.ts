@@ -20,6 +20,11 @@ import { MapToIterable } from './pipes';
     .iot-device{
       width: 100%;
     }
+    .iot-device-resources{
+      max-height: 250px;
+      overflow-y: auto;
+      padding: 20px;
+    }
     `]
 })
 export class DevicesComponent {

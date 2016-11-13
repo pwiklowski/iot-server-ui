@@ -1,37 +1,40 @@
-<div class="iot-icon-menu">
-    <div class="iot-icon-button"><img class="iot-icon-hamburger" src="assets/img/menu2.png"></div>
-    <div class="iot-icon-button" (click)="slideScripts(false); slideDevices(!isDeviceMenuOpen)"><img class="iot-icon-img" src="assets/img/microchip.png"></div>
-    <div class="iot-icon-button" (click)="slideDevices(false); slideScripts(!isScriptMenuOpen)"><img class="iot-icon-img" src="assets/img/browser.png"></div>
-
-</div>
-
-
-<div id="iot-devices" class="iot-menu-items">
-    <b>Devices:</b><br>
-    <input placeholder="Filter devices" class="iot-menu-items-search"/>
-    <template ngFor let-device [ngForOf]="devices">
-        <a href="/#/device/{{device.id}}" (click)="attachDevice(device);slideDevices(false)">
-            <div class="iot-menu-item">
-                <span class="iot-name">{{ device.id | deviceAlias}}</span><br>
-                <span class="iot-id">{{ device.id }}</span>
+<div>
+  <mdl-layout #layout mdl-layout-fixed-header mdl-layout-header-seamed>
+    <mdl-layout-header>
+      <mdl-layout-header-row>
+        <mdl-layout-title>IoT Platform Dashboard</mdl-layout-title>
+        <mdl-layout-spacer></mdl-layout-spacer>
+        <!-- Navigation. We hide it in small screens. -->
+        <nav class="mdl-navigation mdl-layout--large-screen-only">
+          <a class="mdl-navigation__link">Link</a>
+          <a class="mdl-navigation__link">Link</a>
+          <a class="mdl-navigation__link">Link</a>
+        </nav>
+      </mdl-layout-header-row>
+    </mdl-layout-header>
+    <mdl-layout-drawer>
+      <mdl-layout-title>Devices</mdl-layout-title>
+      <nav class="mdl-navigation">
+        <template ngFor let-device [ngForOf]="devices">
+          <div class="mdl-navigation__link" (click)="attachDevice(device); layout.toggleDrawer()">
+              {{ device.id | deviceAlias}}
+          </div>
+        </template>
+      </nav>
+      <mdl-layout-title>Scripts</mdl-layout-title>
+      <nav class="mdl-navigation">
+        <template ngFor let-script [ngForOf]="scripts">
+            <div class="mdl-navigation__link" (click)="attachScript(script); layout.toggleDrawer()">
+                {{ script.Name }}
             </div>
-        </a>
-    </template>
-</div>
-<div id="iot-scripts" class="iot-menu-items">
-    <button (click)="createNewScript()">New</button>
-    <b>Scripts:</b>
-
-    <template ngFor let-script [ngForOf]="scripts">
-        <div class="iot-menu-item" (click)="attachScript(script); slideScripts(false);">
-            <b>{{ script.Name }}</b><br>
-            <span class="iot-id">{{ script.ScriptUuid}} </span>
-        </div>
-    </template>
-
-</div>
-
-<div id="iot-content" (window:resize)="redraw()" >
-    <div id="iot-script-manager" wm #scriptManager></div>
-    <div id="iot-device-manager" wmDevices #deviceManager></div>
+        </template>
+      </nav>
+    </mdl-layout-drawer>>
+    <mdl-layout-content id="iot-container" (window:resize)="redraw()">
+      <div id="iot-content">
+        <div id="iot-script-manager" wm #scriptManager></div>
+        <div id="iot-device-manager" wmDevices #deviceManager></div>
+      </div>
+    </mdl-layout-content>
+  </mdl-layout>
 </div>

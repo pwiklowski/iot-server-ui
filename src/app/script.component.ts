@@ -18,7 +18,8 @@ import { IotService } from './iot.service';
     .iot-script{
       width: 100%;
       height: 100%;
-    }
+    },
+    .iot-script-name { font-size: 24px;   font-family: 'Roboto', sans-serif;  }
     `]
 })
 export class ScriptComponent {
@@ -65,6 +66,8 @@ export class ScriptComponent {
         };
         this.getScript(this.id, null);
         this.getScriptVersions(this.id);
+
+
     }
     ngAfterViewInit(){
         this.eventEditor.setValue(` { "source": "id", "resource": "res", "value" : {"val":4} } `);

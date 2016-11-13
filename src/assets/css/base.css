@@ -16,6 +16,11 @@ body {
   overflow: hidden;
 }
 
+#iot-container {
+  width: 100%;
+  height: 100%;
+}
+
 a {
   text-decoration: none;
   color: black;
@@ -91,6 +96,7 @@ a {
   display: flex;
   transition: all 300ms ease-out;
   overflow: hidden;
+  height: 100%;
 }
 
 .iot-menu-item:hover {
