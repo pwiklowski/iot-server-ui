@@ -155,6 +155,8 @@ a {
   border: 0;
   box-shadow: none;
   outline: none;
+  font-size: 24px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .tag-dropdown {
@@ -168,12 +170,12 @@ a {
 
 .tag-dropdown-selected {
   color: white;
-  background-color: #9000ff;
+  background-color: rgb(255, 87, 34);
 }
 
 .tag-selected-item {
   padding: 5px 35px 5px 8px;
-  background-color: #9000ff;
+  background-color: rgb(255, 87, 34);
   color: white;
   margin: 3px 1px;
   border-radius: 3px;

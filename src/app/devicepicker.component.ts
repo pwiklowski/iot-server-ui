@@ -10,11 +10,7 @@ import { Device } from './models.ts';
   template: `<div class="tag-input" >
                 <div class="tag-selected" #inputField>
                     <template ngFor let-item [ngForOf]="selectedItems">
-                        <div *ngIf="!useSimpleSelectedItems" [innerHtml]="item.inputHtml | sanitizeHtml" class="tag-selected-item"></div>
-                        <div *ngIf="useSimpleSelectedItems"  class="tag-selected-item"> {{ item | deviceAlias }} </div>
-                        <div class="tag-delete-container">
-                            <div class="tag-delete" (click)="remove(item)"></div>
-                        </div>
+                        <mdl-chip mdl-action-icon="cancel" (action-click)="remove(item)" mdl-label="{{ item | deviceAlias }}"></mdl-chip>
                     </template>
 
                     <input class="tag-input-field" #value (keyup)="filter($event, value, inputField)">
