@@ -15,8 +15,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-gobackend
-
+  
   iotserver:
+    restart: unless-stoppped
     network_mode: "host"
     build:
       context: .
