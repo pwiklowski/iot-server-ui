@@ -1,5 +1,5 @@
 #webui
-npm run build-prod
+npm run build:prod
 
 #gobackend
 go build backend.go
