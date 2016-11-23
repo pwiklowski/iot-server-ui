@@ -67,7 +67,9 @@ export class IotService{
 
     refreshAliases(){
         this.http.get("/api/aliases").toPromise().then(res => {
-            this.deviceAliases = res.json().Alias;
+            if (res.json().Alias !== null)
+                this.deviceAliases = res.json().Alias;
+
             console.log(this.deviceAliases);
         }).catch(err => {
             console.error(err);
