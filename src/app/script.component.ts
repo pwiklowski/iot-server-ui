@@ -1,9 +1,9 @@
-import { Component, ViewContainerRef, ViewChild } from '@angular/core';
+import { Component, ViewContainerRef, ViewChild, Inject, forwardRef } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { ScriptVersion, Script, Log } from './models.ts';
 import { Subscription } from 'rxjs/Subscription';
-
+import { AppComponent } from './app.component';
 import { DevicePickerComponent } from './devicepicker.component';
 import { EventEditorDirective } from './eventeditor.directive';
 import { CodeEditorDirective } from './codeeditor.component';
@@ -39,7 +39,7 @@ export class ScriptComponent {
     @ViewChild(EventEditorDirective) eventEditor: EventEditorDirective;
     @ViewChild('devicePicker') devicePicker; 
 
-    constructor(private http: Http, private iot: IotService){ }
+    constructor(private http: Http, private iot: IotService, @Inject(forwardRef(() => AppComponent)) private app: AppComponent){ }
 
     ngOnInit() {
         this.iot.onConnected(()=>{
@@ -83,6 +83,7 @@ export class ScriptComponent {
         }).catch(err => {
             console.error(err);
         });
+        this.app.getScripts();
     }
 
     saveName(){
@@ -90,7 +91,7 @@ export class ScriptComponent {
         let content = '{"Name":"'+ this.script.Name+'" }';
 
         this.http.post("/api/script/" + this.script.ScriptUuid, content).toPromise().then(res => {
-
+            this.app.getScripts();
         }).catch(err => {
             console.error(err);
         });

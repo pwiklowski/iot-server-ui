@@ -2,6 +2,7 @@ import { Component,ViewChild, ViewContainerRef, NgModule } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Device, Script } from './models.ts';
+import { Injectable } from '@angular/core';
 
 
 import { WMScriptsComponent } from './wm-scripts.component';
@@ -15,6 +16,7 @@ import { DevicePickerComponent } from './devicepicker.component';
 
 import { IotService } from './iot.service';
 
+@Injectable()
 @Component({
     selector: 'application',
     templateUrl: 'app.template.html',

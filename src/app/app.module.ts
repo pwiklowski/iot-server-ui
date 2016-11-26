@@ -75,7 +75,7 @@ class SanitizeHtml implements PipeTransform  {
       VariableColourRgbComponent
   ],
   bootstrap: [ AppComponent ],
-  providers: [ENV_PROVIDERS, IotService],
+  providers: [ENV_PROVIDERS, IotService, AppComponent],
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef) {}
