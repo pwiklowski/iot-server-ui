@@ -3,8 +3,9 @@ import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Device, Script } from './models.ts';
 import { Injectable } from '@angular/core';
+import { MdlDialogService,MdlSnackbarService } from 'angular2-mdl';
 
-
+import {Observable} from 'rxjs/Observable';
 import { WMScriptsComponent } from './wm-scripts.component';
 import { WMDevicesComponent } from './wm-devices.component';
 import { DevicesComponent} from './devices.component';
@@ -49,6 +50,9 @@ import { IotService } from './iot.service';
         border-radius: 4px;
     }
 
+   .iot-delete-icon{
+       float: right;
+   } 
 
 
     `]
@@ -70,7 +74,8 @@ export class AppComponent {
 
     sub;
 
-    constructor(private http: Http, private iot: IotService){
+    constructor(private http: Http, private iot: IotService,
+                private dialogService: MdlDialogService, private snack: MdlSnackbarService){
         this.getScripts();
 
         iot.onConnected(()=>{
@@ -112,6 +117,26 @@ export class AppComponent {
         
         });
 
+    }
+    deleteScript(event, script){
+        event.stopPropagation();
+        let r = this.dialogService.confirm('Are you sure ?', 'No', 'Yes');
+        r.subscribe(
+            ()=>{
+                this.layout.closeDrawer();
+                this.http.delete("/api/script/" + script.ScriptUuid).toPromise().then(res => {
+                    this.snack.showSnackbar({
+                        message:'Script was deleted'
+                    });
+                    this.getScripts();
+                }).catch(err => {
+                    console.error(err);
+                });
+            },
+            (err: any) => {
+
+            }
+        );
     }
 
     isDeviceMenuOpen = false;

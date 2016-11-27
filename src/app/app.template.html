@@ -20,6 +20,7 @@
         <template ngFor let-script [ngForOf]="scripts">
           <div class="mdl-navigation__link" (click)="attachScript(script); layout.toggleDrawer()">
             {{ script.Name }}
+          <mdl-icon class="iot-delete-icon" (click)="deleteScript($event, script)">delete</mdl-icon>
           </div>
         </template>
       </nav>

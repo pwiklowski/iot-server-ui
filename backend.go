@@ -105,6 +105,17 @@ func main() {
 		}
 		c.JSON(iris.StatusOK, script)
 	})
+
+	api.Delete("/script/:scriptUuid", func(c *iris.Context) {
+		scriptUuid := c.Param("scriptUuid")
+
+		err := scriptsDb.Remove(bson.M{"scriptuuid": scriptUuid})
+		if err != nil {
+			println("error: " + err.Error())
+		}
+		c.JSON(iris.StatusOK, nil)
+	})
+
 	api.Post("/script/:scriptUuid", func(c *iris.Context) {
 		script := Script{}
 		sentScript := Script{}
