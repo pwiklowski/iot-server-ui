@@ -112,7 +112,7 @@ export class AppComponent {
     }
 
     createNewScript(){
-        let content = '{"Name":"Nowa nazwa"}';
+        let content = '{"Name":"New name"}';
 
         this.http.post("/api/scripts", content).toPromise().then(res => {
             let uuid = res.json().ScriptUuid;
