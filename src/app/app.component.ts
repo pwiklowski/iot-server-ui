@@ -49,7 +49,15 @@ import { IotService } from './iot.service';
         color: white;
         border-radius: 4px;
     }
-
+    .mdl-layout__drawer{
+        width: 400px;
+        -webkit-transform: translateX(-400px);
+        transform: translateX(-400px);
+    }
+    .mdl-layout__drawer.is-visible{
+        -webkit-transform: translateX(0px);
+        transform: translateX(0px);
+    }
    .iot-delete-icon{
        float: right;
    } 
