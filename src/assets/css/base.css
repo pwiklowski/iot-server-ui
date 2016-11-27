@@ -38,6 +38,14 @@ a {
   overflow: hidden;
 }
 
+.iot-widget{
+  float: left;
+  margin: 10px;
+}
+.iot-widget-card{
+  min-height: 50px;;
+}
+
 .iot-device-raw-value {
   font-family: monospace;
   font-size: 11px;

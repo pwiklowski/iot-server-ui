@@ -14,6 +14,8 @@ import { DeviceComponent } from './device.component';
 
 import { WMScriptsComponent } from './wm-scripts.component';
 import { WMDevicesComponent } from './wm-devices.component';
+import { WidgetsComponent } from './widgets.component';
+import { WidgetComponent } from './widget.component';
 import { DevicesComponent} from './devices.component';
 import { ScriptComponent} from './script.component';
 import { DevicePickerComponent } from './devicepicker.component';
@@ -63,6 +65,8 @@ class SanitizeHtml implements PipeTransform  {
       CodeEditorDirective,
       EventEditorDirective,
       LogsComponent,
+      WidgetsComponent,
+      WidgetComponent,
       ScriptLogsComponent
   ],
 
@@ -72,7 +76,9 @@ class SanitizeHtml implements PipeTransform  {
       VariableGenericComponent,
       VariableLightDimmingComponent,
       VariableBinnaryComponent,
-      VariableColourRgbComponent
+      VariableColourRgbComponent,
+      WidgetsComponent,
+      WidgetComponent
   ],
   bootstrap: [ AppComponent ],
   providers: [ENV_PROVIDERS, IotService, AppComponent],

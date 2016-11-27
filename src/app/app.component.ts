@@ -11,6 +11,8 @@ import { WMDevicesComponent } from './wm-devices.component';
 import { DevicesComponent} from './devices.component';
 import { ScriptComponent} from './script.component';
 import { DevicePickerComponent } from './devicepicker.component';
+import { WidgetsComponent } from './widgets.component';
+import { WidgetComponent } from './widget.component';
 
 
 
@@ -61,6 +63,9 @@ import { IotService } from './iot.service';
    .iot-delete-icon{
        float: right;
    } 
+   .iot-widgets-manager{
+       width: 100%;
+   }
 
 
     `]
@@ -72,12 +77,13 @@ export class AppComponent {
     showDevice: boolean = false;
     panelView;
     devicesView;
-    
+    widgetsView;
     scriptsView;
 
 
     @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
     @ViewChild('scriptManager') scriptManager: WMScriptsComponent;
+    @ViewChild('widgetsManager') widgetsManager: WidgetsComponent;
     @ViewChild('layout')layout;
 
     sub;
@@ -100,6 +106,7 @@ export class AppComponent {
         this.panelView = document.getElementById("iot-content");
         this.devicesView = document.getElementById("iot-device-manager");
         this.scriptsView = document.getElementById("iot-script-manager");
+        this.widgetsView = document.getElementById("iot-widgets-manager");
         
     }
 
@@ -172,6 +179,13 @@ export class AppComponent {
         }
     }
 
+    addWidget(){
+        this.widgetsManager.attach(WidgetComponent, (d)=>{
+            this.redraw();
+        }, ()=>{
+            this.redraw();
+        });
+    }
 
     attachDevice(device){
         this.showDevice = true;
