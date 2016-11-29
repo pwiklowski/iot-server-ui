@@ -27,6 +27,23 @@ type Alias struct {
 	Name string
 }
 
+type Value struct {
+	DeviceUuid string
+	Variable   string
+	Value      string
+}
+
+type Action struct {
+	Name   string
+	Values []Value
+}
+
+type Widget struct {
+	WidgetUuid string
+	Name       string
+	Actions    []Action
+}
+
 type Script struct {
 	Id         bson.ObjectId `_id`
 	Name       string
@@ -44,6 +61,7 @@ func main() {
 
 	db := session.DB("iot-webui")
 	scriptsDb := db.C("scripts")
+	widgetsDb := db.C("widgets")
 	aliasDb := db.C("alias")
 
 	api := iris.New(config.Iris{MaxRequestBodySize: 32 << 20})
@@ -73,6 +91,39 @@ func main() {
 		c.JSON(iris.StatusOK, aliases)
 	})
 
+	api.Get("/widgets", func(c *iris.Context) {
+		widgets := []Widget{}
+		widgetsDb.Find(nil).All(&widgets)
+		c.JSON(iris.StatusOK, widgets)
+	})
+	api.Get("/widget/:widgetUuid", func(c *iris.Context) {
+		widget := []Widget{}
+		widgetsUuid := c.Param("widgetUuid")
+		widgetsDb.Find(bson.M{"widgetUuid": widgetsUuid}).One(&widget)
+		c.JSON(iris.StatusOK, widget)
+	})
+	api.Post("/widget", func(c *iris.Context) {
+		widget := Widget{}
+		c.ReadJSON(&widget)
+
+		widget.WidgetUuid = uuid.NewV4().String()
+
+		err := widgetsDb.Insert(widget)
+		if err != nil {
+			panic(err)
+		}
+		c.JSON(iris.StatusOK, widget)
+	})
+
+	api.Delete("/widget/:widgetUuid", func(c *iris.Context) {
+		widgetUuid := c.Param("widgetUuid")
+
+		err := widgetsDb.Remove(bson.M{"widgetuuid": widgetUuid})
+		if err != nil {
+			println("error: " + err.Error())
+		}
+		c.JSON(iris.StatusOK, nil)
+	})
 	api.Get("/scripts", func(c *iris.Context) {
 		scripts := []Script{}
 		scriptsDb.Find(nil).Select(bson.M{"scripts": bson.M{"$slice": -1}}).All(&scripts)
