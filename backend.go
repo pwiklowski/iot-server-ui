@@ -97,9 +97,9 @@ func main() {
 		c.JSON(iris.StatusOK, widgets)
 	})
 	api.Get("/widget/:widgetUuid", func(c *iris.Context) {
-		widget := []Widget{}
+		widget := Widget{}
 		widgetsUuid := c.Param("widgetUuid")
-		widgetsDb.Find(bson.M{"widgetUuid": widgetsUuid}).One(&widget)
+		widgetsDb.Find(bson.M{"widgetuuid": widgetsUuid}).One(&widget)
 		c.JSON(iris.StatusOK, widget)
 	})
 	api.Post("/widget", func(c *iris.Context) {
