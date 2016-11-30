@@ -124,6 +124,27 @@ func main() {
 		}
 		c.JSON(iris.StatusOK, nil)
 	})
+
+	api.Post("/widget/:widgetUuid", func(c *iris.Context) {
+		widget := Widget{}
+		sentWidget := Widget{}
+		c.ReadJSON(&sentWidget)
+		widgetUuid := c.Param("widgetUuid")
+
+		err := widgetsDb.Find(bson.M{"widgetuuid": widgetUuid}).One(&widget)
+		if err != nil {
+			println("error: " + err.Error())
+		}
+
+		widget.Actions = sentWidget.Actions
+		widget.Name = sentWidget.Name
+
+		err = widgetsDb.Update(bson.M{"widgetuuid": widgetUuid}, widget)
+		if err != nil {
+			panic(err)
+		}
+		c.JSON(iris.StatusOK, widget)
+	})
 	api.Get("/scripts", func(c *iris.Context) {
 		scripts := []Script{}
 		scriptsDb.Find(nil).Select(bson.M{"scripts": bson.M{"$slice": -1}}).All(&scripts)
