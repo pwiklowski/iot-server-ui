@@ -107,6 +107,11 @@ export class AppComponent {
         this.devicesView = document.getElementById("iot-device-manager");
         this.scriptsView = document.getElementById("iot-script-manager");
         this.widgetsView = document.getElementById("iot-widgets-manager");
+
+        this.iot.getWidgets().then((res)=>{
+            res.json().forEach(w=> this.addWidget(w));
+        });
+
         
     }
 
@@ -179,8 +184,9 @@ export class AppComponent {
         }
     }
 
-    addWidget(){
-        this.widgetsManager.attach(WidgetComponent, (d)=>{
+    addWidget(widget){
+        this.widgetsManager.attach(WidgetComponent, (w)=>{
+            (<any>w.instance).init(widget);
             this.redraw();
         }, ()=>{
             this.redraw();
