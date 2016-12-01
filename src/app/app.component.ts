@@ -235,6 +235,12 @@ export class AppComponent {
 
         this.scriptsView.style.width = scriptsWidth + "px";
         this.devicesView.style.width = devicesWidth + "px";
+
+        if (this.showDevice || this.showScript){
+            this.widgetsView.style.transform = "translateY(1500px)";
+        }else{
+            this.widgetsView.style.transform = "translateY(0px)";
+        }
     }
 
 }
