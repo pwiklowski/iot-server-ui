@@ -7,6 +7,9 @@ import "gopkg.in/mgo.v2/bson"
 import "github.com/satori/go.uuid"
 import "fmt"
 import "strconv"
+import (
+	firebase "github.com/wuman/firebase-server-sdk-go"
+)
 
 type Log struct {
 	Timestamp  int64
@@ -52,8 +55,28 @@ type Script struct {
 	Scripts    []ScriptVersion
 }
 
+func verifyAccess(auth *firebase.Auth, c *iris.Context) bool {
+	token := c.RequestHeader("Authorization")
+	fmt.Println(token)
+
+	decodedToken, err := auth.VerifyIDToken(token)
+	if err == nil {
+		uid, found := decodedToken.UID()
+		fmt.Println(uid)
+		fmt.Println(found)
+		return found
+	}
+	return false
+}
+
 func main() {
-	session, err := mgo.Dial("mongo:27017")
+	firebase.InitializeApp(&firebase.Options{
+		ServiceAccountPath: "credentials.json",
+	})
+
+	auth, _ := firebase.GetAuth()
+
+	session, err := mgo.Dial("127.0.0.1:27017")
 	if err != nil {
 		panic(err)
 	}
@@ -67,11 +90,20 @@ func main() {
 	api := iris.New(config.Iris{MaxRequestBodySize: 32 << 20})
 
 	api.Get("/aliases", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
+
 		aliases := Aliases{}
 		aliasDb.Find(nil).One(&aliases)
 		c.JSON(iris.StatusOK, aliases)
 	})
 	api.Post("/aliases", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		aliases := Aliases{}
 
 		newAlias := Alias{}
@@ -92,17 +124,29 @@ func main() {
 	})
 
 	api.Get("/widgets", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		widgets := []Widget{}
 		widgetsDb.Find(nil).All(&widgets)
 		c.JSON(iris.StatusOK, widgets)
 	})
 	api.Get("/widget/:widgetUuid", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		widget := Widget{}
 		widgetsUuid := c.Param("widgetUuid")
 		widgetsDb.Find(bson.M{"widgetuuid": widgetsUuid}).One(&widget)
 		c.JSON(iris.StatusOK, widget)
 	})
 	api.Post("/widget", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		widget := Widget{}
 		c.ReadJSON(&widget)
 
@@ -116,6 +160,10 @@ func main() {
 	})
 
 	api.Delete("/widget/:widgetUuid", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		widgetUuid := c.Param("widgetUuid")
 
 		err := widgetsDb.Remove(bson.M{"widgetuuid": widgetUuid})
@@ -126,6 +174,10 @@ func main() {
 	})
 
 	api.Post("/widget/:widgetUuid", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		widget := Widget{}
 		sentWidget := Widget{}
 		c.ReadJSON(&sentWidget)
@@ -146,17 +198,29 @@ func main() {
 		c.JSON(iris.StatusOK, widget)
 	})
 	api.Get("/scripts", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		scripts := []Script{}
 		scriptsDb.Find(nil).Select(bson.M{"scripts": bson.M{"$slice": -1}}).All(&scripts)
 		c.JSON(iris.StatusOK, scripts)
 	})
 	api.Get("/scripts/device/:deviceUuid", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		scripts := []Script{}
 		deviceUuid := c.Param("deviceUuid")
 		scriptsDb.Find(bson.M{"deviceuuid": deviceUuid}).Select(bson.M{"scripts": bson.M{"$slice": -1}}).All(&scripts)
 		c.JSON(iris.StatusOK, scripts)
 	})
 	api.Post("/scripts", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		script := Script{}
 		c.ReadJSON(&script)
 
@@ -179,6 +243,10 @@ func main() {
 	})
 
 	api.Delete("/script/:scriptUuid", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		scriptUuid := c.Param("scriptUuid")
 
 		err := scriptsDb.Remove(bson.M{"scriptuuid": scriptUuid})
@@ -189,6 +257,10 @@ func main() {
 	})
 
 	api.Post("/script/:scriptUuid", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		script := Script{}
 		sentScript := Script{}
 		sentScript.DeviceUuid = nil
@@ -218,6 +290,10 @@ func main() {
 		c.JSON(iris.StatusOK, script)
 	})
 	api.Post("/script/:scriptUuid/version", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		script := Script{}
 		sentScript := ScriptVersion{}
 		c.ReadJSON(&sentScript)
@@ -246,6 +322,10 @@ func main() {
 	})
 
 	api.Get("/script/:scriptUuid", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		script := Script{}
 		scriptUuid := c.Param("scriptUuid")
 		fmt.Println(scriptUuid)
@@ -258,6 +338,10 @@ func main() {
 	})
 
 	api.Get("/scriptVersions/:scriptUuid", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		script := Script{}
 		scriptUuid := c.Param("scriptUuid")
 
@@ -276,6 +360,10 @@ func main() {
 
 	})
 	api.Get("/script/:scriptUuid/:version", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
 		script := Script{}
 		scriptUuid := c.Param("scriptUuid")
 
