@@ -34,6 +34,18 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LogsComponent } from './log.component';
 import { ScriptLogsComponent } from './scriptlog.component';
 
+import { AngularFireModule, AuthMethods, AuthProviders } from "angularfire2";
+
+var config = {
+  apiKey: "AIzaSyDLXmaIjjBQv3-TzBXoRAYpPZaHqPzH9DY",
+  authDomain: "iot-platform-ea00a.firebaseapp.com",
+  databaseURL: "https://iot-platform-ea00a.firebaseio.com",
+  storageBucket: "iot-platform-ea00a.appspot.com",
+  messagingSenderId: "1063396342049"
+}
+
+
+
 @Pipe({
     name: 'sanitizeHtml'
 })
@@ -47,7 +59,14 @@ class SanitizeHtml implements PipeTransform  {
 } 
 
 @NgModule({
-  imports: [ BrowserModule, FormsModule,MdlModule, HttpModule],
+  imports: [ BrowserModule,
+    FormsModule,
+    MdlModule,
+    HttpModule,
+    AngularFireModule.initializeApp(config, {
+      provider: AuthProviders.Google,
+      method: AuthMethods.Popup
+    })],
   declarations: [
       AppComponent,
       DevicePickerComponent,

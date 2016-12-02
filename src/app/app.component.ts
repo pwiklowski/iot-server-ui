@@ -14,7 +14,7 @@ import { DevicePickerComponent } from './devicepicker.component';
 import { WidgetsComponent } from './widgets.component';
 import { WidgetComponent } from './widget.component';
 
-
+import { AngularFire, AuthProviders } from 'angularfire2';
 
 
 import { IotService } from './iot.service';
@@ -80,6 +80,8 @@ export class AppComponent {
     widgetsView;
     scriptsView;
 
+    user = {};
+
 
     @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
     @ViewChild('scriptManager') scriptManager: WMScriptsComponent;
@@ -89,7 +91,8 @@ export class AppComponent {
     sub;
 
     constructor(private http: Http, private iot: IotService,
-                private dialogService: MdlDialogService, private snack: MdlSnackbarService){
+                private dialogService: MdlDialogService, private snack: MdlSnackbarService,
+                 public af: AngularFire){
         this.getScripts();
 
         iot.onConnected(()=>{
@@ -100,6 +103,26 @@ export class AppComponent {
                 this.devices = payload.devices;
             });
         });
+
+        this.af.auth.subscribe(user => {
+            if(user) {
+                this.user = user;
+                this.user.auth.getToken().then(token => console.log(token));
+            } else {
+                this.user = {};
+            }
+            console.log(this.user);
+
+        });
+    }
+    login() {
+        this.af.auth.login({
+            provider: AuthProviders.Google
+        });
+    }
+    
+    logout() {
+        this.af.auth.logout();
     }
 
     ngAfterViewInit(){
