@@ -78,7 +78,7 @@ export class ScriptComponent {
     saveDevices(devices){
         let content = {"DeviceUuid": devices};
 
-        this.http.post("/api/script/" + this.script.ScriptUuid, content).toPromise().then(res => {
+        this.iot.post("/api/script/" + this.script.ScriptUuid, content).then(res => {
 
         }).catch(err => {
             console.error(err);
@@ -90,7 +90,7 @@ export class ScriptComponent {
         console.log("save name " + this.script.Name);
         let content = '{"Name":"'+ this.script.Name+'" }';
 
-        this.http.post("/api/script/" + this.script.ScriptUuid, content).toPromise().then(res => {
+        this.iot.post("/api/script/" + this.script.ScriptUuid, content).then(res => {
             this.app.getScripts();
         }).catch(err => {
             console.error(err);
@@ -105,7 +105,7 @@ export class ScriptComponent {
 
     getScript(id:string, version){
 
-        this.http.get("/api/script/" + id).toPromise().then(res => {
+        this.iot.get("/api/script/" + id).then(res => {
             console.log(res.json());
             this.script = res.json();
             this.scriptVersion.Content = window.atob(res.json().Scripts[0].Content);
@@ -119,7 +119,7 @@ export class ScriptComponent {
     }
 
     getScriptVersions(id: string){
-        this.http.get("/api/scriptVersions/" + id).toPromise().then(res => {
+        this.iot.get("/api/scriptVersions/" + id).then(res => {
             this.versions = res.json();
             
         }).catch(err => {
@@ -131,7 +131,7 @@ export class ScriptComponent {
     saveScript(){
         let content = '{"Content":"' + window.btoa(this.codeEditor.getValue()) + '"}';
 
-        this.http.post("/api/script/" + this.id + "/version", content).toPromise().then(res => {
+        this.iot.post("/api/script/" + this.id + "/version", content).then(res => {
             this.scriptVersion.Content = window.atob(res.json().Content);
             this.scriptVersion.Version = res.json().Version;
             this.codeEditor.setContent(this.scriptVersion.Content);

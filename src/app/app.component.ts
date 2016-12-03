@@ -14,7 +14,6 @@ import { DevicePickerComponent } from './devicepicker.component';
 import { WidgetsComponent } from './widgets.component';
 import { WidgetComponent } from './widget.component';
 
-import { AngularFire, AuthProviders } from 'angularfire2';
 
 
 import { IotService } from './iot.service';
@@ -80,7 +79,6 @@ export class AppComponent {
     widgetsView;
     scriptsView;
 
-    user = {};
 
 
     @ViewChild('deviceManager') deviceManager: WMDevicesComponent;
@@ -91,8 +89,7 @@ export class AppComponent {
     sub;
 
     constructor(private http: Http, private iot: IotService,
-                private dialogService: MdlDialogService, private snack: MdlSnackbarService,
-                 public af: AngularFire){
+                private dialogService: MdlDialogService, private snack: MdlSnackbarService){
         this.getScripts();
 
         iot.onConnected(()=>{
@@ -103,26 +100,13 @@ export class AppComponent {
                 this.devices = payload.devices;
             });
         });
-
-        this.af.auth.subscribe(user => {
-            if(user) {
-                this.user = user;
-                this.user.auth.getToken().then(token => console.log(token));
-            } else {
-                this.user = {};
-            }
-            console.log(this.user);
-
-        });
     }
     login() {
-        this.af.auth.login({
-            provider: AuthProviders.Google
-        });
+        this.iot.login();
     }
     
     logout() {
-        this.af.auth.logout();
+        this.iot.logout();
     }
 
     ngAfterViewInit(){
@@ -133,13 +117,15 @@ export class AppComponent {
 
         this.iot.getWidgets().then((res)=>{
             res.json().forEach(w=> this.addWidget(w));
+        }).catch((res)=> {
+            console.log(res);
         });
 
         
     }
 
     getScripts(){
-        this.http.get("/api/scripts").toPromise().then(res => {
+        this.iot.getScripts().then(res => {
             this.scripts = res.json();
         }).catch(err => {
         
@@ -149,13 +135,11 @@ export class AppComponent {
     createNewScript(){
         let content = '{"Name":"New name"}';
 
-        this.http.post("/api/scripts", content).toPromise().then(res => {
+        this.iot.createScript(content).then(res => {
             let uuid = res.json().ScriptUuid;
             this.getScripts();
             this.attachScript(res.json());
             this.layout.closeDrawer();
-
-
         }).catch(err => {
         
         });
@@ -167,7 +151,7 @@ export class AppComponent {
         r.subscribe(
             ()=>{
                 this.layout.closeDrawer();
-                this.http.delete("/api/script/" + script.ScriptUuid).toPromise().then(res => {
+                this.iot.deleteScript(script.ScriptUuid).then(res => {
                     this.snack.showSnackbar({
                         message:'Script was deleted'
                     });
