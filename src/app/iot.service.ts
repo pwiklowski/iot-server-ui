@@ -18,6 +18,7 @@ class Subscription{
 @Injectable()
 export class IotService{
 
+    static RequestAuthorize = "RequestAuthorize";
     static RequestGetDevices = "RequestGetDevices";
     static RequestGetDeviceResources = "RequestGetDeviceResources";
     static RequestSetValue = "RequestSetValue";
@@ -147,10 +148,28 @@ export class IotService{
 
         this.socket.onopen = (e)=> {
             console.log('Connected!');
-            this.onConnectedCallbacks.forEach((callback)=>{
-                callback();
-            });
-            this.onConnectedCallbacks = [];
+            this.af.auth.subscribe(user => {
+                if (user != null){
+                    user.auth.getToken().then((token) => {
+                        console.log("token " + token);
+                        let h = new Headers({ 'Authorization': token });
+
+                        let req = {
+                            "request":IotService.RequestAuthorize,
+                            "token" : token
+                        };
+                        
+                        this.send(req, (res)=>{
+                            if (res){
+                                this.onConnectedCallbacks.forEach((callback)=>{
+                                    callback();
+                                });
+                                this.onConnectedCallbacks = [];
+                            }
+                        });
+                    });
+                }
+            })
         };
 
         this.socket.onclose = (e) =>{

@@ -57,13 +57,11 @@ type Script struct {
 
 func verifyAccess(auth *firebase.Auth, c *iris.Context) bool {
 	token := c.RequestHeader("Authorization")
-	fmt.Println(token)
 
 	decodedToken, err := auth.VerifyIDToken(token)
 	if err == nil {
 		uid, found := decodedToken.UID()
 		fmt.Println(uid)
-		fmt.Println(found)
 		return found
 	}
 	return false
@@ -88,6 +86,15 @@ func main() {
 	aliasDb := db.C("alias")
 
 	api := iris.New(config.Iris{MaxRequestBodySize: 32 << 20})
+
+	api.Get("/websocketaccess", func(c *iris.Context) {
+		if !verifyAccess(auth, c) {
+			c.JSON(iris.StatusForbidden, nil)
+			return
+		}
+
+		c.JSON(iris.StatusOK, nil)
+	})
 
 	api.Get("/aliases", func(c *iris.Context) {
 		if !verifyAccess(auth, c) {
