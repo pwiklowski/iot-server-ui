@@ -14,7 +14,7 @@ import { DevicePickerComponent } from './devicepicker.component';
 import { WidgetsComponent } from './widgets.component';
 import { WidgetComponent } from './widget.component';
 
-
+import { AngularFire } from 'angularfire2';
 
 import { IotService } from './iot.service';
 
@@ -89,17 +89,9 @@ export class AppComponent {
     sub;
 
     constructor(private http: Http, private iot: IotService,
-                private dialogService: MdlDialogService, private snack: MdlSnackbarService){
-        this.getScripts();
-
-        iot.onConnected(()=>{
-            this.iot.getDevices((payload)=>{
-                this.devices = payload.devices;
-            });
-            this.sub = this.iot.subscribe("EventDeviceListUpdate", {}, (payload)=>{
-                this.devices = payload.devices;
-            });
-        });
+                private dialogService: MdlDialogService, private snack: MdlSnackbarService,
+                private af: AngularFire){
+                    console.log(iot.getUser());
     }
     login() {
         this.iot.login();
@@ -115,10 +107,25 @@ export class AppComponent {
         this.scriptsView = document.getElementById("iot-script-manager");
         this.widgetsView = document.getElementById("iot-widgets-manager");
 
-        this.iot.getWidgets().then((res)=>{
-            res.json().forEach(w=> this.addWidget(w));
-        }).catch((res)=> {
-            console.log(res);
+        this.af.auth.subscribe(user => {
+            console.log("on user", user);
+            if(user) {
+                this.iot.getWidgets().then((res)=>{
+                    res.json().forEach(w=> this.addWidget(w));
+                }).catch((res)=> {
+                    console.log(res);
+                });
+                this.getScripts();
+
+                this.iot.onConnected(()=>{
+                    this.iot.getDevices((payload)=>{
+                        this.devices = payload.devices;
+                    });
+                    this.sub = this.iot.subscribe("EventDeviceListUpdate", {}, (payload)=>{
+                        this.devices = payload.devices;
+                    });
+                });
+            }
         });
 
         

@@ -1,13 +1,16 @@
+<div class="iot-login" *ngIf="!iot.isUserLogged()">
+    <button mdl-button mdl-button-type="raised" mdl-colored="primary"  (click)="login()">
+      Use My Google Account
+    </button>
+</div>
+
 <div>
   <mdl-layout #layout mdl-layout-fixed-header mdl-layout-header-seamed>
     <mdl-layout-header>
       <mdl-layout-header-row>
         <mdl-layout-title>IoT Platform Dashboard</mdl-layout-title>
         <mdl-layout-spacer></mdl-layout-spacer>
-        <button md-raised-button (click)="login()">
-          Use My Google Account
-        </button>
-        <button md-raised-button (click)="logout()">
+        <button mdl-button mdl-button-type="raised" mdl-colored="primary"  (click)="logout()">
           Logout
         </button>
       </mdl-layout-header-row>

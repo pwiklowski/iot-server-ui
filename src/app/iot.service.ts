@@ -50,17 +50,24 @@ export class IotService{
     devices = [];
 
     user = {};
+    isLogged = false;
 
     constructor(private http: Http, public af: AngularFire){
         this.connect();
-        this.refreshAliases();
         this.af.auth.subscribe(user => {
             if(user) {
+                this.isLogged = true;
                 this.user = user;
-            } else {
-                this.user = {};
+                this.refreshAliases();
             }
         });
+    }
+
+    getUser(){
+        return this.user;
+    }
+    isUserLogged(){
+        return this.isLogged;
     }
 
     login(){
@@ -70,6 +77,8 @@ export class IotService{
     }
     logout(){
         this.af.auth.logout();
+        this.user = {};
+        this.isLogged = false;
     }
 
     getAlias(uuid: string){

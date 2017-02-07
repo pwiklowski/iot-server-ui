@@ -35,6 +35,7 @@ import { LogsComponent } from './log.component';
 import { ScriptLogsComponent } from './scriptlog.component';
 
 import { AngularFireModule, AuthMethods, AuthProviders } from "angularfire2";
+import { LoginComponent } from './login.component';
 
 var config = {
   apiKey: "AIzaSyDLXmaIjjBQv3-TzBXoRAYpPZaHqPzH9DY",
@@ -69,6 +70,7 @@ class SanitizeHtml implements PipeTransform  {
     })],
   declarations: [
       AppComponent,
+      LoginComponent,
       DevicePickerComponent,
       DevicesComponent,
       ScriptComponent,
