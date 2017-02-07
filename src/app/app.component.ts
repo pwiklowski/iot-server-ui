@@ -107,28 +107,20 @@ export class AppComponent {
         this.scriptsView = document.getElementById("iot-script-manager");
         this.widgetsView = document.getElementById("iot-widgets-manager");
 
-        this.af.auth.subscribe(user => {
-            console.log("on user", user);
-            if(user) {
-                this.iot.getWidgets().then((res)=>{
-                    res.json().forEach(w=> this.addWidget(w));
-                }).catch((res)=> {
-                    console.log(res);
-                });
-                this.getScripts();
-
-                this.iot.onConnected(()=>{
-                    this.iot.getDevices((payload)=>{
-                        this.devices = payload.devices;
-                    });
-                    this.sub = this.iot.subscribe("EventDeviceListUpdate", {}, (payload)=>{
-                        this.devices = payload.devices;
-                    });
-                });
-            }
+        this.iot.onConnected(()=>{
+            this.iot.getDevices((payload)=>{
+                this.devices = payload.devices;
+            });
+            this.sub = this.iot.subscribe("EventDeviceListUpdate", {}, (payload)=>{
+                this.devices = payload.devices;
+            });
+            this.iot.getWidgets().then((res)=>{
+                res.json().forEach(w=> this.addWidget(w));
+            }).catch((res)=> {
+                console.log(res);
+            });
+            this.getScripts();
         });
-
-        
     }
 
     getScripts(){
