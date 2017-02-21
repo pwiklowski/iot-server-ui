@@ -6,7 +6,7 @@ services:
     volumes:
       - /home/pwiklowski/iot/database:/data/db
     ports:
-      - "27017:27017"
+      - "27018:27017"
     command: mongod --smallfiles
 
   dbbackend:
