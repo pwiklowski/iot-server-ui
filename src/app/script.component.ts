@@ -63,8 +63,13 @@ export class ScriptComponent {
             });
         });
         this.devicePicker.selectionChanged = itemIds => {
-            console.log("data" + itemIds);
-            this.saveDevices(itemIds);
+            let devices = [];
+
+            itemIds.forEach((item)=>{
+                devices.push(item.id);
+            });
+
+            this.saveDevices(devices);
         };
         this.getScript(this.id, null);
         this.getScriptVersions(this.id);
