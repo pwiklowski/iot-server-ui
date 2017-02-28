@@ -29,6 +29,7 @@ export class ScriptComponent {
     scriptVersion: ScriptVersion = new ScriptVersion();
     script: Script = new Script();
     devices = [];
+    selectedDevices = [];
     versions: Array<string> = new Array<string>();
     private sub: Subscription;
     id: string;
@@ -45,7 +46,6 @@ export class ScriptComponent {
         this.iot.onConnected(()=>{
             this.iot.subscribeScript(this.id);
             this.iot.getDevices((payload)=>{
-                console.log(payload);
                 this.devices = payload.devices;
                 let items = [];
                 this.devices.forEach(device => {
@@ -63,13 +63,12 @@ export class ScriptComponent {
             });
         });
         this.devicePicker.selectionChanged = itemIds => {
-            let devices = [];
-
+            this.selectedDevices = [];
             itemIds.forEach((item)=>{
-                devices.push(item.id);
+                this.selectedDevices.push(item.id);
             });
 
-            this.saveDevices(devices);
+            this.saveDevices(this.selectedDevices);
         };
         this.getScript(this.id, null);
         this.getScriptVersions(this.id);

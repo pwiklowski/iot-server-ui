@@ -95,10 +95,20 @@ export class DevicePickerComponent{
 
         this.allItems.forEach(item=>{
             if (item.content.toLowerCase().indexOf(value.value.toLowerCase()) !== -1){
-                this.items.push(item);
+                if (!this.isSelected(item)){
+                    this.items.push(item);
+                }
             }
         });
-
+    }
+    private isSelected(item): boolean{
+        let isSelected = false;
+        this.selectedItems.forEach((i)=>{
+            if (item.id === i){
+                isSelected = true;
+            }
+        });
+        return isSelected;
     }
 
     public add(item){
