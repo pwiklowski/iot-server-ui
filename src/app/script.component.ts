@@ -34,6 +34,7 @@ export class ScriptComponent {
     private sub: Subscription;
     id: string;
     logs: Array<Log> = new Array<Log>();
+    private subDevice;
 
     editorConfig: Object;
     @ViewChild(CodeEditorDirective) codeEditor : CodeEditorDirective;
@@ -45,21 +46,11 @@ export class ScriptComponent {
     ngOnInit() {
         this.iot.onConnected(()=>{
             this.iot.subscribeScript(this.id);
+            this.subDevice = this.iot.subscribe("EventDeviceListUpdate", {}, (payload)=>{
+                this.onDeviceListUpdate(payload.devices);
+            });
             this.iot.getDevices((payload)=>{
-                this.devices = payload.devices;
-                let items = [];
-                this.devices.forEach(device => {
-                    items.push( {
-                        id  : device.id,
-                        text: device.id,
-                        listHtml: `<div style="padding: 5px" ><div style="font-size: 18px">${this.iot.getAlias(device.id)}</div><div style="font-size: 12px" >${device.id}</div></div>`,
-                        inputHtml: `<div style="font-size: 16px"><b>${device.id}</b></div>`,
-                        content: device.id + device.name
-                    });
-                });
-
-                this.codeEditor.setDevices(this.devices);
-                this.devicePicker.setItems(items);
+                this.onDeviceListUpdate(payload.devices);
             });
         });
         this.devicePicker.selectionChanged = itemIds => {
@@ -79,6 +70,22 @@ export class ScriptComponent {
         this.eventEditor.setValue(` { "source": "id", "resource": "res", "value" : {"val":4} } `);
     }
 
+    onDeviceListUpdate(devices){
+        this.devices = devices;
+        let items = [];
+        this.devices.forEach(device => {
+            items.push( {
+                id  : device.id,
+                text: device.id,
+                listHtml: `<div style="padding: 5px" ><div style="font-size: 18px">${this.iot.getAlias(device.id)}</div><div style="font-size: 12px" >${device.id}</div></div>`,
+                inputHtml: `<div style="font-size: 16px"><b>${device.id}</b></div>`,
+                content: device.id + device.name
+            });
+        });
+
+        this.codeEditor.setDevices(this.devices);
+        this.devicePicker.setItems(items);
+    }
     saveDevices(devices){
         let content = {"DeviceUuid": devices};
 
