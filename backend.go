@@ -50,6 +50,7 @@ type Widget struct {
 type Script struct {
 	Id         bson.ObjectId `_id`
 	Name       string
+	Schedule   string
 	ScriptUuid string `bson:"scriptuuid"`
 	DeviceUuid []string
 	Scripts    []ScriptVersion
