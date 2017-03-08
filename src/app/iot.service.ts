@@ -33,6 +33,8 @@ export class IotService{
     static EventDeviceListUpdate = "EventDeviceListUpdate";
     static EventValueUpdate = "EventValueUpdate";
 
+    static RequestReloadSchedule = "RequestReloadSchedule";
+
     static EventLog = "EventLog";
 
     subscriptions = new Map<number, Subscription>();
@@ -278,6 +280,14 @@ export class IotService{
     subscribeDevice(uuid, callback){
         this.send({
             "request": IotService.RequestSubscribeDevice,
+            "uuid" : uuid
+        });
+    }
+
+
+    reloadSchedule(uuid){
+        this.send({
+            "request": IotService.RequestReloadSchedule,
             "uuid" : uuid
         });
     }

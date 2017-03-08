@@ -9,6 +9,9 @@
        placeholder="Enter script name" (keydown.enter)="saveName()" (blur)="saveName()">
     </mdl-textfield>
   </mdl-card-title>
+    <mdl-textfield class="iot-script-cron" type="text" [(ngModel)]="script.Schedule"
+       placeholder="Enter cron schedule" (keydown.enter)="saveCron()" (blur)="saveCron()">
+    </mdl-textfield>
 
   <div class="iot-script-content">
     <device-picker #devicePicker></device-picker>

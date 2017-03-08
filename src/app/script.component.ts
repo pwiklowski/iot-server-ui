@@ -107,6 +107,17 @@ export class ScriptComponent {
             console.error(err);
         });
     }
+
+    saveCron(){
+        console.log("save cron" + this.script.Schedule);
+        let content = '{"Schedule":"'+ this.script.Schedule+'" }';
+
+        this.iot.post("/api/script/" + this.script.ScriptUuid, content).then(res => {
+            this.iot.reloadSchedule(this.script.ScriptUuid);
+        }).catch(err => {
+            console.error(err);
+        });
+    }
     
 
     ngOnDestroy() {
