@@ -286,6 +286,9 @@ func main() {
 		if sentScript.Name != "" {
 			script.Name = sentScript.Name
 		}
+		if sentScript.Schedule != "" {
+			script.Schedule = sentScript.Schedule
+		}
 
 		if sentScript.DeviceUuid != nil {
 			script.DeviceUuid = sentScript.DeviceUuid
