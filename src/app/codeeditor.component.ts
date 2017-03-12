@@ -45,7 +45,7 @@ export class CodeEditorDirective {
                 mode: { name: 'javascript', json: true }
             } 
         );
-        this.editor.setSize("100%", 250);
+        this.editor.setSize("100%", "calc(100% - 100px)");
 
         this.editor.deviceNames = this.deviceNames;
         this.editor.deviceIds = this.deviceIds;

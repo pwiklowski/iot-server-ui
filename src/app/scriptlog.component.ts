@@ -7,6 +7,10 @@ import {LogsComponent} from './log.component';
   selector: '[scriptlogs]',
   templateUrl: `
     <div #logsContainer class="iot-device-logs">
+      <div class="iot-device-logs-handle" (click)="toggleLogsSize()">
+        <mdl-icon *ngIf="!logsOpen">keyboard_arrow_up</mdl-icon>
+        <mdl-icon *ngIf="logsOpen" >keyboard_arrow_down</mdl-icon>
+      </div>
       <div #logsList>
         <div *ngFor="let log of logs">
           {{log}}
@@ -17,20 +21,38 @@ import {LogsComponent} from './log.component';
   `,
   styles:[`
     .iot-device-logs{
-      height: 200px;
+      height: 80px;
       line-height: 12px;
       overflow-y: scroll;
       display: flex;
       flex-flow: column;
       font-size: 11px;
       font-family: monospace;
+      background-color: rgba(255, 255, 255, 100);
+      transition: all 200ms ease-out;
+      margin: 0 10px;
+      border: 1px solid gray;
     }
+    .iot-device-logs-handle{
+      height: 20px;
+      padding: 0 40px;
+      background-color:white;
+      border-top: 1px solid gray;
+      border-left: 1px solid gray;
+      border-right: 1px solid gray;
+      top: -20px;
+      position: absolute;
+      left: calc(50% - 55px);
+      cursor: pointer;
+    }
+
 
   `]
 })
 export class ScriptLogsComponent {
   sub : any;
   logs = [];
+  logsOpen: boolean = false;
   @Input() deviceId: string;
   @ViewChild('logsContainer', { read: ViewContainerRef }) logsContainer: ViewContainerRef;
   @ViewChild('logsList', { read: ViewContainerRef }) logsList: ViewContainerRef;
@@ -49,6 +71,16 @@ export class ScriptLogsComponent {
 
   ngOnDestroy() {
 
+  }
+
+  toggleLogsSize(){
+      if( this.logsContainer.element.nativeElement.style.height == "400px"){
+        this.logsContainer.element.nativeElement.style.height = "80px";
+        this.logsOpen =false;
+      }else{
+        this.logsContainer.element.nativeElement.style.height = "400px";
+        this.logsOpen = true;
+      }
   }
 
   clearLogs(){

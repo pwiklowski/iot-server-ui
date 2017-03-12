@@ -20,8 +20,30 @@ import { IotService } from './iot.service';
       height: 100%;
     }
     .iot-script-content{
-        padding: 10px;
+        position:relative;
+        height: -webkit-calc(100% - 200px)
     }
+    .iot-script-settings{
+        position:relative;
+        height:200px;
+    }
+    .mdl-textfield{
+        padding: 0;
+    }
+
+    .iot-script-log{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        z-index:  500;
+    }
+    .CodeMirror {
+        border: 1px solid #eee;
+        height: auto;
+    }
+
+
+
     `]
 })
 export class ScriptComponent {

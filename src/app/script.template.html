@@ -1,31 +1,30 @@
 <mdl-card class="iot-script" mdl-shadow="2" mdl-card-expand>
-  <mdl-card-menu>
-    <button mdl-button mdl-button-type="icon" mdl-ripple (click)="close()">
-      <mdl-icon>close</mdl-icon>
-    </button>
-  </mdl-card-menu>
-  <mdl-card-title>
-    <mdl-textfield class="iot-script-name" type="text" [(ngModel)]="script.Name"
-       placeholder="Enter script name" (keydown.enter)="saveName()" (blur)="saveName()">
-    </mdl-textfield>
-  </mdl-card-title>
+
+  <div class="iot-script-settings">
+    <mdl-card-menu>
+      <button mdl-button mdl-button-type="icon" mdl-ripple (click)="close()">
+        <mdl-icon>close</mdl-icon>
+      </button>
+    </mdl-card-menu>
+    <mdl-card-title>
+      Name:<mdl-textfield class="iot-script-name" type="text" [(ngModel)]="script.Name"
+        placeholder="Enter script name" (keydown.enter)="saveName()" (blur)="saveName()">
+      </mdl-textfield>
+      <select [ngModel]="scriptVersion.Version" #versionValue (change)="getScript(id, versionValue.value)">
+            <option *ngFor="let version of versions" value="{{version}}">{{version}}</option>
+      </select>
+    </mdl-card-title>
     <mdl-textfield class="iot-script-cron" type="text" [(ngModel)]="script.Schedule"
        placeholder="Enter cron schedule" (keydown.enter)="saveCron()" (blur)="saveCron()">
     </mdl-textfield>
-
-  <div class="iot-script-content">
     <device-picker #devicePicker></device-picker>
-
-    <textarea eventeditor></textarea><br>
-    <textarea #code codeeditor></textarea>
-
-    <select [ngModel]="scriptVersion.Version" #versionValue (change)="getScript(id, versionValue.value)">
-          <option *ngFor="let version of versions" value="{{version}}">{{version}}</option>
-    </select>
-
-    <div scriptlogs></div>
-
-
+    <div id="iot-script-container">
+      <textarea eventeditor></textarea>
+    </div>
+  </div>
+  <div class="iot-script-content">
+    <textarea #code codeeditor></textarea><br>
+    <div class="iot-script-log" scriptlogs></div>
   </div>
 
   <mdl-card-actions mdl-card-border>
