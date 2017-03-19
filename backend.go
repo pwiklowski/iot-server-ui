@@ -75,7 +75,7 @@ func main() {
 
 	auth, _ := firebase.GetAuth()
 
-	session, err := mgo.Dial("127.0.0.1:27018")
+	session, err := mgo.Dial("127.0.0.1:27017")
 	if err != nil {
 		panic(err)
 	}
