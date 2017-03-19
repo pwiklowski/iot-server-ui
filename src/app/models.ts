@@ -9,6 +9,7 @@ export class Script {
 	Id: string;
     Name: string;
 	ScriptUuid: string;
+    Schedule: string;
 	DeviceUuid: Array<string>;
 }
 export class ScriptVersion{
