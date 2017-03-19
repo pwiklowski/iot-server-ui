@@ -154,7 +154,7 @@ export class IotService{
 
 
     connect(){
-        this.socket = new WebSocket("ws://127.0.0.1:7002/");
+        this.socket = new WebSocket("ws://"+window.location.hostname+":"+window.location.port+"/ws/");
         this.socket.onmessage = (e) => { this.onMessage(e);} ;
 
         this.socket.onopen = (e)=> {
