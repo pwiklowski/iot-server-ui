@@ -10,6 +10,7 @@ services:
     command: mongod --smallfiles
 
   dbbackend:
+    restart: unless-stoppped
     ports:
       - "7001:7001"
     build:
@@ -24,6 +25,7 @@ services:
       dockerfile: Dockerfile-iot-server
 
   webui:
+    restart: unless-stoppped
     network_mode: "host"
     build:
       context: .
