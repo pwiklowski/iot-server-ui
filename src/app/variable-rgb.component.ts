@@ -17,16 +17,19 @@ import {IotService} from './iot.service';
           min="0"
           max="255"
           [(ngModel)]="red" 
+           [disabled]="isReadOnly()" 
           (ngModelChange)="onChange(r, $event)"> 
         </mdl-slider>
         Green:<br>
         <mdl-slider #g type="range" min="0" max="255"
           [(ngModel)]="green" 
+           [disabled]="isReadOnly()" 
           (ngModelChange)="onChange(g, $event)"> 
         </mdl-slider>
         Blue:<br>
         <mdl-slider #b type="range" min="0" max="255"
           [(ngModel)]="blue" 
+           [disabled]="isReadOnly()" 
           (ngModelChange)="onChange(b, $event)">
         </mdl-slider>
     </div>`})
@@ -54,12 +57,12 @@ export class VariableColourRgbComponent extends VariableComponent {
     });
   }
 
-  init(di, name, value) {
-    this.di = di;
-    this.name = name;
-    this.rawValue = JSON.stringify(value);
+  init(di, name, variable) {
+    super.init(di, name, variable);
+
+    this.rawValue = JSON.stringify(variable.values);
     setTimeout(()=>{
-      this.setValues(value);
+      this.setValues(variable.values);
     }, 100); 
   }
 

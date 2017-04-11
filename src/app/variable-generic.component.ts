@@ -8,18 +8,15 @@ import { VariableComponent } from './variable.component';
     selector: '[variable]',
     template: `
     <div>
-        <b>{{href}}</b><br>
+        <b>{{name}}</b><br>
          <div class="iot-device-raw-value">{{values}}</div>
     </div>`,
 })
 export class VariableGenericComponent extends VariableComponent {
-    href: String;
     values: any;
-    init(name, href, values){
-        this.name = name;
-        this.href = href;
-        this.values =  JSON.stringify(values);
+    init(name, href, variables){
+        super.init(name, href, variables);
+        this.values =  JSON.stringify(variables.values);
     }
 }
-
 

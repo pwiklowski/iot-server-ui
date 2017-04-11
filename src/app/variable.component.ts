@@ -19,9 +19,16 @@ import { MapToIterable } from './pipes';
 export class VariableComponent {
     name: string;
     di: string;
+    variable: string;
 
-    init(di, name, value){
+    init(di, name, variable){
+        this.name = name;
+        this.di = di;
+        this.variable = variable;
+    }
 
+    isReadOnly(){
+        return this.variable["if"] === "oic.if.r";
     }
 }
 

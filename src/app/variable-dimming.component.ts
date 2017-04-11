@@ -46,15 +46,14 @@ export class VariableLightDimmingComponent extends VariableComponent {
     });
   }
 
-  init(di, name, value) {
-    this.rawValue = JSON.stringify(value);
-    this.name = name;
-    this.di = di;
-    this.min = value["range"].split(",")[0];
-    this.max = value["range"].split(",")[1];
+  init(di, name, variable) {
+    super.init(di, name, variable);
+    this.rawValue = JSON.stringify(variable.values);
+    this.min = variable.values["range"].split(",")[0];
+    this.max = variable.values["range"].split(",")[1];
     
     setTimeout(()=>{
-      this.value = value["dimmingSetting"];
+      this.value = variable.values["dimmingSetting"];
     }, 10); 
   }
   

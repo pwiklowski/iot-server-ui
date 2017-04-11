@@ -14,7 +14,7 @@ import {IotService} from './iot.service';
     <div class="iot-resource">
       <b>{{name}}</b>
       <div class="iot-device-raw-value">{{rawValue}}</div>
-      <mdl-switch [(ngModel)]="value" (change)="onChange($event)"></mdl-switch>
+      <mdl-switch [(ngModel)]="value" (change)="onChange($event)"  [disabled]="isReadOnly()" ></mdl-switch>
     </div>`
 })
 export class VariableBinnaryComponent extends VariableComponent {
@@ -40,15 +40,16 @@ export class VariableBinnaryComponent extends VariableComponent {
     });
   }
 
-  init(di, name, value) {
-    this.name = name;
-    this.di = di;
+  init(di, name, variable) {
+    super.init(di, name, variable);
     
     setTimeout(()=>{
-      this.value = value["value"];
-      this.rawValue = JSON.stringify(value);
+      this.value = variable.values["value"];
+      this.rawValue = JSON.stringify(variable.values);
     }, 10); 
   }
+
+
 
   onChange(e){
     console.log(e);
