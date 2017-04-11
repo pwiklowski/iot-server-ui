@@ -8,17 +8,18 @@ import { VariableComponent } from './variable.component';
     selector: '[variable]',
     template: `
     <div>
-        {{name}}
-        <div *ngFor="let v of value | mapToIterable">
-            {{v.key}}: {{ v.value}}
-        </div>
+        <b>{{href}}</b><br>
+         <div class="iot-device-raw-value">{{values}}</div>
     </div>`,
 })
 export class VariableGenericComponent extends VariableComponent {
-    value;
-    init(name, value){
+    href: String;
+    values: any;
+    init(name, href, values){
         this.name = name;
-        this.value = value;
+        this.href = href;
+        this.values =  JSON.stringify(values);
     }
 }
+
 
