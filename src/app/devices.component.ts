@@ -52,10 +52,10 @@ export class DevicesComponent {
                 this.variables = payload;
                 payload.forEach(v => {
                     let factory = this.componentFactoryResolver.resolveComponentFactory(
-                        this.variableComponentFactory(v.values["rt"]));
+                        this.variableComponentFactory(v.rt));
 
                     let c = this.container.createComponent(factory);  
-                    (<any>c.instance).init(this.id, v.name, v.values);
+                    (<any>c.instance).init(this.id, v.href, v.values);
 
                     this.variablesComponents[v.name] = c;
                 });
