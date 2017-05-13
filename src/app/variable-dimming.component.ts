@@ -19,6 +19,7 @@ import {IotService} from './iot.service';
           type="range"
           min="{{min}}"
           max="{{max}}"
+          [disabled]="isReadOnly()"
           (ngModelChange)="updateValue($event)">
         </mdl-slider>
     </div>`
