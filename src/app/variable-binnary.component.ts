@@ -52,7 +52,6 @@ export class VariableBinnaryComponent extends VariableComponent {
 
 
   onChange(e){
-    console.log(e);
     this.updateValue(e);
   }
  
