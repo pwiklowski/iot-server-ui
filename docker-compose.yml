@@ -1,29 +1,6 @@
 version: '2'
 
 services:
-  mongo:  
-    image: mvertes/alpine-mongo:3.2.3
-    volumes:
-      - /home/pwiklowski/iot/database:/data/db
-    ports:
-      - "27017:27017"
-    command: mongod --smallfiles
-
-  dbbackend:
-    restart: unless-stoppped
-    ports:
-      - "7001:7001"
-    build:
-      context: .
-      dockerfile: Dockerfile-gobackend
-  
-  iotserver:
-    restart: unless-stoppped
-    network_mode: "host"
-    build:
-      context: .
-      dockerfile: Dockerfile-iot-server
-
   webui:
     restart: unless-stoppped
     network_mode: "host"
