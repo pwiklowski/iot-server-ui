@@ -33,7 +33,7 @@ export class VariableBinnaryComponent extends VariableComponent {
   
   ngAfterViewInit(){
     this.iot.onConnected(() => {
-      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.di, resource: this.name }, (data) => {
+      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.di, resource: this.resource }, (data) => {
         this.value = data.value["value"];
         this.rawValue = JSON.stringify(data.value);
       });
@@ -53,7 +53,7 @@ export class VariableBinnaryComponent extends VariableComponent {
 
   onChange(e){
     console.log(e);
-    this.updateValue(e.checked);
+    this.updateValue(e);
   }
  
   
@@ -61,6 +61,6 @@ export class VariableBinnaryComponent extends VariableComponent {
     let obj = {
       "value": value
     };
-    this.iot.setValue(this.di, this.name, obj);
+    this.iot.setValue(this.di, this.resource, obj);
   }
 }

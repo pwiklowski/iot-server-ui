@@ -17,6 +17,7 @@ import { MapToIterable } from './pipes';
     </div>`,
 })
 export class VariableComponent {
+    resource: string;
     name: string;
     di: string;
     variable: string;
@@ -25,6 +26,7 @@ export class VariableComponent {
         this.name = name;
         this.di = di;
         this.variable = variable;
+        this.resource = variable["href"];
     }
 
     isReadOnly(){
