@@ -39,7 +39,7 @@ export class VariableLightDimmingComponent extends VariableComponent {
   
   ngAfterViewInit(){
     this.iot.onConnected(() => {
-      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.di, resource: this.name }, (data) => {
+      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.di, resource: this.resource }, (data) => {
         this.value = data.value["dimmingSetting"];
         this.rawValue = JSON.stringify(data.value);
       });
