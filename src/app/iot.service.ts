@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
-import { AngularFire, AuthProviders } from 'angularfire2';
 
 class Subscription{
     callback;
@@ -54,15 +53,8 @@ export class IotService{
     user = {};
     isLogged = false;
 
-    constructor(private http: Http, public af: AngularFire){
+    constructor(private http: Http){
         this.connect();
-        this.af.auth.subscribe(user => {
-            if(user) {
-                this.isLogged = true;
-                this.user = user;
-                this.refreshAliases();
-            }
-        });
     }
 
     getUser(){
@@ -73,12 +65,8 @@ export class IotService{
     }
 
     login(){
-        this.af.auth.login({
-            provider: AuthProviders.Google
-        });
     }
     logout(){
-        this.af.auth.logout();
         this.user = {};
         this.isLogged = false;
     }

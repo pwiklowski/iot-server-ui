@@ -2,14 +2,16 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule }   from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, PreloadAllModules } from '@angular/router';
 import { MdlModule } from 'angular2-mdl';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
 import { ENV_PROVIDERS } from './environment';
 import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home.component';
 import { IotService } from './iot.service';
+import { AuthService } from './auth.service';
 import { DeviceComponent } from './device.component';
 
 import { WMScriptsComponent } from './wm-scripts.component';
@@ -34,18 +36,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LogsComponent } from './log.component';
 import { ScriptLogsComponent } from './scriptlog.component';
 
-import { AngularFireModule, AuthMethods, AuthProviders } from "angularfire2";
 import { LoginComponent } from './login.component';
-
-var config = {
-  apiKey: "AIzaSyDLXmaIjjBQv3-TzBXoRAYpPZaHqPzH9DY",
-  authDomain: "iot-platform-ea00a.firebaseapp.com",
-  databaseURL: "https://iot-platform-ea00a.firebaseio.com",
-  storageBucket: "iot-platform-ea00a.appspot.com",
-  messagingSenderId: "1063396342049"
-}
-
-
+import { RouterModule} from '@angular/router';
 
 @Pipe({
     name: 'sanitizeHtml'
@@ -64,12 +56,11 @@ class SanitizeHtml implements PipeTransform  {
     FormsModule,
     MdlModule,
     HttpModule,
-    AngularFireModule.initializeApp(config, {
-      provider: AuthProviders.Google,
-      method: AuthMethods.Popup
-    })],
+    RouterModule.forRoot(ROUTES)
+    ],
   declarations: [
       AppComponent,
+      HomeComponent,
       LoginComponent,
       DevicePickerComponent,
       DevicesComponent,
@@ -102,7 +93,7 @@ class SanitizeHtml implements PipeTransform  {
       WidgetComponent
   ],
   bootstrap: [ AppComponent ],
-  providers: [ENV_PROVIDERS, IotService, AppComponent],
+  providers: [ENV_PROVIDERS, IotService, AppComponent, AuthService],
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef) {}
