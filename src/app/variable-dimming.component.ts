@@ -12,7 +12,7 @@ import {IotService} from './iot.service';
   selector: '[variable]',
   template: `
     <div class="iot-resource">
-        <b>{{name}}</b>
+        <b>{{ getName() }}</b>
         <div class="iot-device-raw-value">{{rawValue}}</div>
         <mdl-slider #slider
           [(ngModel)]="value" 
@@ -39,21 +39,23 @@ export class VariableLightDimmingComponent extends VariableComponent {
   
   ngAfterViewInit(){
     this.iot.onConnected(() => {
-      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.di, resource: this.name }, (data) => {
+      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.uuid, resource: this.name }, (data) => {
         this.value = data.value["dimmingSetting"];
         this.rawValue = JSON.stringify(data.value);
       });
     });
   }
 
-  init(di, name, variable) {
-    super.init(di, name, variable);
-    this.rawValue = JSON.stringify(variable.values);
-    this.min = variable.values["range"].split(",")[0];
-    this.max = variable.values["range"].split(",")[1];
+  init(di, variable) {
+    super.init(di, variable);
+    this.rawValue = JSON.stringify(variable.value);
+    console.log(variable);
+
+    this.min = variable.value["range"].split(",")[0];
+    this.max = variable.value["range"].split(",")[1];
     
     setTimeout(()=>{
-      this.value = variable.values["dimmingSetting"];
+      this.value = variable.value["dimmingSetting"];
     }, 10); 
   }
   
@@ -61,6 +63,6 @@ export class VariableLightDimmingComponent extends VariableComponent {
     let obj = {
       "dimmingSetting": parseInt(value)
     };
-    this.iot.setValue(this.di, this.name, obj);
+    this.iot.setValue(this.uuid, this.name, obj);
   }
 }

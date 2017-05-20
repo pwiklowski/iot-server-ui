@@ -158,8 +158,8 @@ export class IotService{
         this.send(IotService.RequestGetDeviceResources,{"uuid" : uuid}, callback);
     }
 
-    setValue(di, variable, value){
-        this.send(IotService.RequestSetValue, {"di" : di, "resource" : variable, "value" : value });
+    setValue(uuid, variable, value){
+        this.send(IotService.RequestSetValue, {"uuid" : uuid, "resource" : variable, "value" : value });
     }
 
     subscribeDevice(uuid, callback){

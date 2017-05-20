@@ -12,7 +12,7 @@ import {IotService} from './iot.service';
   selector: '[variable]',
   template: `
     <div class="iot-resource">
-      <b>{{name}}</b>
+      <b>{{ getName() }}</b>
       <div class="iot-device-raw-value">{{rawValue}}</div>
       <mdl-switch [(ngModel)]="value" (change)="onChange($event)"  [disabled]="isReadOnly()" ></mdl-switch>
     </div>`
@@ -28,39 +28,34 @@ export class VariableBinnaryComponent extends VariableComponent {
 
   constructor(private iot : IotService) {
     super();
-
   }
   
   ngAfterViewInit(){
     this.iot.onConnected(() => {
-      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.di, resource: this.resource }, (data) => {
+      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.uuid , resource: this.getResource() }, (data) => {
         this.value = data.value["value"];
         this.rawValue = JSON.stringify(data.value);
       });
     });
   }
 
-  init(di, name, variable) {
-    super.init(di, name, variable);
+  init(uuid, variable) {
+    super.init(uuid, variable);
     
     setTimeout(()=>{
-      this.value = variable.values["value"];
-      this.rawValue = JSON.stringify(variable.values);
+      this.value = variable.value["value"];
+      this.rawValue = JSON.stringify(variable.value);
     }, 10); 
   }
 
-
-
   onChange(e){
-    console.log(e);
     this.updateValue(e);
   }
- 
   
   updateValue(value){
     let obj = {
       "value": value
     };
-    this.iot.setValue(this.di, this.resource, obj);
+    this.iot.setValue(this.uuid, this.resource, obj);
   }
 }

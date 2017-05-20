@@ -19,14 +19,21 @@ import { MapToIterable } from './pipes';
 export class VariableComponent {
     resource: string;
     name: string;
-    di: string;
-    variable: string;
+    uuid: string;
+    variable;
 
-    init(di, name, variable){
-        this.name = name;
-        this.di = di;
+    init(uuid, variable){
+        this.uuid = uuid;
         this.variable = variable;
-        this.resource = variable["href"];
+        this.variable.value = JSON.parse(this.variable.value);
+    }
+
+    getName(){
+        return this.variable["n"];
+    }
+
+    getResource(){
+        return this.variable["href"];
     }
 
     isReadOnly(){

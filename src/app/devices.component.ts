@@ -28,9 +28,8 @@ import { MapToIterable } from './pipes';
     `]
 })
 export class DevicesComponent {
-    id: string;
+    uuid: string;
     device: Device = new Device();
-    variables: Array<DeviceVariable> = new Array<DeviceVariable>();
     onClose = undefined;
     @ViewChild('container', { read: ViewContainerRef })
     container: ViewContainerRef;
@@ -47,23 +46,19 @@ export class DevicesComponent {
 
     ngOnInit() {
         this.iot.onConnected(()=>{
-            this.iot.subscribeDevice(this.id, null);
-            this.iot.getDeviceResources(this.id, (payload)=>{
-                this.variables = payload;
-                payload.forEach(v => {
-                    let factory = this.componentFactoryResolver.resolveComponentFactory(
-                        this.variableComponentFactory(v.rt));
+            this.iot.subscribeDevice(this.uuid, null);
+            this.device.variables.forEach(v => {
+                let factory = this.componentFactoryResolver.resolveComponentFactory(this.variableComponentFactory(v.rt));
 
-                    let c = this.container.createComponent(factory);  
-                    (<any>c.instance).init(this.id, v.n , v);
+                let c = this.container.createComponent(factory);  
+                (<any>c.instance).init(this.uuid, v);
 
-                    this.variablesComponents[v.name] = c;
-                });
+                this.variablesComponents[v.name] = c;
             });
         });
     }
     ngOnDestroy(){
-        this.iot.unsubscribeDevice(this.id);
+        this.iot.unsubscribeDevice(this.uuid);
     }
 
     variableComponentFactory(rt) : any{

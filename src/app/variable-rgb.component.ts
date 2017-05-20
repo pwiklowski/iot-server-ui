@@ -9,7 +9,7 @@ import {IotService} from './iot.service';
 
 @Component({selector: '[variable]', template: `
     <div class="iot-resource">
-        <b>{{ name}}</b>
+        <b>{{ getName() }}</b>
         <div class="iot-device-raw-value">{{rawValue}}</div>
         Red:<br>
         <mdl-slider #r 
@@ -50,19 +50,19 @@ export class VariableColourRgbComponent extends VariableComponent {
   }
   ngAfterViewInit(){
     this.iot.onConnected(() => {
-      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.di, resource: this.name }, (data) => {
+      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.uuid, resource: this.name }, (data) => {
         this.setValues(data.value);
         this.rawValue = JSON.stringify(data.value);
       });
     });
   }
 
-  init(di, name, variable) {
-    super.init(di, name, variable);
+  init(uuid, variable) {
+    super.init(uuid, variable);
 
-    this.rawValue = JSON.stringify(variable.values);
+    this.rawValue = JSON.stringify(variable.value);
     setTimeout(()=>{
-      this.setValues(variable.values);
+      this.setValues(variable.value);
     }, 100); 
   }
 
@@ -84,6 +84,6 @@ export class VariableColourRgbComponent extends VariableComponent {
     let obj = {
       "dimmingSetting": red + "," + green + "," + blue
     };
-    this.iot.setValue(this.di, this.name, obj);
+    this.iot.setValue(this.uuid, this.name, obj);
   }
 }

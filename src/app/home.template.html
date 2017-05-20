@@ -22,10 +22,10 @@
       <mdl-layout-title>Devices</mdl-layout-title>
       <nav class="mdl-navigation">
         <template ngFor let-hub [ngForOf]="hubs">
-          <mdl-layout-title>{{ hub.Name }}</mdl-layout-title>
+          <mdl-layout-title>{{ hub.name }}</mdl-layout-title>
           <template ngFor let-device [ngForOf]="hub.devices">
             <div class="mdl-navigation__link" (click)="attachDevice(device);  layout.toggleDrawer()">
-              {{ device.Name }}
+              {{ device.name }}
             </div>
           </template>
         </template>

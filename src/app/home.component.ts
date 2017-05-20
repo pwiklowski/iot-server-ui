@@ -159,7 +159,7 @@ export class HomeComponent {
         this.redraw();
 
         this.deviceManager.attach(DevicesComponent, (d)=>{
-            d.instance.id = device.id;
+            d.instance.uuid = device.uuid;
             d.instance.device = device;
             this.redraw();
         }, ()=>{
