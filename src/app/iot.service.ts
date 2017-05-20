@@ -18,7 +18,7 @@ class Subscription{
 @Injectable()
 export class IotService{
 
-    static IOT_CLOUD_URL = "ws://127.0.0.1:12345/connect";
+    static IOT_CLOUD_URL = "ws://127.0.0.1:12345/connectClient";
 
     static RequestAuthorize = "RequestAuthorize";
     static RequestGetDevices = "RequestGetDevices";
@@ -66,15 +66,16 @@ export class IotService{
         this.socket.onmessage = (e) => { this.onMessage(e);} ;
 
         this.socket.onopen = (e)=> {
-            console.log('Connected!');
-
+            console.log('Connected!', this.socket.readyState);
+            if (this.socket.readyState != 1) return;
 
             let req = {
                 "token" : this.auth.getToken()
             };
             
             this.send(IotService.RequestAuthorize, req, (res)=>{
-                if (res){
+                console.log(res);
+                if (res.status == "ok"){
                     this.onConnectedCallbacks.forEach((callback)=>{
                         callback();
                     });
@@ -171,7 +172,6 @@ export class IotService{
 
     subscribe(event, params, callback): number {
         let s = new Subscription(event, params, callback);
-
         this.subscriptionId++;
         this.subscriptions[this.subscriptionId] = s;
         return this.subscriptionId;

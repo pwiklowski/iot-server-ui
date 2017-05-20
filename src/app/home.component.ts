@@ -70,7 +70,7 @@ import { AuthService } from "./auth.service";
     `]
 })
 export class HomeComponent {
-    devices: Array<Device> = new Array<Device>();
+    hubs;
     scripts: Array<Script> = new Array<Script>();
     showScript : boolean = false;
     showDevice: boolean = false;
@@ -111,10 +111,10 @@ export class HomeComponent {
 
         this.iot.onConnected(()=>{
             this.iot.getDevices((payload)=>{
-                this.devices = payload.devices;
+                this.hubs= payload.hubs;
             });
             this.sub = this.iot.subscribe("EventDeviceListUpdate", {}, (payload)=>{
-                this.devices = payload.devices;
+                this.hubs= payload.hubs;
             });
         });
     }

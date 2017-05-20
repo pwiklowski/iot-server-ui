@@ -21,22 +21,16 @@
     <mdl-layout-drawer>
       <mdl-layout-title>Devices</mdl-layout-title>
       <nav class="mdl-navigation">
-        <template ngFor let-device [ngForOf]="devices">
-          <div class="mdl-navigation__link" (click)="attachDevice(device);  layout.toggleDrawer()">
-            {{ device.id | deviceAlias}}
-          </div>
+        <template ngFor let-hub [ngForOf]="hubs">
+          <mdl-layout-title>{{ hub.Name }}</mdl-layout-title>
+          <template ngFor let-device [ngForOf]="hub.devices">
+            <div class="mdl-navigation__link" (click)="attachDevice(device);  layout.toggleDrawer()">
+              {{ device.Name }}
+            </div>
+          </template>
         </template>
       </nav>
-      <mdl-layout-title>Scripts</mdl-layout-title>
-      <nav class="mdl-navigation">
-        <template ngFor let-script [ngForOf]="scripts">
-          <div class="mdl-navigation__link" (click)="attachScript(script); layout.toggleDrawer()">
-            {{ script.Name }}
-          <mdl-icon class="iot-delete-icon" (click)="deleteScript($event, script)">delete</mdl-icon>
-          </div>
-        </template>
-      </nav>
-    </mdl-layout-drawer>
+     </mdl-layout-drawer>
     <mdl-layout-content id="iot-container" (window:resize)="redraw()">
       <div id="iot-content">
         <div id="iot-script-manager" wm #scriptManager></div>
