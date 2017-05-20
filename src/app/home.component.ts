@@ -116,57 +116,10 @@ export class HomeComponent {
             this.sub = this.iot.subscribe("EventDeviceListUpdate", {}, (payload)=>{
                 this.devices = payload.devices;
             });
-            this.iot.getWidgets().then((res)=>{
-                res.json().forEach(w=> this.addWidget(w));
-            }).catch((res)=> {
-                console.log(res);
-            });
-            this.getScripts();
         });
     }
 
-    getScripts(){
-        this.iot.getScripts().then(res => {
-            this.scripts = res.json();
-        }).catch(err => {
-        
-        });
-    }
-
-    createNewScript(){
-        let content = '{"Name":"New name"}';
-
-        this.iot.createScript(content).then(res => {
-            let uuid = res.json().ScriptUuid;
-            this.getScripts();
-            this.attachScript(res.json());
-            this.layout.closeDrawer();
-        }).catch(err => {
-        
-        });
-
-    }
-    deleteScript(event, script){
-        event.stopPropagation();
-        let r = this.dialogService.confirm('Are you sure ?', 'No', 'Yes');
-        r.subscribe(
-            ()=>{
-                this.layout.closeDrawer();
-                this.iot.deleteScript(script.ScriptUuid).then(res => {
-                    this.snack.showSnackbar({
-                        message:'Script was deleted'
-                    });
-                    this.getScripts();
-                }).catch(err => {
-                    console.error(err);
-                });
-            },
-            (err: any) => {
-
-            }
-        );
-    }
-
+   
     isDeviceMenuOpen = false;
     isScriptMenuOpen = false;
 

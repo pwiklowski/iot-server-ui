@@ -60,76 +60,6 @@ export class IotService{
         this.connect();
     }
 
-    getAlias(uuid: string){
-        if (this.deviceAliases[uuid] !== undefined ){
-            return this.deviceAliases[uuid];
-        }else{
-            for(let device of this.devices){
-                if (device.id == uuid){
-                    return device.name;
-                }
-            }
-        }
-        return uuid;
-    }
-    getScripts(){
-        return this.get("/api/scripts");
-    }
-
-    createScript(data){
-        return this.post("/api/scripts", data);
-    }
-    deleteScript(uuid){
-        return this.delete("/api/script/"+uuid);
-    }
-
-    refreshAliases(){
-        this.get("/api/aliases").then(res => {
-            if (res.json().Alias !== null)
-                this.deviceAliases = res.json().Alias;
-        }).catch(err => {
-            console.error(err);
-        });
-    }
-
-    getWidgets(){
-        return this.get("/api/widgets");
-    }
-
-    get(url){
-        return new Promise<Response>((resolve, reject)=>{
-            this.af.auth.subscribe(user => {
-                user.auth.getToken().then((token) => {
-                    let h = new Headers({ 'Authorization': token });
-                    return this.http.get(url, {headers: h}).toPromise().then(res => resolve(res)).catch(err => reject(err));
-                });
-            });
-        });
-    }
-
-    post(url, data){
-        return new Promise<Response>((resolve, reject)=>{
-            this.af.auth.subscribe(user => {
-                user.auth.getToken().then((token) => {
-                    let h = new Headers({ 'Authorization': token });
-                    return this.http.post(url, data, {headers: h}).toPromise().then(res => resolve(res)).catch(err => reject(err));
-                });
-            });
-        });
-    }
-
-    delete(url){
-        return new Promise<Response>((resolve, reject)=>{
-            this.af.auth.subscribe(user => {
-                user.auth.getToken().then((token) => {
-                    let h = new Headers({ 'Authorization': token });
-                    return this.http.delete(url, {headers: h}).toPromise().then(res => resolve(res)).catch(err => reject(err));
-                });
-            });
-        });
-    }
-
-
     connect(){
         if (this.auth.getToken() == undefined) return;
         this.socket = new WebSocket(IotService.IOT_CLOUD_URL);
@@ -220,68 +150,23 @@ export class IotService{
     }
 
     getDevices(callback){
-        this.send({"request": IotService.RequestGetDevices}, callback);
+        this.send(IotService.RequestGetDevices, null, callback);
     }
 
     getDeviceResources(uuid, callback){
-        this.send({
-            "request": IotService.RequestGetDeviceResources,
-            "uuid" : uuid
-        }, callback);
-    }
-
-    runScript(uuid, obj){
-        this.send({
-            "request": IotService.RequestRunScript,
-            "uuid": uuid,
-            "object" : obj
-        
-        });
+        this.send(IotService.RequestGetDeviceResources,{"uuid" : uuid}, callback);
     }
 
     setValue(di, variable, value){
-        this.send({
-            "request": IotService.RequestSetValue,
-            "di" : di,
-            "resource" : variable,
-            "value" : value
-        });
+        this.send(IotService.RequestSetValue, {"di" : di, "resource" : variable, "value" : value });
     }
 
     subscribeDevice(uuid, callback){
-        this.send({
-            "request": IotService.RequestSubscribeDevice,
-            "uuid" : uuid
-        });
-    }
-
-
-    reloadSchedule(uuid){
-        this.send({
-            "request": IotService.RequestReloadSchedule,
-            "uuid" : uuid
-        });
+        this.send(IotService.RequestSubscribeDevice,{"uuid" : uuid});
     }
 
     unsubscribeDevice(uuid){
-        this.send({
-            "request": IotService.RequestUnsubscribeDevice,
-            "uuid" : uuid
-        });
-    }
-
-    subscribeScript(uuid){
-        this.send({
-            "request": IotService.RequestSubscribeScript,
-            "uuid" : uuid
-        });
-    }
-
-    unsubscribeScript(uuid){
-        this.send({
-            "request": IotService.RequestUnsubscribeScript,
-            "uuid" : uuid
-        });
+        this.send(IotService.RequestUnsubscribeDevice,{"uuid" : uuid});
     }
 
     subscribe(event, params, callback): number {
