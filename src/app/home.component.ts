@@ -92,8 +92,7 @@ export class HomeComponent {
                 private dialogService: MdlDialogService,
                 private snack: MdlSnackbarService,
                 private auth: AuthService) {
-
-
+        this.iot.connect();
     }
 
     login() {

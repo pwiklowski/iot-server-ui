@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
+import { AuthService } from "./auth.service";
 
 class Subscription{
     callback;
@@ -16,6 +17,8 @@ class Subscription{
 
 @Injectable()
 export class IotService{
+
+    static IOT_CLOUD_URL = "ws://127.0.0.1:12345/connect";
 
     static RequestAuthorize = "RequestAuthorize";
     static RequestGetDevices = "RequestGetDevices";
@@ -53,22 +56,8 @@ export class IotService{
     user = {};
     isLogged = false;
 
-    constructor(private http: Http){
+    constructor(private http: Http, private auth: AuthService){
         this.connect();
-    }
-
-    getUser(){
-        return this.user;
-    }
-    isUserLogged(){
-        return this.isLogged;
-    }
-
-    login(){
-    }
-    logout(){
-        this.user = {};
-        this.isLogged = false;
     }
 
     getAlias(uuid: string){
@@ -142,33 +131,26 @@ export class IotService{
 
 
     connect(){
-        this.socket = new WebSocket("ws://"+window.location.hostname+":"+window.location.port+"/ws/");
+        if (this.auth.getToken() == undefined) return;
+        this.socket = new WebSocket(IotService.IOT_CLOUD_URL);
         this.socket.onmessage = (e) => { this.onMessage(e);} ;
 
         this.socket.onopen = (e)=> {
             console.log('Connected!');
-            this.af.auth.subscribe(user => {
-                if (user != null){
-                    user.auth.getToken().then((token) => {
-                        console.log("token " + token);
-                        let h = new Headers({ 'Authorization': token });
 
-                        let req = {
-                            "request":IotService.RequestAuthorize,
-                            "token" : token
-                        };
-                        
-                        this.send(req, (res)=>{
-                            if (res){
-                                this.onConnectedCallbacks.forEach((callback)=>{
-                                    callback();
-                                });
-                                this.onConnectedCallbacks = [];
-                            }
-                        });
+
+            let req = {
+                "token" : this.auth.getToken()
+            };
+            
+            this.send(IotService.RequestAuthorize, req, (res)=>{
+                if (res){
+                    this.onConnectedCallbacks.forEach((callback)=>{
+                        callback();
                     });
+                    this.onConnectedCallbacks = [];
                 }
-            })
+            });
         };
 
         this.socket.onclose = (e) =>{
@@ -178,9 +160,10 @@ export class IotService{
 
     }
 
-    private send(request, callback=undefined){
+    private send(name, payload, callback=undefined){
         let message = {
-            "payload": request
+            "name" : name,
+            "payload": payload
         };
 
         if (callback !== undefined){
@@ -310,7 +293,7 @@ export class IotService{
     }
         
     onConnected(callback){
-        if (this.socket.readyState == 1)
+        if (this.socket != undefined && this.socket.readyState == 1)
             callback();
         else
             this.onConnectedCallbacks.push(callback);

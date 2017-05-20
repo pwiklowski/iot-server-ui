@@ -26,4 +26,11 @@ export class AuthService{
   setToken(token:string){
     this.token = token;
   }
+  getToken(){
+    return this.token;
+  }
+
+  isLogged(){
+    return this.getToken() != undefined;
+  }
 }

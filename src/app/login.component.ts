@@ -8,10 +8,12 @@ export class LoginComponent {
   constructor(private iot : IotService, private router: Router, private auth: AuthService) {
    router.events.subscribe(s => {
         let params = new URLSearchParams(s.url.split('#')[1]);
+        console.log(params);
         let access_token = params.get('access_token');
-        auth.setToken(access_token)
-
-        router.navigate(["/"]);
+        if (access_token != null){
+          auth.setToken(access_token)
+          router.navigate(["/home"]);
+        }
     });
   }
 }
