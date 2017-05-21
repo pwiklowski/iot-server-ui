@@ -123,12 +123,12 @@ export class IotService{
 
     private onMessage(e){
         let data = JSON.parse(e.data);
-        let event = data.event;
+        let name = data.name;
         let mid = data.mid; 
 
         let callback = this.callbacks[mid];
 
-        if (event== IotService.EventDeviceListUpdate){
+        if (name == IotService.EventDeviceListUpdate){
             this.devices = data.payload.devices;
             console.log(this.devices);
         }
@@ -139,15 +139,13 @@ export class IotService{
         }else{
             for(let sub in this.subscriptions){
                 let s = this.subscriptions[sub];
-                if (s.event == event){
+                if (s.event == name){
                     if (this.filterEvent(s.params,data.payload)){
                         s.callback(data.payload);
                     }
                 }
             }
         }
-
-
     }
 
     getDevices(callback){

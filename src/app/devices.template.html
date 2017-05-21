@@ -14,7 +14,7 @@
   <div class="iot-device-resources" mdl-card-border>
     <div #container> </div>
   </div>
-  <div logs #logsContainer [deviceId]="device.id">
+  <div logs #logsContainer [deviceId]="device.uuid">
   </div>
   <mdl-card-actions mdl-card-border>
     <button mdl-button mdl-colored mdl-ripple (click)="logsContainer.clearLogs()">

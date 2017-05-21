@@ -32,7 +32,7 @@ export class VariableBinnaryComponent extends VariableComponent {
   
   ngAfterViewInit(){
     this.iot.onConnected(() => {
-      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.uuid , resource: this.getResource() }, (data) => {
+      this.sub = this.iot.subscribe("EventValueUpdate", { uuid: this.uuid , resource: this.getResource() }, (data) => {
         this.value = data.value["value"];
         this.rawValue = JSON.stringify(data.value);
       });
