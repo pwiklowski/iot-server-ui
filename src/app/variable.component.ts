@@ -25,7 +25,8 @@ export class VariableComponent {
     init(uuid, variable){
         this.uuid = uuid;
         this.variable = variable;
-        this.variable.value = JSON.parse(this.variable.value);
+        if (typeof this.variable.value == 'string')
+            this.variable.value = JSON.parse(this.variable.value);
     }
 
     getName(){
