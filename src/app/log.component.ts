@@ -37,7 +37,7 @@ export class LogsComponent {
   constructor(private iot : IotService) {}
 
   ngOnInit() {
-    this.sub = this.iot.subscribe("EventValueUpdate", { di: this.deviceId }, (data) => {
+    this.sub = this.iot.subscribe("EventValueUpdate", { uuid: this.deviceId }, (data) => {
       let today = new Date();
       let timestamp = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
       this.logs.push("["+timestamp+"] " + data.resource + " " + JSON.stringify(data.value));

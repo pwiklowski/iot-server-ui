@@ -46,7 +46,7 @@ export class DevicesComponent {
 
     ngOnInit() {
         this.iot.onConnected(()=>{
-            this.iot.subscribeDevice(this.uuid, null);
+            this.iot.subscribeDevice(this.device.uuid, this.device.hubUuid);
             this.device.variables.forEach(v => {
                 let factory = this.componentFactoryResolver.resolveComponentFactory(this.variableComponentFactory(v.rt));
 
@@ -58,7 +58,7 @@ export class DevicesComponent {
         });
     }
     ngOnDestroy(){
-        this.iot.unsubscribeDevice(this.uuid);
+        this.iot.unsubscribeDevice(this.device.uuid, this.device.hubUuid);
     }
 
     variableComponentFactory(rt) : any{

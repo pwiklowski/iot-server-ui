@@ -42,7 +42,6 @@ export class IotService{
     subscriptions = new Map<number, Subscription>();
     subscriptionId = 0;
 
-
     onConnectedCallbacks = [];
 
 
@@ -60,7 +59,7 @@ export class IotService{
         this.connect();
     }
 
-    connect(){
+    private connect(){
         if (this.auth.getToken() == undefined) return;
         this.socket = new WebSocket(IotService.IOT_CLOUD_URL);
         this.socket.onmessage = (e) => { this.onMessage(e);} ;
@@ -160,12 +159,12 @@ export class IotService{
         this.send(IotService.RequestSetValue, {"uuid" : uuid, "resource" : variable, "value" : value });
     }
 
-    subscribeDevice(uuid, callback){
-        this.send(IotService.RequestSubscribeDevice,{"uuid" : uuid});
+    subscribeDevice(uuid, hubUuid){
+        this.send(IotService.RequestSubscribeDevice,{"uuid" : uuid, "hubUuid": hubUuid});
     }
 
-    unsubscribeDevice(uuid){
-        this.send(IotService.RequestUnsubscribeDevice,{"uuid" : uuid});
+    unsubscribeDevice(uuid, hubUuid){
+        this.send(IotService.RequestUnsubscribeDevice, {"uuid" : uuid, "hubUuid": hubUuid});
     }
 
     subscribe(event, params, callback): number {

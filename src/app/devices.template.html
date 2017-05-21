@@ -9,16 +9,14 @@
   </mdl-card-title>
 
   <mdl-card-supporting-text>
-    {{ device.id}}
+    {{ device.uuid}}
   </mdl-card-supporting-text>
   <div class="iot-device-resources" mdl-card-border>
     <div #container> </div>
   </div>
-  <div logs #logsContainer [deviceId]="device.uuid">
-  </div>
+  <logs [deviceId]="device.uuid">
+  </logs>
   <mdl-card-actions mdl-card-border>
-    <button mdl-button mdl-colored mdl-ripple (click)="logsContainer.clearLogs()">
-        Clear logs
-      </button>
+    <button mdl-button mdl-colored mdl-ripple (click)="logsContainer.clearLogs()">Clear logs</button>
   </mdl-card-actions>
 </mdl-card>
