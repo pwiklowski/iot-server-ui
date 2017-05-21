@@ -3,8 +3,8 @@ import {Subscription} from 'rxjs/Subscription';
 import {IotService} from './iot.service';
 
 @Component({
-  selector: '[logs]',
-  templateUrl: `
+  selector: 'logs',
+  template: `
     <div #logsContainer class="iot-device-logs">
       <div #logsList>
         <div *ngFor="let log of logs">
