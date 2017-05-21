@@ -18,26 +18,10 @@ import {IotService} from './iot.service';
     </div>`
 })
 export class VariableBinnaryComponent extends VariableComponent {
-  rawValue : string;
-  value : number = 0;
   max : number;
   min : number;
 
-  sub;
   @ViewChild('slider') slider; 
-
-  constructor(private iot : IotService) {
-    super();
-  }
-  
-  ngAfterViewInit(){
-    this.iot.onConnected(() => {
-      this.sub = this.iot.subscribe("EventValueUpdate", { uuid: this.uuid , resource: this.getResource() }, (data) => {
-        this.value = data.value["value"];
-        this.rawValue = JSON.stringify(data.value);
-      });
-    });
-  }
 
   init(uuid, variable) {
     super.init(uuid, variable);
@@ -46,6 +30,10 @@ export class VariableBinnaryComponent extends VariableComponent {
       this.value = variable.value["value"];
       this.rawValue = JSON.stringify(variable.value);
     }, 10); 
+
+    this.onValueChanged = (data)=>{
+      this.value = data.value;
+    };
   }
 
   onChange(e){

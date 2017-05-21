@@ -34,7 +34,6 @@ import {IotService} from './iot.service';
         </mdl-slider>
     </div>`})
 export class VariableColourRgbComponent extends VariableComponent {
-  rawValue: string;
   red : number = 0;
   green : number = 0;
   blue : number = 0;
@@ -43,20 +42,6 @@ export class VariableColourRgbComponent extends VariableComponent {
   @ViewChild('g') g;
   @ViewChild('b') b;
 
-  sub;
-
-  constructor(private iot : IotService) {
-    super();
-  }
-  ngAfterViewInit(){
-    this.iot.onConnected(() => {
-      this.sub = this.iot.subscribe("EventValueUpdate", { di: this.uuid, resource: this.name }, (data) => {
-        this.setValues(data.value);
-        this.rawValue = JSON.stringify(data.value);
-      });
-    });
-  }
-
   init(uuid, variable) {
     super.init(uuid, variable);
 
@@ -64,6 +49,10 @@ export class VariableColourRgbComponent extends VariableComponent {
     setTimeout(()=>{
       this.setValues(variable.value);
     }, 100); 
+
+    this.onValueChanged = (data)=>{
+      this.setValues(data);
+    };
   }
 
   setValues(value) {
