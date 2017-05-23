@@ -23,8 +23,8 @@ export class VariableBinnaryComponent extends VariableComponent {
 
   @ViewChild('slider') slider; 
 
-  init(uuid, variable) {
-    super.init(uuid, variable);
+  init(hubUuid, uuid, variable) {
+    super.init(hubUuid, uuid, variable);
     
     setTimeout(()=>{
       this.value = variable.value["value"];
@@ -44,6 +44,6 @@ export class VariableBinnaryComponent extends VariableComponent {
     let obj = {
       "value": value
     };
-    this.iot.setValue(this.uuid, this.resource, obj);
+    this.iot.setValue(this.hubUuid, this.uuid, this.getResource(), obj);
   }
 }

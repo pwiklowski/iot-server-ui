@@ -29,8 +29,8 @@ export class VariableLightDimmingComponent extends VariableComponent {
 
   @ViewChild('slider') slider; 
   
-  init(di, variable) {
-    super.init(di, variable);
+  init(hubUuid, uuid, variable) {
+    super.init(hubUuid, uuid, variable);
     this.rawValue = JSON.stringify(variable.value);
     console.log(variable);
 
@@ -50,6 +50,6 @@ export class VariableLightDimmingComponent extends VariableComponent {
     let obj = {
       "dimmingSetting": parseInt(value)
     };
-    this.iot.setValue(this.uuid, this.name, obj);
+    this.iot.setValue(this.hubUuid, this.uuid, this.getResource(), obj);
   }
 }

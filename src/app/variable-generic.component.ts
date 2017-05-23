@@ -14,8 +14,8 @@ import { VariableComponent } from './variable.component';
 })
 export class VariableGenericComponent extends VariableComponent {
     values: any;
-    init(uuid, variable){
-        super.init(uuid, variable);
+    init(hubUuid, uuid, variable){
+        super.init(hubUuid, uuid, variable);
         this.values =  JSON.stringify(variable.value);
     }
 }

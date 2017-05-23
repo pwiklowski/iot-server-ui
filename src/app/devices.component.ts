@@ -51,7 +51,7 @@ export class DevicesComponent {
                 let factory = this.componentFactoryResolver.resolveComponentFactory(this.variableComponentFactory(v.rt));
 
                 let c = this.container.createComponent(factory);  
-                (<any>c.instance).init(this.uuid, v);
+                (<any>c.instance).init(this.device.hubUuid, this.device.uuid, v);
 
                 this.variablesComponents[v.name] = c;
             });

@@ -42,8 +42,8 @@ export class VariableColourRgbComponent extends VariableComponent {
   @ViewChild('g') g;
   @ViewChild('b') b;
 
-  init(uuid, variable) {
-    super.init(uuid, variable);
+  init(hubUuid, uuid, variable) {
+    super.init(hubUuid, uuid, variable);
 
     this.rawValue = JSON.stringify(variable.value);
     setTimeout(()=>{
@@ -73,6 +73,6 @@ export class VariableColourRgbComponent extends VariableComponent {
     let obj = {
       "dimmingSetting": red + "," + green + "," + blue
     };
-    this.iot.setValue(this.uuid, this.name, obj);
+    this.iot.setValue(this.hubUuid, this.uuid, this.getResource(), obj);
   }
 }

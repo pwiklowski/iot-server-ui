@@ -17,9 +17,9 @@ import {IotService} from './iot.service';
     </div>`,
 })
 export class VariableComponent {
-    resource: string;
     name: string;
     uuid: string;
+    hubUuid: string;
     variable;
     sub;
     rawValue : string;
@@ -30,8 +30,9 @@ export class VariableComponent {
     constructor(protected iot : IotService) {
     }
   
-    init(uuid, variable){
+    init(hubUuid, uuid, variable){
         this.uuid = uuid;
+        this.hubUuid = hubUuid;
         this.variable = variable;
         if (typeof this.variable.value == 'string')
             this.variable.value = JSON.parse(this.variable.value);
