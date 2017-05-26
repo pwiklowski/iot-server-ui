@@ -34,8 +34,7 @@ export class VariableComponent {
         this.uuid = uuid;
         this.hubUuid = hubUuid;
         this.variable = variable;
-        if (typeof this.variable.value == 'string')
-            this.variable.value = JSON.parse(this.variable.value);
+        this.variable.value = this.variable.value;
     }
 
     ngAfterViewInit(){
@@ -45,7 +44,7 @@ export class VariableComponent {
                     let variable = data.variables[key];
                     if (variable.href == this.getResource()){
                         this.rawValue = variable.value;
-                        this.variable.value = JSON.parse(variable.value);
+                        this.variable.value = variable.value;
                         if (this.onValueChanged != undefined){
                             this.onValueChanged(this.variable.value);
                         }
